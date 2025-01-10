@@ -80,7 +80,8 @@ public class LoginController extends HttpServlet {
         String passWord = request.getParameter("passWord");
         String rememberMe = request.getParameter("rememberMe");
         String Role = request.getParameter("Role");
-        User user = d.Login(userName, passWord, Role);
+        String hashPassword = uv.encode(passWord);
+        User user = d.Login(userName, hashPassword, Role);
         if (user != null) {
 //            if (uv.checkRole(Role).equals("customer")) {
 //                response.sendRedirect("Customer.jsp");

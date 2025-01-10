@@ -5,6 +5,7 @@
 package Validation;
 
 import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.regex.Pattern;
 
@@ -13,40 +14,41 @@ import java.util.regex.Pattern;
  * @author thang
  */
 public class UserValidation {
-   public String checkRole(String Role){
-       if(Role.equals("customer")){
-           return "customer";
-       }
-       if(Role.equals("staff")){
-           return "staff";
-       }
-       return "admin";
-   }
-   
-   public boolean checkMatching(String password , String cPassword){
-       if(password.equals(cPassword)){
-           return true;
-       }
-       return false;
-   }
-   
-     public String encode(String mk) {
+
+    public String checkRole(String Role) {
+        if (Role.equals("customer")) {
+            return "customer";
+        }
+        if (Role.equals("staff")) {
+            return "staff";
+        }
+        return "admin";
+    }
+
+    public boolean checkMatching(String password, String cPassword) {
+        if (password.equals(cPassword)) {
+            return true;
+        }
+        return false;
+    }
+
+    public String encode(String password) {
         String salt = "sa@gjielskdjjjiela;s";
         String rs = null;
-        mk += salt;
+
         try {
-            
+            password += salt;
             MessageDigest md = MessageDigest.getInstance("SHA-1");
-            byte[] hash = salt.getBytes("UTF-8");
+            byte[] hash = md.digest(password.getBytes("UTF-8"));
             rs = Base64.getEncoder().encodeToString(hash);
         } catch (Exception e) {
         }
-        return rs; 
+        return rs;
 
     }
-     
-     public boolean checkHashOfPassword(String password){
-           if (password.length() < 8) {
+
+    public boolean checkHashOfPassword(String password) {
+        if (password.length() < 8) {
             return false;
         }
 
@@ -61,5 +63,12 @@ public class UserValidation {
 
         // Kiểm tra tất cả các điều kiện
         return hasUppercase && hasLowercase && hasDigit || hasSpecialChar;
-     }
+    }
+
+    public String generateResetToken() {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[6]; // Token dài 24 byte
+        random.nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    }
 }
