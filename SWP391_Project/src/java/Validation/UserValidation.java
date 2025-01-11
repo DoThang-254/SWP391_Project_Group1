@@ -15,16 +15,6 @@ import java.util.regex.Pattern;
  */
 public class UserValidation {
 
-    public String checkRole(String Role) {
-        if (Role.equals("customer")) {
-            return "customer";
-        }
-        if (Role.equals("staff")) {
-            return "staff";
-        }
-        return "admin";
-    }
-
     public boolean checkMatching(String password, String cPassword) {
         if (password.equals(cPassword)) {
             return true;

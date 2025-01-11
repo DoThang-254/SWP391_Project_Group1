@@ -9,19 +9,27 @@ package Model;
  * @author thang
  */
 public class User {
+    private int userId ;
     private String userName ;
     private String PasswordHash ;
-    private String role ;
+    private int role ;
 
     public User() {
     }
 
-    public User(String userName, String PasswordHash, String role) {
+    public User(int userId, String userName, String PasswordHash, int role) {
+        this.userId = userId;
         this.userName = userName;
         this.PasswordHash = PasswordHash;
         this.role = role;
     }
 
+     public User(String userName, String PasswordHash, int role) { // login
+        this.userName = userName;
+        this.PasswordHash = PasswordHash;
+        this.role = role;
+    }
+    
     public String getUserName() {
         return userName;
     }
@@ -38,12 +46,20 @@ public class User {
         this.PasswordHash = PasswordHash;
     }
 
-    public String getRole() {
+    public int getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(int role) {
         this.role = role;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
     
     

@@ -18,9 +18,14 @@
             <br>
             Password <input type="password" name="passWord" value="${cookie.password.value}" /> <br>
             Remember me <input type="checkbox" name="rememberMe" value=""/> <br>
-            <input type="radio" name="Role" value="customer" checked="checked" /> Customer
-            <input type="radio" name="Role" value="staff"/>   Staff 
-            <input type="radio" name="Role" value="admin"/>  Admin <br>
+
+            <select name="Role">
+                <option value="2">Customer</option>
+                <option value="4">Service Management</option>
+                <option value="3">Technician</option>
+                <option value="1">Admin</option>
+
+            </select>
 
             <c:if test="${requestScope.msg != null}">
                 <p style="color: red"> ${requestScope.msg}</p>

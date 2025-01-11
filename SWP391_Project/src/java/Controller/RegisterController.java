@@ -5,6 +5,7 @@
 package Controller;
 
 import Dal.DAO;
+import Model.User;
 import Validation.UserValidation;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -78,6 +79,9 @@ public class RegisterController extends HttpServlet {
         String password = request.getParameter("passWord");
         String cPassword = request.getParameter("confirmPassword");
         String Role = request.getParameter("Role");
+        String fullName = request.getParameter("fullName");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
         String msg = "";
         if (!uv.checkMatching(password, cPassword)) {
             msg += "password and confirm password are not matching";
@@ -89,6 +93,8 @@ public class RegisterController extends HttpServlet {
             if (uv.checkHashOfPassword(password)) {
                 String hashPassword = uv.encode(password);
                 d.Register(userName, hashPassword, Role);
+                User newUser = d.getUser(userName);
+                d.RegisterCustomer(newUser.getUserId(), fullName, email, phone);
                 request.setAttribute("msg2", "Sign up successfully");
             } else {
                 msg += "the password is weak";

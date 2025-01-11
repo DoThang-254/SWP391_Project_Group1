@@ -79,20 +79,11 @@ public class LoginController extends HttpServlet {
         String userName = request.getParameter("userName");
         String passWord = request.getParameter("passWord");
         String rememberMe = request.getParameter("rememberMe");
-        String Role = request.getParameter("Role");
+        int Role =  Integer.parseInt(request.getParameter("Role"));
         String hashPassword = uv.encode(passWord);
         User user = d.Login(userName, hashPassword, Role);
         if (user != null) {
-//            if (uv.checkRole(Role).equals("customer")) {
-//                response.sendRedirect("Customer.jsp");
-//
-//            }
-//            if (uv.checkRole(Role).equals("staff")) {
-//                response.sendRedirect("Staff.jsp");
-//            } else {
-//                response.sendRedirect("Admin.jsp");
-//
-//            }
+
             if (rememberMe != null) {
                 Cookie userNameCookie = new Cookie("username", userName);
                 userNameCookie.setMaxAge(60 * 60 * 24 * 7);
@@ -110,7 +101,16 @@ public class LoginController extends HttpServlet {
             }
 
             request.getSession().setAttribute("user", user);
-            request.getRequestDispatcher("Customer.jsp").forward(request, response);
+            if (Role == 2) {
+                response.sendRedirect("Customer.jsp");
+
+            }
+            if (Role == 3 || Role == 4) {
+                response.sendRedirect("Staff.jsp");
+            }if(Role == 1) {
+                response.sendRedirect("Admin.jsp");
+
+            }
         } else {
             request.setAttribute("msg", "this account is not existed");
             request.getRequestDispatcher("Login.jsp").forward(request, response);

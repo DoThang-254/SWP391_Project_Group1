@@ -18,9 +18,16 @@
             <br>
             Password <input type="password" name="passWord" required/> <br>
             Confirm Password <input type="password" name="confirmPassword"  required/> <br>
+            Full name<input type="text" name="fullName" required /> <br>
+            Email<input type="text" name="email" required /> <br>
+            Phone<input type="text" name="phone" required /> <br>
+            
             <select name="Role">
-                <option>Customer</option>
-                <option>Staff</option>
+                <option value="2">Customer</option>
+                <option value="4">Service Management</option>
+                <option value="3">Technician</option>
+                <option value="1">Admin</option>
+
             </select>
             <br>
             <c:if test="${requestScope.msg != null}">
