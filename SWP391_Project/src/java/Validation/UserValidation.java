@@ -67,7 +67,7 @@ public class UserValidation {
 
     public String generateResetToken() {
         SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[6]; // Token dài 24 byte
+        byte[] bytes = new byte[6]; 
         random.nextBytes(bytes);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }

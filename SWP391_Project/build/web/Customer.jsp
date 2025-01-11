@@ -16,6 +16,9 @@
         <h1>Hello <c:if test="${sessionScope.user != null}">
                 ${sessionScope.user.userName}
         </c:if> </h1>
+        
+         <p> <a href="changepassword">Change Password</a></p>
+        
         <form action="logout">
             <input type="submit" value="Logout" />
         </form>

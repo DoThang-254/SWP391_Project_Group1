@@ -5,6 +5,7 @@
 package Controller;
 
 import Dal.DAO;
+import Model.User;
 import Validation.UserValidation;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,10 +18,10 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author thang
  */
-public class ForgotPasswordController extends HttpServlet {
+public class ChangePasswordController extends HttpServlet {
 
-    DAO d = new DAO();
     UserValidation uv = new UserValidation();
+    DAO d = new DAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +40,10 @@ public class ForgotPasswordController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ForgotPasswordController</title>");
+            out.println("<title>Servlet ChangePasswordController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ForgotPasswordController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ChangePasswordController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,7 +61,7 @@ public class ForgotPasswordController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("ForgotPassword.jsp");
+        response.sendRedirect("ChangePassword.jsp");
     }
 
     /**
@@ -74,15 +75,22 @@ public class ForgotPasswordController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        if (d.checkAccountExisted(username)) {
-            String token = uv.generateResetToken();
-            d.UpdatePassword(token, username);
-            request.setAttribute("token", token);
-        }else{
-        request.setAttribute("msg", "username is not existed");
+        User user = (User) request.getSession().getAttribute("user");
+
+        String username = user.getUserName();
+        String password = request.getParameter("password");
+        String cPassword = request.getParameter("confirmPassword");
+        if (!uv.checkMatching(password, cPassword)) {
+            request.setAttribute("msg", "password and confirm password are not matching");
+
+        } else {
+            
+            d.UpdatePassword(password, username);
+
+            request.setAttribute("msg2", "Change successfully");
         }
-        request.getRequestDispatcher("ForgotPassword.jsp").forward(request, response);
+
+        request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
 
     }
 

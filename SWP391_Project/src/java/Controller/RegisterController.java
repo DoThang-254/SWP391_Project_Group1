@@ -89,7 +89,7 @@ public class RegisterController extends HttpServlet {
             if (uv.checkHashOfPassword(password)) {
                 String hashPassword = uv.encode(password);
                 d.Register(userName, hashPassword, Role);
-                request.setAttribute("msg2", "successfully");
+                request.setAttribute("msg2", "Sign up successfully");
             } else {
                 msg += "the password is weak";
 

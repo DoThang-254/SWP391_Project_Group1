@@ -5,6 +5,7 @@
 package Dal;
 
 import Model.User;
+import Validation.UserValidation;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -13,6 +14,7 @@ import java.sql.ResultSet;
  * @author thang
  */
 public class DAO extends DBContext {
+    private UserValidation uv = new UserValidation();
 
     public User Login(String userName, String passWord, String Role) {
         String sql = "SELECT *\n"
@@ -50,19 +52,36 @@ public class DAO extends DBContext {
         } catch (Exception e) {
         }
     }
-    
-    public boolean checkAccountExisted(String userName){
-        String sql = "select * from Users where Username = ? " ;
+
+    public boolean checkAccountExisted(String userName) {
+        String sql = "select * from Users where Username = ? ";
         try {
-           PreparedStatement p = connection.prepareStatement(sql);
-           p.setString(1, userName);
-           ResultSet rs = p.executeQuery();
-           if(rs.next()){
-               return true ;
-           }
+            PreparedStatement p = connection.prepareStatement(sql);
+            p.setString(1, userName);
+            ResultSet rs = p.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
         } catch (Exception e) {
-            
+
         }
-        return false ;
+        return false;
+    }
+
+    public void UpdatePassword(String password, String username) {
+        String sql = "UPDATE [dbo].[Users]\n"
+                + "   SET\n"
+                + "      [PasswordHash] = ?\n"
+                + "      \n"
+                + " WHERE Username = ?";
+        
+        try {
+            
+            PreparedStatement p = connection.prepareStatement(sql);
+            p.setString(1, uv.encode(password));
+            p.setString(2, username);
+            p.executeUpdate();
+        } catch (Exception e) {
+        }
     }
 }
