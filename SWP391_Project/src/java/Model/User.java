@@ -9,10 +9,26 @@ package Model;
  * @author thang
  */
 public class User {
-    private int userId ;
-    private String userName ;
-    private String PasswordHash ;
-    private int role ;
+
+    private int userId;
+    private String userName;
+    private String PasswordHash;
+    private int role;
+    private String FullName;
+    private String Email;
+    private String Phone;
+    private String Position;
+
+    public User(int userId, String userName, String PasswordHash, int role, String FullName, String Email, String Phone, String Position) {
+        this.userId = userId;
+        this.userName = userName;
+        this.PasswordHash = PasswordHash;
+        this.role = role;
+        this.FullName = FullName;
+        this.Email = Email;
+        this.Phone = Phone;
+        this.Position = Position;
+    }
 
     public User() {
     }
@@ -24,12 +40,31 @@ public class User {
         this.role = role;
     }
 
-     public User(String userName, String PasswordHash, int role) { // login
+    public User(String userName, String PasswordHash, int role) { // login
         this.userName = userName;
         this.PasswordHash = PasswordHash;
         this.role = role;
     }
-    
+
+    public User(int UserID, String FullName, String Email, String Phone, String Position) {
+        this.Email = Email;
+        this.FullName = FullName;
+        this.Phone = Phone;
+        this.Position = Position;
+
+    }
+
+    //List all user information except admin
+    public User(int userId, String userName, int role, String Email, String fullName, String position, String phone) {
+        this.userId = userId;
+        this.userName = userName;
+        this.role = role;
+        this.Email = Email;
+        this.FullName = fullName;
+        this.Position = position;
+        this.Phone = phone;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -61,6 +96,37 @@ public class User {
     public void setUserId(int userId) {
         this.userId = userId;
     }
-    
-    
+
+    public String getFullName() {
+        return FullName;
+    }
+
+    public void setFullName(String FullName) {
+        this.FullName = FullName;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String Email) {
+        this.Email = Email;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String Phone) {
+        this.Phone = Phone;
+    }
+
+    public String getPosition() {
+        return Position;
+    }
+
+    public void setPosition(String Position) {
+        this.Position = Position;
+    }
+
 }

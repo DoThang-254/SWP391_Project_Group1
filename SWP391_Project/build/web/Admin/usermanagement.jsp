@@ -113,6 +113,7 @@
                                                     </div>
                                                 </form>
                                             </div>
+
                                         </div><!-- /.box -->
                                 </form>
                             </div>
@@ -121,12 +122,7 @@
                 <div class="footer-main">
                 </div>
             </aside><!-- /.right-side -->
-
-
         </div><!-- ./wrapper -->
-
-
-
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
@@ -136,4 +132,4 @@
             });
         </script>
     </body>
-</html>
+</html>  
