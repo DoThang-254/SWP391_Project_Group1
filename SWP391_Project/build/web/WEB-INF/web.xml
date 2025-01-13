@@ -24,10 +24,6 @@
         <servlet-name>ReadListRole</servlet-name>
         <servlet-class>Controller.ReadListRole</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>UserManagerController</servlet-name>
-        <servlet-class>Controller.UserManagerController</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -51,10 +47,6 @@
     <servlet-mapping>
         <servlet-name>ReadListRole</servlet-name>
         <url-pattern>/role</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UserManagerController</servlet-name>
-        <url-pattern>/usermanager</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login</welcome-file>
