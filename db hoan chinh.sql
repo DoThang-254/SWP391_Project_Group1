@@ -1,4 +1,4 @@
-create database WarrantyManagement2
+create database WarrantyManagement3
 
 CREATE TABLE Role (
     RoleId INT PRIMARY KEY,
@@ -78,19 +78,19 @@ CREATE TABLE WarrantyRequirement (
 );
 
 CREATE TABLE WarrantyForm (
-    FormId INT PRIMARY KEY,
+    RequirementId INT PRIMARY KEY,  
     StartDate DATE,
     EndDate DATE,
     Status VARCHAR(255),
-    RequirementId INT,
     VerificationCode VARCHAR(255),
     VerificationMethod VARCHAR(255),
     Verified CHAR(1),
     Price FLOAT(10),
-    InvoiceId INT, 
+    InvoiceId INT UNIQUE,  
     FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId),
-    FOREIGN KEY (InvoiceId) REFERENCES Invoice(InvoiceId) 
+    FOREIGN KEY (InvoiceId) REFERENCES Invoice(InvoiceId)
 );
+
 
 
 CREATE TABLE Notification (
