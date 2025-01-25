@@ -150,7 +150,7 @@
                                 <li class="footer"><a href="#">See All Messages</a></li>
                             </ul>
                         </li>
-                        
+
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -353,6 +353,17 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <br>
+                                    <div class=" add-task-row">
+                                         <div class="table-foot">
+                                        <ul class="pagination pagination-sm no-margin pull-right">
+                                            <li><a href="#">&laquo;</a></li>
+                                            <li><a href="#">1</a></li>
+                                            <li><a href="#">2</a></li>
+                                            <li><a href="#">3</a></li>
+                                            <li><a href="#">&raquo;</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </section>
 
@@ -494,10 +505,18 @@
 
                                         </ul>
                                     </div>
-
+                                   
                                     <div class=" add-task-row">
+                                         <div class="table-foot">
+                                        <ul class="pagination pagination-sm no-margin pull-right">
+                                            <li><a href="#">&laquo;</a></li>
+                                            <li><a href="#">1</a></li>
+                                            <li><a href="#">2</a></li>
+                                            <li><a href="#">3</a></li>
+                                            <li><a href="#">&raquo;</a></li>
+                                        </ul>
+                                    </div>
                                         <a class="btn btn-success btn-sm pull-left" href="#">Add New Tasks</a>
-                                        <a class="btn btn-default btn-sm pull-right" href="#">See All Tasks</a>
                                     </div>
                                 </div>
                             </section>
