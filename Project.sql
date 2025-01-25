@@ -1,5 +1,5 @@
 ﻿CREATE TABLE Role (
-    RoleId INT PRIMARY KEY,
+    RoleId INT IDENTITY(1,1) PRIMARY KEY,
     RoleName VARCHAR(255) NOT NULL
 );
 
@@ -19,7 +19,7 @@ CREATE TABLE Staff (
 );
 
 CREATE TABLE Customer (
-    CustomerId INT PRIMARY KEY,
+    CustomerId INT IDENTITY(1,1) PRIMARY KEY,
     Username VARCHAR(100) UNIQUE NOT NULL,
     Password VARCHAR(255) NOT NULL,
     FirstName VARCHAR(255),
@@ -43,19 +43,19 @@ CREATE TABLE Product (
 );
 
 CREATE TABLE Invoice (
-    InvoiceId INT PRIMARY KEY,
-    Price FLOAT(10),
+    InvoiceId INT IDENTITY(1,1) PRIMARY KEY,
+    Price FLOAT,
     Status VARCHAR(255),
     Note VARCHAR(255),
     FormId INT UNIQUE
 );
 
 CREATE TABLE Component (
-    ComponentId INT PRIMARY KEY,
+    ComponentId INT IDENTITY(1,1) PRIMARY KEY,
     ComponentName VARCHAR(255),
     Brand VARCHAR(255),
     Status VARCHAR(255),
-    Price FLOAT(10),
+    Price FLOAT,
     Amount INT,
     StaffId VARCHAR(255),
     InvoiceId INT,
@@ -65,7 +65,7 @@ CREATE TABLE Component (
 
 
 CREATE TABLE WarrantyRequirement (
-    RequirementId INT PRIMARY KEY,
+    RequirementId INT IDENTITY(1,1) PRIMARY KEY,
     Status VARCHAR(255),
     Description VARCHAR(255),
     RegisterDate DATE,
@@ -76,23 +76,23 @@ CREATE TABLE WarrantyRequirement (
 );
 
 CREATE TABLE WarrantyForm (
-    FormId INT PRIMARY KEY,
+    FormId INT IDENTITY(1,1) PRIMARY KEY,
     StartDate DATE,
     EndDate DATE,
     Status VARCHAR(255),
-    RequirementId INT Unique,
+    RequirementId INT UNIQUE,
     VerificationCode VARCHAR(255),
     VerificationMethod VARCHAR(255),
     Verified CHAR(1),
-    Price FLOAT(10),
-    InvoiceId INT unique, 
+    Price FLOAT,
+    InvoiceId INT UNIQUE, 
     FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId),
     FOREIGN KEY (InvoiceId) REFERENCES Invoice(InvoiceId) 
 );
 
 
 CREATE TABLE Notification (
-    NotificationId INT PRIMARY KEY,
+    NotificationId INT IDENTITY(1,1) PRIMARY KEY,
     CustomerId INT,
     RequirementId INT,
     Title VARCHAR(255),
@@ -104,7 +104,7 @@ CREATE TABLE Notification (
 );
 
 CREATE TABLE WarrantyInformation (
-    InformationId INT PRIMARY KEY,
+    InformationId INT IDENTITY(1,1) PRIMARY KEY,
     Status VARCHAR(255),
     Note VARCHAR(255),
     ReturnDate DATE,
@@ -115,7 +115,7 @@ CREATE TABLE WarrantyInformation (
 );
 
 CREATE TABLE Schedule (
-    ScheduleId INT PRIMARY KEY,
+    ScheduleId INT IDENTITY(1,1) PRIMARY KEY,
     StartTime TIME(7),
     EndTime TIME(7),
     Date DATE,
@@ -124,7 +124,7 @@ CREATE TABLE Schedule (
 );
 
 CREATE TABLE Report (
-    ReportId INT PRIMARY KEY,
+    ReportId INT IDENTITY(1,1) PRIMARY KEY,
     Comment VARCHAR(255),
     CustomerId INT,
     InformationId INT,
@@ -133,88 +133,65 @@ CREATE TABLE Report (
 );
 
 CREATE TABLE Blog (
-    BlogId INT PRIMARY KEY,
+    BlogId INT IDENTITY(1,1) PRIMARY KEY,
     Content VARCHAR(255),
     StaffId VARCHAR(255),
     FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
-)
+);
 
--- Insert vào bảng Role
-INSERT INTO Role (RoleId, RoleName) 
+INSERT INTO Role (RoleName)
 VALUES 
-(1, 'Admin'), 
-(2, 'Technician'), 
-(3, 'Customer Support');
-
--- Insert vào bảng Staff
+    ('Admin'),
+    ('Technician'),
+    ('Customer Service');
 INSERT INTO Staff (StaffId, Username, Password, FirstName, LastName, Email, Phone, Gender, BirthDate, Status, RoleId)
 VALUES 
-('S001', 'admin', 'password123', 'John', 'Doe', 'john.doe@example.com', '0123456789', 'Male', '1985-05-15', 'Active', 1),
-('S002', 'tech1', 'techpass', 'Alice', 'Smith', 'alice.smith@example.com', '0987654321', 'Female', '1990-07-22', 'Active', 2),
-('S003', 'support1', 'supportpass', 'Bob', 'Brown', 'bob.brown@example.com', '0223344556', 'Male', '1988-10-01', 'Active', 3);
-
--- Insert vào bảng Customer
-INSERT INTO Customer (CustomerId, Username, Password, FirstName, LastName, Email, Gender, BirthDate, Status, Address)
+    ('S001', 'admin1', 'password123', 'John', 'Doe', 'admin1@example.com', '0123456789', 'Male', '1985-05-15', 'Active', 1),
+    ('S002', 'tech1', 'password123', 'Jane', 'Smith', 'tech1@example.com', '0987654321', 'Female', '1990-07-20', 'Active', 2),
+    ('S003', 'service1', 'password123', 'Emily', 'Brown', 'service1@example.com', '0112233445', 'Female', '1992-10-10', 'Active', 3);
+INSERT INTO Customer (Username, Password, FirstName, LastName, Email, Gender, BirthDate, Status, Address)
 VALUES 
-(1, 'customer1', 'custpass1', 'Emma', 'Williams', 'emma.w@example.com', 'Female', '1992-03-12', 'Active', '123 Main St'),
-(2, 'customer2', 'custpass2', 'Liam', 'Johnson', 'liam.j@example.com', 'Male', '1995-08-25', 'Active', '456 Elm St');
-
--- Insert vào bảng Product
+    ('cust1', 'password123', 'Alice', 'Johnson', 'alice.j@example.com', 'Female', '1995-12-05', 'Active', '123 Main Street'),
+    ('cust2', 'password123', 'Bob', 'Williams', 'bob.w@example.com', 'Male', '1988-03-25', 'Active', '456 Elm Street');
 INSERT INTO Product (ProductId, ProductName, WarrantyDateTime, Price, Brand, BuyTime, CustomerId)
 VALUES 
-('P001', 'Laptop X1', '2025-01-15', 1200.00, 'BrandA', '2023-01-10', 1),
-('P002', 'Laptop Pro', '2024-12-20', 1500.00, 'BrandB', '2023-06-15', 2);
-
--- Insert vào bảng Invoice
-INSERT INTO Invoice (InvoiceId, Price, Status, Note, FormId)
+    ('P001', 'Laptop A', '2025-01-01', 1500.00, 'BrandX', '2024-01-01', 1),
+    ('P002', 'Laptop B', '2025-06-01', 1200.00, 'BrandY', '2024-06-01', 2);
+INSERT INTO Invoice (Price, Status, Note, FormId)
 VALUES 
-(1, 150.00, 'Paid', 'Replacement part', 1),
-(2, 200.00, 'Pending', 'Battery issue', 2);
-
--- Insert vào bảng Component
-INSERT INTO Component (ComponentId, ComponentName, Brand, Status, Price, Amount, StaffId, InvoiceId)
+    (200.00, 'Paid', 'Warranty fee', 1), 
+    (100.00, 'Pending', 'Component replacement', 2);
+INSERT INTO Component (ComponentName, Brand, Status, Price, Amount, StaffId, InvoiceId)
 VALUES 
-(1, 'Battery', 'BrandA', 'Available', 50.00, 10, 'S002', 1),
-(2, 'Keyboard', 'BrandB', 'Out of Stock', 70.00, 0, 'S002', 2);
-
--- Insert vào bảng WarrantyRequirement
-INSERT INTO WarrantyRequirement (RequirementId, Status, Description, RegisterDate, CustomerId, StaffId)
+    ('Battery', 'BrandX', 'In Stock', 50.00, 10, 'S002', 1),
+    ('Keyboard', 'BrandY', 'In Stock', 30.00, 5, 'S002', 2);
+INSERT INTO WarrantyRequirement (Status, Description, RegisterDate, CustomerId, StaffId)
 VALUES 
-(1, 'Received', 'Screen malfunction', '2025-01-10', 1, 'S003'),
-(2, 'Pending', 'Battery issue', '2025-01-12', 2, 'S003');
-
--- Insert vào bảng WarrantyForm
-INSERT INTO WarrantyForm (FormId, StartDate, EndDate, Status, RequirementId, VerificationCode, VerificationMethod, Verified, Price, InvoiceId)
+    ('Pending', 'Laptop not powering on', '2025-01-15', 1, 'S003'), 
+    ('Approved', 'Screen flickering issue', '2025-01-20', 2, 'S002'); 
+INSERT INTO WarrantyForm (StartDate, EndDate, Status, RequirementId, VerificationCode, VerificationMethod, Verified, Price, InvoiceId)
 VALUES 
-(1, '2025-01-11', '2025-02-11', 'Active', 1, 'CODE123', 'Email', 'Y', 0.00, 1),
-(2, '2025-01-13', '2025-02-13', 'Pending', 2, 'CODE456', 'Phone', 'N', 200.00, 2);
-
--- Insert vào bảng Notification
-INSERT INTO Notification (NotificationId, CustomerId, RequirementId, Title, Message, IsRead, SendTime)
+    ('2025-01-15', '2025-01-30', 'Active', 1, 'ABC123', 'Email', 'Y', 0.00, 1),
+    ('2025-01-20', '2025-02-10', 'Pending', 2, 'XYZ789', 'SMS', 'N', 50.00, 2);
+INSERT INTO Notification (CustomerId, RequirementId, Title, Message, IsRead, SendTime)
 VALUES 
-(1, 1, 1, 'Warranty Received', 'Your warranty request has been received.', 'N', '2025-01-11'),
-(2, 2, 2, 'Action Required', 'Your warranty request is pending approval.', 'N', '2025-01-13');
-
--- Insert vào bảng WarrantyInformation
-INSERT INTO WarrantyInformation (InformationId, Status, Note, ReturnDate, ProductId, StaffId)
+    (1, 1, 'Warranty Request Received', 'Your warranty request has been received and is being processed.', 'N', '2025-01-15'),
+    (2, 2, 'Warranty Request Approved', 'Your warranty request has been approved.', 'N', '2025-01-20');
+INSERT INTO WarrantyInformation (Status, Note, ReturnDate, ProductId, StaffId)
 VALUES 
-(1, 'Completed', 'Screen replaced', '2025-01-20', 'P001', 'S002'),
-(2, 'In Progress', 'Battery replacement', NULL, 'P002', 'S002');
-
--- Insert vào bảng Schedule
-INSERT INTO Schedule (ScheduleId, StaffTime, EndTime, Date, StaffId)
+    ('In Progress', 'Diagnosing issue', NULL, 'P001', 'S002'),
+    ('Completed', 'Screen replaced', '2025-01-22', 'P002', 'S002');
+INSERT INTO Schedule (StartTime, EndTime, Date, StaffId)
 VALUES 
-(1, '09:00:00', '17:00:00', '2025-01-24', 'S002'),
-(2, '10:00:00', '18:00:00', '2025-01-25', 'S003');
-
--- Insert vào bảng Report
-INSERT INTO Report (ReportId, Comment, CustomerId, InformationId)
+    ('09:00:00', '17:00:00', '2025-01-25', 'S002'),
+    ('10:00:00', '18:00:00', '2025-01-26', 'S003');
+INSERT INTO Report (Comment, CustomerId, InformationId)
 VALUES 
-(1, 'Great service!', 1, 1),
-(2, 'Waiting too long.', 2, 2);
-
--- Insert vào bảng Blog
-INSERT INTO Blog (BlogId, Content, StaffId)
+    ('Service was quick and efficient.', 1, 1),
+    ('Satisfied with the replacement.', 2, 2);
+INSERT INTO Blog (Content, StaffId)
 VALUES 
-(1, 'How to maintain your laptop.', 'S003'),
-(2, 'Common laptop issues and fixes.', 'S002');
+    ('Tips to maintain your laptop battery.', 'S003'),
+    ('How to clean your keyboard safely.', 'S002');
+
+
