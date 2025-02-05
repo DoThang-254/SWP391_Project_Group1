@@ -2,23 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Controller;
 
-import Dal.AdminDAO;
-import Model.Staff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
  * @author tuand
  */
-public class AdminManagement extends HttpServlet {
+public class AdminManagementController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +33,10 @@ public class AdminManagement extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AdminManagement</title>");
+            out.println("<title>Servlet AdminManagementController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AdminManagement at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AdminManagementController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,31 +54,7 @@ public class AdminManagement extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String searchKeyword = request.getParameter("searchKeyword");
-        String roleIdParam = request.getParameter("roleId");
-        Integer roleId = null;
-        if (roleIdParam != null && !roleIdParam.isEmpty()) {
-            roleId = Integer.parseInt(roleIdParam);
-        }
-        AdminDAO adminDAO = new AdminDAO();
-        List<Staff> staffList = adminDAO.getListOfUser(searchKeyword, roleId);
-        int page, numberpage = 5;
-        int size = staffList.size();
-        int num = (size % 5 == 0 ? (size / 5) : (size / 5) + 1); //number page
-        String xpage = request.getParameter("page");
-        if (xpage == null) {
-            page = 1;
-        } else {
-            page = Integer.parseInt(xpage);
-        }
-        int start, end;
-        start = (page - 1) * numberpage;
-        end = Math.min(page * numberpage, size);
-        List<Staff> list = adminDAO.getListByPage(staffList, start, end);
-        request.setAttribute("page", page);
-        request.setAttribute("num", num);
-        request.setAttribute("staffList", list);
-        request.getRequestDispatcher("/Admin_decentralization.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
