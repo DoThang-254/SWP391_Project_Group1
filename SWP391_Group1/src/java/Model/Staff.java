@@ -23,9 +23,26 @@ public class Staff {
     private Date birthDate;
     private String status;
     private int roleId;
+    private Role role;
 
     public Staff() {
     }
+
+    public Staff(String staffId, String username, String firstName, String lastName, String email, String phone, String gender, Date birthDate, String status, int roleId, Role role) {
+        this.staffId = staffId;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.status = status;
+        this.roleId = roleId;
+        this.role = role;
+    }
+
+   
 
     public Staff(String staffId, String username, String password, String firstName,
             String lastName, String email, String phone, String gender,
@@ -129,5 +146,13 @@ public class Staff {
 
     public void setRoleId(int role) {
         this.roleId = role;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
