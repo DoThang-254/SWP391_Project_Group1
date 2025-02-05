@@ -4,8 +4,19 @@
         <servlet-name>SearchWarrantyInformationController</servlet-name>
         <servlet-class>Controller.SearchWarrantyInformationController</servlet-class>
     </servlet>
+    
+    <servlet>
+        <servlet-name>WarrantyInformationController</servlet-name>
+        <servlet-class>Controller.WarrantyInformationController</servlet-class>
+    </servlet>
+   
     <servlet-mapping>
-        <servlet-name>SearchWarrantyInformationController</servlet-name>
-        <url-pattern>/searchwarrantyinformation</url-pattern>
+        <servlet-name>WarrantyInformationController</servlet-name>
+        <url-pattern>/searchinformation</url-pattern>
+    </servlet-mapping>
+    
+     <servlet-mapping>
+        <servlet-name>WarrantyInformationController</servlet-name>
+        <url-pattern>/warrantyinformation</url-pattern>
     </servlet-mapping>
 </web-app>
