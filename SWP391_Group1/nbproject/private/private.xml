@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/thang/Downloads/c/SWP391_Group1/src/java/Model/Component.java</file>
-            <file>file:/C:/Users/thang/Downloads/c/SWP391_Group1/src/java/Model/Invoice.java</file>
-            <file>file:/C:/Users/thang/Downloads/c/SWP391_Group1/src/java/Model/Schedule.java</file>
-            <file>file:/C:/Users/thang/Downloads/c/SWP391_Group1/src/java/Model/WarrantyInformation.java</file>
-            <file>file:/C:/Users/thang/Downloads/c/SWP391_Group1/src/java/Model/Staff.java</file>
-            <file>file:/C:/Users/thang/Downloads/c/SWP391_Group1/src/java/Dal/CustomerDao.java</file>
-            <file>file:/C:/Users/thang/Downloads/c/SWP391_Group1/src/java/Model/WarrantyForm.java</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/WarrantyInformationController.java</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Dal/CustomerDao.java</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/web/WarrantyInformation.jsp</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/web/SearchInformation.jsp</file>
         </group>
     </open-files>
 </project-private>

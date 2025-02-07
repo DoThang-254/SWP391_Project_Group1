@@ -113,8 +113,8 @@ public class WarrantyInformationController extends HttpServlet {
         Customer c = (Customer) request.getSession().getAttribute("Customer");
         String searchBox = request.getParameter("table_search");
         String brand = request.getParameter("filterBrand");
-        Product newProduct = new Product(searchBox, null, null, 0, brand, null, c.getCustomerId());
-        int count = cd.GetTotalProductWarrantyByCustomerId(c.getCustomerId(), newProduct);
+        Product newProduct = new Product(null, null, null, 0, brand, null, c.getCustomerId());
+        int count = cd.GetTotalProductWarrantyByCustomerId(c.getCustomerId(),searchBox ,newProduct);
 
         int endPage = count / 10;
         if (count % 10 != 0) {
@@ -125,7 +125,7 @@ public class WarrantyInformationController extends HttpServlet {
         String order = request.getParameter("order");
         String priceRange = request.getParameter("filterPriceRange");
 
-        List<Product> list = cd.SearchingWarrantyProductInformation(index, c.getCustomerId(), newProduct, sort, order, priceRange);
+        List<WarrantyInformation> list = cd.WarrantyProductInformation(index, c.getCustomerId(),searchBox, newProduct, sort, order , priceRange);
         //List<WarrantyInformation> list2 = cd.WarrantyProductInformation(index, c.getCustomerId(), newProduct, sort, order);
         request.setAttribute("endpage", endPage);
         request.setAttribute("listA", list);

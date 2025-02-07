@@ -168,9 +168,9 @@
                                 <li>
                                     <a href="logout"><i class="fa fa-ban fa-fw pull-right"></i> Logout</a>
                                 </li>                                
-                    </ul>
+                            </ul>
 
-                    </li>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -249,6 +249,8 @@
                                 </header>
                                 <div class="filter-section">
                                     <form action="warrantyinformation" method="get" class="row">
+                                        <input type="hidden" name="sort" value="${requestScope.sort}">
+                                        <input type="hidden" name="order" value="${requestScope.order}">
                                         <div class="box-tools m-b-15">
                                             <div class="input-group">                                            
                                                 <input type="text" name="table_search" class="form-control input-sm pull-right"
@@ -320,24 +322,19 @@
                                                     <a href="warrantyinformation?sort=productname&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
                                                     <a href="warrantyinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
-                                                <th>Warranty End Time 
-                                                    <a href="warrantyinformation?sort=WarrantyDateTime&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=WarrantyDateTime&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
-                                                </th>
-                                                <th>Price
-                                                    <a href="warrantyinformation?sort=Price&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="warrantyinformation?sort=Price&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
-                                                </th>
+
+
                                                 <th>Brand
                                                     <a href="warrantyinformation?sort=Brand&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
                                                     <a href="warrantyinformation?sort=Brand&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
-                                                <th>Buy Time
-                                                    <a href="warrantyinformation?sort=BuyTime&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="warrantyinformation?sort=BuyTime&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
-                                                </th>
+
 
                                                 <th> Note
+
+                                                </th>
+
+                                                <th> Return Date
 
                                                 </th>
                                                 <th>View Details
@@ -352,15 +349,17 @@
                                         </c:if>
                                         <c:forEach var="c" items="${requestScope.listA}">
                                             <tr>
-                                                <td>${c.productId}</td>
-                                                <td>${c.productName}</td>
-                                                <td>${c.warrantyDateTime}</td>
-                                                <td>${c.price}</td>
-                                                <td>${c.brand}</td>
-                                                <td>${c.buyTime}</td>
-                                                <td>
-                                                    Diagnosing issue
-                                                </td>
+                                                <td>${c.product.productId}</td>
+                                                <td>${c.product.productName}</td>
+                                                <td>${c.product.brand}</td>
+                                                <td>${c.note}</td>
+                                                <c:if test="${c.returnDate == null}">
+                                                    <td>N/A</td>
+                                                </c:if>
+                                                <td>${c.returnDate}</td>
+
+                                                
+
 
 
                                             </tr>
