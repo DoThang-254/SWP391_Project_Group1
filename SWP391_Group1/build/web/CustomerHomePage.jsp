@@ -163,8 +163,8 @@
                                 <li class="divider"></li>
 
                                 <li>
-                                    <a href="#"><i class="fa fa-ban fa-fw pull-right"></i> Logout</a>
-                                </li>
+                                    <a href="logout"><i class="fa fa-ban fa-fw pull-right"></i> Logout</a>
+                                </li>  
                             </ul>
 
                         </li>
@@ -226,11 +226,11 @@
 
                     </ul>
                 </section>
-                
+
             </aside>
 
             <!-- Right side column. Contains the navbar and content of the page -->
-            
+
         </div><!-- ./wrapper -->
 
 

@@ -22,7 +22,7 @@ public class WarrantyInformation {
     }
 
     public WarrantyInformation(int informationId, String status, String note, java.util.Date returnDate, 
-                       String productId, String staffId) {
+                        String productId,String staffId) {
         this.informationId = informationId;
         this.status = status;
         this.note = note;
@@ -63,20 +63,20 @@ public class WarrantyInformation {
         this.returnDate = returnDate;
     }
 
-    public String getProductId() {
+    public String getProduct() {
         return productId;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setProduct(String product) {
+        this.productId = product;
     }
 
-    public String getStaffId() {
+    public String getStaff() {
         return staffId;
     }
 
-    public void setStaffId(String staffId) {
-        this.staffId = staffId;
+    public void setStaff(String staff) {
+        this.staffId = staff;
     }
 }
 

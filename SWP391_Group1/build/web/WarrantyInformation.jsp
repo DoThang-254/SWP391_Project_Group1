@@ -165,11 +165,12 @@
                                 <li class="divider"></li>
 
                                 <li>
-                                    <a href="#"><i class="fa fa-ban fa-fw pull-right"></i> Logout</a>
-                                </li>
-                            </ul>
+                                <li>
+                                    <a href="logout"><i class="fa fa-ban fa-fw pull-right"></i> Logout</a>
+                                </li>                                
+                    </ul>
 
-                        </li>
+                    </li>
                     </ul>
                 </div>
             </nav>
@@ -234,20 +235,20 @@
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
 
-              
+
 
                 <!-- Main content -->
                 <section class="content">
-                    
+
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="panel">
                                 <header class="panel-heading">
-                                    Search Warranty Information
+                                    Warranty History
 
                                 </header>
                                 <div class="filter-section">
-                                    <form action="searchinformation" method="get" class="row">
+                                    <form action="warrantyinformation" method="get" class="row">
                                         <div class="box-tools m-b-15">
                                             <div class="input-group">                                            
                                                 <input type="text" name="table_search" class="form-control input-sm pull-right"
@@ -268,37 +269,24 @@
                                         <div class="col-md-3">
                                             <label for="filterBrand">Brand</label>
                                             <select name="filterBrand" id="filterBrand" class="form-control">
-                                                <c:if test="${requestScope.brand != null}">
-                                                    <option value="${requestScope.brand}">${requestScope.brand}</option>
-
-                                                </c:if>
-                                                <option value="">-- All Brands --</option>
-                                                <option value="BrandY">BrandY</option>
-                                                <option value="HP">HP</option>
-                                                <option value="Asus">Asus</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- Filter Warranty Status -->
-                                        <div class="col-md-3">
-                                            <label for="filterWarrantyStatus">Warranty Status</label>
-                                            <select name="filterWarrantyStatus" id="filterWarrantyStatus" class="form-control">
-                                                <option value="">-- All Statuses --</option>
-                                                <option value="active">Active</option>
-                                                <option value="expired">Expired</option>
+                                                <option value="" ${empty requestScope.brand ? 'selected' : ''}>-- All Brands --</option>
+                                                <option value="BrandY" ${requestScope.brand == 'BrandY' ? 'selected' : ''}>BrandY</option>
+                                                <option value="BrandX" ${requestScope.brand == 'BrandX' ? 'selected' : ''}>BrandX</option>
                                             </select>
                                         </div>
 
                                         <!-- Filter Price -->
                                         <div class="col-md-3">
+
                                             <label for="filterPriceRange">Price Range</label>
-                                            <select id="filterPriceRange" class="form-control">
-                                                <option value="0-5000">Dưới 5.000</option>
-                                                <option value="5000-10000">5.000 - 10.000</option>
-                                                <option value="10000-15000" selected>10.000 - 15.000</option>
-                                                <option value="15000-20000">15.000 - 20.000</option>
-                                                <option value="20000+">Trên 20.000</option>
+                                            <select name="filterPriceRange" id="filterPriceRange" class="form-control">
+                                                <option value="0-5000" ${requestScope.priceRange == '0-5000' ? 'selected' : ''}>Dưới 5.000</option>
+                                                <option value="5000-10000" ${requestScope.priceRange == '5000-10000' ? 'selected' : ''}>5.000 - 10.000</option>
+                                                <option value="10000-15000" ${requestScope.priceRange == '10000-15000' ? 'selected' : ''}>10.000 - 15.000</option>
+                                                <option value="15000-20000" ${requestScope.priceRange == '15000-20000' ? 'selected' : ''}>15.000 - 20.000</option>
+                                                <option value="20000+" ${requestScope.priceRange == '20000+' ? 'selected' : ''}>Trên 20.000</option>
                                             </select>
+
                                         </div>
 
 
@@ -307,7 +295,7 @@
                                             <button type="submit" class="btn btn-primary">
                                                 <i class="fa fa-filter"></i> Apply Filters
                                             </button>
-                                            <a href="searchinformation" class="btn btn-secondary">
+                                            <a href="warrantyinformation" class="btn btn-secondary">
                                                 <i class="fa fa-times"></i> Reset
                                             </a>
                                         </div>
@@ -320,33 +308,37 @@
                                         <thead>
                                             <tr>
                                                 <th>Product ID
-                                                    <a href="searchinformation?sort=productid&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}">
+                                                    <a href="warrantyinformation?sort=productid&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}">
                                                         <i class="fa fa-arrow-up"></i>
                                                     </a>
-                                                    <a href="searchinformation?sort=productid&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}">
+                                                    <a href="warrantyinformation?sort=productid&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}">
                                                         <i class="fa fa-arrow-down"></i>
                                                     </a>
                                                 </th>
 
                                                 <th>Product Name
-                                                    <a href="searchinformation?sort=productname&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-down"></i></a>
+                                                    <a href="warrantyinformation?sort=productname&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
+                                                    <a href="warrantyinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
                                                 <th>Warranty End Time 
-                                                    <a href="searchinformation?sort=WarrantyDateTime&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=WarrantyDateTime&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-down"></i></a>
+                                                    <a href="warrantyinformation?sort=WarrantyDateTime&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
+                                                    <a href="searchinformation?sort=WarrantyDateTime&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
                                                 <th>Price
-                                                    <a href="searchinformation?sort=Price&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=Price&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-down"></i></a>
+                                                    <a href="warrantyinformation?sort=Price&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
+                                                    <a href="warrantyinformation?sort=Price&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
                                                 <th>Brand
-                                                    <a href="searchinformation?sort=Brand&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=Brand&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-down"></i></a>
+                                                    <a href="warrantyinformation?sort=Brand&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
+                                                    <a href="warrantyinformation?sort=Brand&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
                                                 <th>Buy Time
-                                                    <a href="searchinformation?sort=BuyTime&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=BuyTime&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-down"></i></a>
+                                                    <a href="warrantyinformation?sort=BuyTime&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
+                                                    <a href="warrantyinformation?sort=BuyTime&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
+                                                </th>
+
+                                                <th> Note
+
                                                 </th>
                                                 <th>View Details
 
@@ -367,69 +359,10 @@
                                                 <td>${c.brand}</td>
                                                 <td>${c.buyTime}</td>
                                                 <td>
-                                                    <!-- Bootstrap Modal -->
-                                                    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="productTitle">Product Details</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <p><strong>Product ID:</strong> <span id="modalProductId"></span></p>
-                                                                    <p><strong>Name:</strong> <span id="modalProductName"></span></p>
-                                                                    <p><strong>Brand:</strong> <span id="modalProductBrand"></span></p>
-                                                                    <p><strong>Price:</strong> <span id="modalProductPrice"></span></p>
-                                                                    <p><strong>Description:</strong> <span id="modalProductDescription"></span></p>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-                                                    <a href="javascript:void(0);" class="btn btn-info btn-sm view-details" 
-                                                       data-productid="${c.productId}" title="View Details">
-                                                        <i class="fa fa-eye"></i>
-                                                    </a>
-                                                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                                                    <script>
-                                                        $(document).ready(function () {
-                                                            $(".view-details").click(function () {
-                                                                var productId = $(this).data("productid");
-
-                                                                $.ajax({
-                                                                    url: "detail",
-                                                                    type: "GET",
-                                                                    data: {productid: productId},
-                                                                    dataType: "json",
-                                                                    success: function (data) {
-                                                                        if (data.error) {
-                                                                            alert(data.error);
-                                                                        } else {
-                                                                            $("#modalProductId").text(data.productId);
-                                                                            $("#modalProductName").text(data.name);
-                                                                            $("#modalProductBrand").text(data.brand);
-                                                                            $("#modalProductPrice").text(data.price);
-                                                                            $("#modalProductDescription").text(data.description);
-
-                                                                            // Hiển thị modal Bootstrap
-                                                                            $("#productModal").modal("show");
-                                                                        }
-                                                                    },
-                                                                    error: function () {
-                                                                        alert("Error loading product details.");
-                                                                    }
-                                                                });
-                                                            });
-                                                        });
-                                                    </script>
-
+                                                    Diagnosing issue
                                                 </td>
+
+
                                             </tr>
                                         </c:forEach>
                                     </table>
@@ -440,7 +373,7 @@
                                             <c:forEach begin="1" end="${requestScope.endpage}" var="i">
                                                 <li>
                                                     <a class="${tag == i ? 'active' : ''}"
-                                                       href="searchinformation?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}">${i}</a>
+                                                       href="warrantyinformation?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}">${i}</a>
                                                 </li>
                                             </c:forEach>
                                         </ul>

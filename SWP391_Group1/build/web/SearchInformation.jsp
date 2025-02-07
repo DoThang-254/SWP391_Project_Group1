@@ -165,7 +165,7 @@
                                 <li class="divider"></li>
 
                                 <li>
-                                    <a href="#"><i class="fa fa-ban fa-fw pull-right"></i> Logout</a>
+                                    <a href="logout"><i class="fa fa-ban fa-fw pull-right"></i> Logout</a>
                                 </li>
                             </ul>
 
@@ -236,7 +236,7 @@
 
                 <!-- Main content -->
                 <section class="content">
-                    
+
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="panel">
@@ -246,6 +246,8 @@
                                 </header>
                                 <div class="filter-section">
                                     <form action="searchinformation" method="get" class="row">
+                                        <input type="hidden" name="sort" value="${requestScope.sort}">
+                                        <input type="hidden" name="order" value="${requestScope.order}">
                                         <div class="box-tools m-b-15">
                                             <div class="input-group">                                            
                                                 <input type="text" name="table_search" class="form-control input-sm pull-right"
@@ -266,37 +268,28 @@
                                         <div class="col-md-3">
                                             <label for="filterBrand">Brand</label>
                                             <select name="filterBrand" id="filterBrand" class="form-control">
-                                                <c:if test="${requestScope.brand != null}">
-                                                    <option value="${requestScope.brand}">${requestScope.brand}</option>
-
-                                                </c:if>
-                                                <option value="">-- All Brands --</option>
-                                                <option value="BrandY">BrandY</option>
-                                                <option value="HP">HP</option>
-                                                <option value="Asus">Asus</option>
+                                                <option value="" ${empty requestScope.brand ? 'selected' : ''}>-- All Brands --</option>
+                                                <option value="BrandY" ${requestScope.brand == 'BrandY' ? 'selected' : ''}>BrandY</option>
+                                                <option value="BrandX" ${requestScope.brand == 'BrandX' ? 'selected' : ''}>BrandX</option>
                                             </select>
                                         </div>
 
-                                        <!-- Filter Warranty Status -->
-                                        <div class="col-md-3">
-                                            <label for="filterWarrantyStatus">Warranty Status</label>
-                                            <select name="filterWarrantyStatus" id="filterWarrantyStatus" class="form-control">
-                                                <option value="">-- All Statuses --</option>
-                                                <option value="active">Active</option>
-                                                <option value="expired">Expired</option>
-                                            </select>
-                                        </div>
+
+
 
                                         <!-- Filter Price -->
                                         <div class="col-md-3">
+
                                             <label for="filterPriceRange">Price Range</label>
-                                            <select id="filterPriceRange" class="form-control">
-                                                <option value="0-5000">Dưới 5.000</option>
-                                                <option value="5000-10000">5.000 - 10.000</option>
-                                                <option value="10000-15000" selected>10.000 - 15.000</option>
-                                                <option value="15000-20000">15.000 - 20.000</option>
-                                                <option value="20000+">Trên 20.000</option>
+                                            <select name="filterPriceRange" id="filterPriceRange" class="form-control">
+                                                <option value="" ${empty requestScope.priceRange ? 'selected' : ''}>Tất cả giá</option>
+                                                <option value="0-5000" ${requestScope.priceRange == '0-5000' ? 'selected' : ''}>Dưới 5.000</option>
+                                                <option value="5000-10000" ${requestScope.priceRange == '5000-10000' ? 'selected' : ''}>5.000 - 10.000</option>
+                                                <option value="10000-15000" ${requestScope.priceRange == '10000-15000' ? 'selected' : ''}>10.000 - 15.000</option>
+                                                <option value="15000-20000" ${requestScope.priceRange == '15000-20000' ? 'selected' : ''}>15.000 - 20.000</option>
+                                                <option value="20000+" ${requestScope.priceRange == '20000+' ? 'selected' : ''}>Trên 20.000</option>
                                             </select>
+
                                         </div>
 
 
@@ -327,24 +320,24 @@
                                                 </th>
 
                                                 <th>Product Name
-                                                    <a href="searchinformation?sort=productname&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-down"></i></a>
+                                                    <a href="searchinformation?sort=productname&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
+                                                    <a href="searchinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
                                                 <th>Warranty End Time 
-                                                    <a href="searchinformation?sort=WarrantyDateTime&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=WarrantyDateTime&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-down"></i></a>
+                                                    <a href="searchinformation?sort=WarrantyDateTime&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
+                                                    <a href="searchinformation?sort=WarrantyDateTime&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
                                                 <th>Price
-                                                    <a href="searchinformation?sort=Price&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=Price&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-down"></i></a>
+                                                    <a href="searchinformation?sort=Price&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
+                                                    <a href="searchinformation?sort=Price&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
                                                 <th>Brand
-                                                    <a href="searchinformation?sort=Brand&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=Brand&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-down"></i></a>
+                                                    <a href="searchinformation?sort=Brand&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
+                                                    <a href="searchinformation?sort=Brand&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
                                                 <th>Buy Time
-                                                    <a href="searchinformation?sort=BuyTime&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=BuyTime&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}"><i class="fa fa-arrow-down"></i></a>
+                                                    <a href="searchinformation?sort=BuyTime&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
+                                                    <a href="searchinformation?sort=BuyTime&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
                                                 <th>View Details
 

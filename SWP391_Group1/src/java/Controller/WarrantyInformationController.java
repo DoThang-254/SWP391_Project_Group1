@@ -7,6 +7,7 @@ package Controller;
 import Dal.CustomerDao;
 import Model.Customer;
 import Model.Product;
+import Model.WarrantyInformation;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -62,8 +63,8 @@ public class WarrantyInformationController extends HttpServlet {
         if (request.getServletPath().equals("/searchinformation")) {
             searchWarrantyInformation(request, response);
         }
-         if (request.getServletPath().equals("/warrantyinformation")) {
-             WarrantyInformation(request, response);
+        if (request.getServletPath().equals("/warrantyinformation")) {
+            WarrantyInformation(request, response);
         }
 
     }
@@ -88,8 +89,8 @@ public class WarrantyInformationController extends HttpServlet {
         if (count % 10 != 0) {
             endPage++;
         }
-
-        List<Product> list = cd.SearchingProductByProductId(index, c.getCustomerId(), newProduct, sort, order);
+        String priceRange = request.getParameter("filterPriceRange");
+        List<Product> list = cd.SearchingProductByProductId(index, c.getCustomerId(), newProduct, sort, order, priceRange);
 
         request.setAttribute("endpage", endPage);
         request.setAttribute("listA", list);
@@ -97,15 +98,46 @@ public class WarrantyInformationController extends HttpServlet {
         request.setAttribute("brand", brand);
         request.setAttribute("sort", sort);
         request.setAttribute("order", order);
+        request.setAttribute("priceRange", priceRange);
         request.setAttribute("save", searchBox);
         request.getRequestDispatcher("SearchInformation.jsp").forward(request, response);
     }
 
     protected void WarrantyInformation(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("WarrantyInformation.jsp");
+        String input = request.getParameter("index");
+        if (input == null || input.isBlank()) {
+            input = "1";
+        }
+        int index = Integer.parseInt(input);
+        Customer c = (Customer) request.getSession().getAttribute("Customer");
+        String searchBox = request.getParameter("table_search");
+        String brand = request.getParameter("filterBrand");
+        Product newProduct = new Product(searchBox, null, null, 0, brand, null, c.getCustomerId());
+        int count = cd.GetTotalProductWarrantyByCustomerId(c.getCustomerId(), newProduct);
+
+        int endPage = count / 10;
+        if (count % 10 != 0) {
+            endPage++;
+        }
+
+        String sort = request.getParameter("sort");
+        String order = request.getParameter("order");
+        String priceRange = request.getParameter("filterPriceRange");
+
+        List<Product> list = cd.SearchingWarrantyProductInformation(index, c.getCustomerId(), newProduct, sort, order, priceRange);
+        //List<WarrantyInformation> list2 = cd.WarrantyProductInformation(index, c.getCustomerId(), newProduct, sort, order);
+        request.setAttribute("endpage", endPage);
+        request.setAttribute("listA", list);
+        request.setAttribute("tag", index);
+        request.setAttribute("brand", brand);
+        request.setAttribute("sort", sort);
+        request.setAttribute("order", order);
+        request.setAttribute("priceRange", priceRange);
+        request.setAttribute("save", searchBox);
+        request.getRequestDispatcher("WarrantyInformation.jsp").forward(request, response);
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Short description";

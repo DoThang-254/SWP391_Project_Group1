@@ -13,29 +13,29 @@ public class WarrantyForm {
     private java.util.Date startDate;
     private java.util.Date endDate;
     private String status;
-    private int requirementId;
+    private WarrantyRequirement requirement;
     private String verificationCode;
     private String verificationMethod;
     private char verified;
     private float price;
-    private int invoiceId;
+    private Invoice invoice;
 
     public WarrantyForm() {
     }
 
     public WarrantyForm(int formId, java.util.Date startDate, java.util.Date endDate, String status, 
-                        int requirementId, String verificationCode, String verificationMethod, 
-                        char verified, float price, int invoiceId) {
+                        WarrantyRequirement requirement, String verificationCode, String verificationMethod, 
+                        char verified, float price, Invoice invoice) {
         this.formId = formId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
-        this.requirementId = requirementId;
+        this.requirement = requirement;
         this.verificationCode = verificationCode;
         this.verificationMethod = verificationMethod;
         this.verified = verified;
         this.price = price;
-        this.invoiceId = invoiceId;
+        this.invoice = invoice;
     }
 
     public int getFormId() {
@@ -70,12 +70,12 @@ public class WarrantyForm {
         this.status = status;
     }
 
-    public int getRequirementId() {
-        return requirementId;
+    public WarrantyRequirement getRequirementId() {
+        return requirement;
     }
 
-    public void setRequirementId(int requirementId) {
-        this.requirementId = requirementId;
+    public void setRequirementId(WarrantyRequirement requirement) {
+        this.requirement = requirement;
     }
 
     public String getVerificationCode() {
@@ -110,11 +110,11 @@ public class WarrantyForm {
         this.price = price;
     }
 
-    public int getInvoiceId() {
-        return invoiceId;
+    public Invoice getInvoiceId() {
+        return invoice;
     }
 
-    public void setInvoiceId(int invoiceId) {
-        this.invoiceId = invoiceId;
+    public void setInvoiceId(Invoice invoice) {
+        this.invoice = invoice;
     }
 }

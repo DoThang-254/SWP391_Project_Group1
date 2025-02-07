@@ -17,7 +17,7 @@ public interface ICustomerDAO {
 
     public int GetTotalProductByProductId(int CustomerId, Product p);
 
-    public List<Product> SearchingProductByProductId(int index, int CustomerId, Product p , String sort , String order);
+  //  public List<Product> SearchingProductByProductId(int index, int CustomerId, Product p , String sort , String order);
 //    public List<Product> SearchingProductByProductId(int index, int CustomerId, Product p);
 
 //    public int GetTotalProductByBrand(int CustomerId, String ProductBrand);
