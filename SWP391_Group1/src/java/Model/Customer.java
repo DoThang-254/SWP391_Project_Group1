@@ -12,28 +12,45 @@ import java.util.Date;
  */
 public class Customer {
 
-    private int customerId;           
-    private String username;          
-    private String password;          
-    private String firstName;        
-    private String lastName;          
-    private String email;           
-    private String gender;            
-    private Date birthDate; 
-    private String status;           
-    private String address;           
+    private int customerId;
+    private String username;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private String phone;
+    private String email;
+    private String gender;
+    private Date birthDate;
+    private String status;
+    private String address;
 
     public Customer() {
     }
 
     public Customer(int customerId, String username, String password, String firstName,
-            String lastName, String email, String gender, Date birthDate,
+            String lastName, String phone, String email, String gender, Date birthDate,
             String status, String address) {
         this.customerId = customerId;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.phone = phone;
+        this.email = email;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.status = status;
+        this.address = address;
+    }
+
+    public Customer(String username, String password, String firstName,
+            String lastName, String phone, String email, String gender, Date birthDate,
+            String status, String address) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
         this.email = email;
         this.gender = gender;
         this.birthDate = birthDate;
@@ -119,6 +136,14 @@ public class Customer {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
 }

@@ -42,6 +42,19 @@ public class Staff {
         this.roleId = roleId;
         this.role = role;
     }
+    
+    public Staff(String username, String password, String firstName, String lastName, String email, String phone, String gender, Date birthDate, String status, int roleId, Role role) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.status = status;
+        this.role = role;
+    }
 
    
 

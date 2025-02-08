@@ -24,6 +24,7 @@ CREATE TABLE Customer (
     Password VARCHAR(255) NOT NULL,
     FirstName VARCHAR(255),
     LastName VARCHAR(255),
+	Phone VARCHAR(255),
     Email VARCHAR(255),
     Gender VARCHAR(255),
     BirthDate DATE,
@@ -149,10 +150,11 @@ VALUES
     ('S001', 'admin1', 'password123', 'John', 'Doe', 'admin1@example.com', '0123456789', 'Male', '1985-05-15', 'Active', 1),
     ('S002', 'tech1', 'password123', 'Jane', 'Smith', 'tech1@example.com', '0987654321', 'Female', '1990-07-20', 'Active', 2),
     ('S003', 'service1', 'password123', 'Emily', 'Brown', 'service1@example.com', '0112233445', 'Female', '1992-10-10', 'Active', 3);
-INSERT INTO Customer (Username, Password, FirstName, LastName, Email, Gender, BirthDate, Status, Address)
+INSERT INTO Customer (Username, Password, FirstName, LastName, Phone, Email, Gender, BirthDate, Status, Address)
 VALUES 
-    ('cust1', 'password123', 'Alice', 'Johnson', 'alice.j@example.com', 'Female', '1995-12-05', 'Active', '123 Main Street'),
-    ('cust2', 'password123', 'Bob', 'Williams', 'bob.w@example.com', 'Male', '1988-03-25', 'Active', '456 Elm Street');
+('user1', 'password123', 'John', 'Doe', '0123456789', 'john.doe@example.com', 'Male', '1990-05-15', 'Active', '123 Main St'),
+('user2', 'password456', 'Jane', 'Smith', '0987654321', 'jane.smith@example.com', 'Female', '1995-08-25', 'Active', '456 Elm St');
+
 INSERT INTO Product (ProductId, ProductName, WarrantyDateTime, Price, Brand, BuyTime, CustomerId)
 VALUES 
     ('P001', 'Laptop A', '2025-01-01', 1500.00, 'BrandX', '2024-01-01', 1),
