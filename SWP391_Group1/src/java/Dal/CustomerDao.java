@@ -4,6 +4,7 @@
  */
 package Dal;
 
+import Model.Customer;
 import Model.Product;
 import Model.Staff;
 import Model.WarrantyInformation;
@@ -22,12 +23,25 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
     private PreparedStatement p;
     private ResultSet rs;
 
-    @Override
-    public int GetTotalProductByProductId(int CustomerId, Product product) {
+    public static void main(String[] args) {
+        CustomerDao c = new CustomerDao();
+        Product newProduct = new Product(null, null, null, 0, null, null, 1);
+
+//        List<WarrantyInformation> list = c.WarrantyProductInformation(1, 1, "Laptop A", newProduct, null, null , null);
+        List<Product> list = c.SearchingProductByProductId(1, 1, "Laptop A", newProduct, null, null, null);
+        for (Product w : list) {
+            System.out.println(w.getProductId());
+        }
+        System.out.println(c.GetTotalProductByProductId(1, "Laptop A", newProduct));
+    }
+    
+    
+
+    public int GetTotalProductByProductId(int CustomerId, String search, Product product) {
         String sql = "SELECT count(*) FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId WHERE c.CustomerId = ? ";
 
-        if (product.getProductId() != null && !product.getProductId().trim().isEmpty()) {
-            sql += " AND p.ProductId LIKE ? ";
+        if (search != null && !search.trim().isEmpty()) {
+            sql += " AND (p.ProductId LIKE ? or p.ProductName like ? )";
         }
 
         if (product.getBrand() != null && !product.getBrand().trim().isEmpty()) {
@@ -35,19 +49,21 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         }
 
         try {
-            PreparedStatement p = connection.prepareStatement(sql);
+            p = connection.prepareStatement(sql);
             p.setInt(1, CustomerId);
 
             int index = 2;
-            if (product.getProductId() != null && !product.getProductId().trim().isEmpty()) {
-                p.setString(index++, "%" + product.getProductId() + "%");
+            if (search != null && !search.trim().isEmpty()) {
+                String searchPattern = "%" + search + "%";
+                p.setString(index++, searchPattern);
+                p.setString(index++, searchPattern);
             }
 
             if (product.getBrand() != null && !product.getBrand().trim().isEmpty()) {
                 p.setString(index++, product.getBrand());
             }
 
-            ResultSet rs = p.executeQuery();
+            rs = p.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);  // Lấy giá trị count(*) chính xác
             }
@@ -57,12 +73,12 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         return 0;  // Trả về 0 nếu có lỗi
     }
 
-    public List<Product> SearchingProductByProductId(int index, int CustomerId, Product product, String sort, String order, String priceRange) {
+    public List<Product> SearchingProductByProductId(int index, int CustomerId, String search, Product product, String sort, String order, String priceRange) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId WHERE c.CustomerId = ? ";
 
-        if (product.getProductId() != null && !product.getProductId().trim().isEmpty()) {
-            sql += " AND p.ProductId LIKE ? ";
+        if (search != null && !search.trim().isEmpty()) {
+            sql += " AND (p.ProductId LIKE ? or p.ProductName like ? )";
         }
         if (product.getBrand() != null && !product.getBrand().trim().isEmpty()) {
             sql += " AND p.Brand = ? ";
@@ -89,9 +105,10 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
             p.setInt(1, CustomerId);
 
             int paramIndex = 2;
-            if (product.getProductId() != null && !product.getProductId().trim().isEmpty()) {
-                p.setString(paramIndex, "%" + product.getProductId() + "%");
-                paramIndex++;
+            if (search != null && !search.trim().isEmpty()) {
+                String searchPattern = "%" + search + "%";
+                p.setString(paramIndex++, searchPattern);
+                p.setString(paramIndex++, searchPattern);
             }
             if (product.getBrand() != null && !product.getBrand().trim().isEmpty()) {
                 p.setString(paramIndex, product.getBrand());
@@ -175,17 +192,6 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
             e.printStackTrace();  // In lỗi ra để dễ debug
         }
         return 0;  // Trả về 0 nếu có lỗi
-    }
-
-    public static void main(String[] args) {
-        CustomerDao c = new CustomerDao();
-        Product newProduct = new Product(null, null, null, 0, null, null, 1);
-
-        List<WarrantyInformation> list = c.WarrantyProductInformation(1, 1, "Laptop A", newProduct, null, null , null);
-        for (WarrantyInformation w : list) {
-            System.out.println(w.getInformationId());
-        }
-        System.out.println(c.GetTotalProductWarrantyByCustomerId(1, "Laptop A", newProduct));
     }
 
     public List<WarrantyInformation> WarrantyProductInformation(int index, int CustomerId, String search, Product product, String sort, String order, String priceRange) {

@@ -94,15 +94,16 @@
         </style>
     </head>
     <body>
-       
+
         <div class="main-content">
             <form action="login" method="POST">
                 <h2>Login</h2>
                 <label>Username</label>
-                <input type="text" name="userName" value="${cookie.username.value}" />
+                <input type="text" name="userName" value="${not empty param.userName ? param.userName : (not empty cookie.username.value ? cookie.username.value : '')}" />
                 <label>Password</label>
-                <input type="password" name="passWord" value="${cookie.password.value}" />
-                
+                <input type="password" name="passWord" value="${not empty param.password ? param.password : (not empty cookie.password.value ? cookie.password.value : '')}" />
+
+
                 <label>Remember me</label> 
                 <input type="checkbox" name="rememberMe" />
                 <br>
@@ -113,7 +114,7 @@
                 <input type="submit" value="Login" />
             </form>
             <p>Don't have an account? <a href="register">Register now</a></p>
-            <p><a href="requestPassword">Forgot Password</a></p>
+            <p><a href="requestforget">Forgot Password</a></p>
         </div>
     </body>
 </html>

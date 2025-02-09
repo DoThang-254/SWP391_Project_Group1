@@ -4,7 +4,6 @@
         <servlet-name>SearchWarrantyInformationController</servlet-name>
         <servlet-class>Controller.SearchWarrantyInformationController</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>RegisterController</servlet-name>
         <servlet-class>Controller.RegisterController</servlet-class>
@@ -16,6 +15,14 @@
     <servlet>
         <servlet-name>Logout</servlet-name>
         <servlet-class>Controller.Logout</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RequestForgetPassword</servlet-name>
+        <servlet-class>Controller.RequestForgetPassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResetForgetPassword</servlet-name>
+        <servlet-class>Controller.ResetForgetPassword</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
@@ -32,5 +39,13 @@
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RequestForgetPassword</servlet-name>
+        <url-pattern>/requestforget</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetForgetPassword</servlet-name>
+        <url-pattern>/resetforget</url-pattern>
     </servlet-mapping>
 </web-app>

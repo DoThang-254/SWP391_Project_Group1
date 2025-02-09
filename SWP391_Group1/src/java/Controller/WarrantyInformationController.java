@@ -81,16 +81,16 @@ public class WarrantyInformationController extends HttpServlet {
         Customer c = (Customer) request.getSession().getAttribute("Customer");
         String searchBox = request.getParameter("table_search");
         String brand = request.getParameter("filterBrand");
-        Product newProduct = new Product(searchBox, null, null, 0, brand, null, c.getCustomerId());
+        Product newProduct = new Product(null, null, null, 0, brand, null, c.getCustomerId());
         String sort = request.getParameter("sort");
         String order = request.getParameter("order");
-        int count = cd.GetTotalProductByProductId(c.getCustomerId(), newProduct);
+        int count = cd.GetTotalProductByProductId(c.getCustomerId(), searchBox, newProduct);
         int endPage = count / 10;
         if (count % 10 != 0) {
             endPage++;
         }
         String priceRange = request.getParameter("filterPriceRange");
-        List<Product> list = cd.SearchingProductByProductId(index, c.getCustomerId(), newProduct, sort, order, priceRange);
+        List<Product> list = cd.SearchingProductByProductId(index, c.getCustomerId(), searchBox, newProduct, sort, order, priceRange);
 
         request.setAttribute("endpage", endPage);
         request.setAttribute("listA", list);
@@ -114,7 +114,7 @@ public class WarrantyInformationController extends HttpServlet {
         String searchBox = request.getParameter("table_search");
         String brand = request.getParameter("filterBrand");
         Product newProduct = new Product(null, null, null, 0, brand, null, c.getCustomerId());
-        int count = cd.GetTotalProductWarrantyByCustomerId(c.getCustomerId(),searchBox ,newProduct);
+        int count = cd.GetTotalProductWarrantyByCustomerId(c.getCustomerId(), searchBox, newProduct);
 
         int endPage = count / 10;
         if (count % 10 != 0) {
@@ -125,7 +125,7 @@ public class WarrantyInformationController extends HttpServlet {
         String order = request.getParameter("order");
         String priceRange = request.getParameter("filterPriceRange");
 
-        List<WarrantyInformation> list = cd.WarrantyProductInformation(index, c.getCustomerId(),searchBox, newProduct, sort, order , priceRange);
+        List<WarrantyInformation> list = cd.WarrantyProductInformation(index, c.getCustomerId(), searchBox, newProduct, sort, order, priceRange);
         //List<WarrantyInformation> list2 = cd.WarrantyProductInformation(index, c.getCustomerId(), newProduct, sort, order);
         request.setAttribute("endpage", endPage);
         request.setAttribute("listA", list);

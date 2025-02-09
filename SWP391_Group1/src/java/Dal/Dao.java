@@ -8,6 +8,7 @@ import Repository.ILoginDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import Model.Customer;
+import Model.Role;
 import Model.Staff;
 
 /**
@@ -35,21 +36,25 @@ public class Dao extends DBContext implements ILoginDAO {
         }
         return null;
     }
-    
-//    public Staff StaffLogin(String Username, String password) {
-//        String sql = "select * from Customer where Username = ? and Password = ? ";
-//        try {
-//            p = connection.prepareStatement(sql);
-//            p.setString(1, Username);
-//            p.setString(2, password);
-//            rs = p.executeQuery();
-//            if (rs.next()) {
-//                return new Staff(Username, password, Username, Username, sql, sql, sql, birthDate, sql, 0, role)
-//            }
-//        } catch (Exception e) {
-//        }
-//        return null;
-//    }
+
+    public Staff StaffLogin(String Username, String password) {
+        String sql = "select s.* , r.RoleName from Staff s join Role r on s.RoleId = r.RoleId where s.Username = ? and s.Password = ?";
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, Username);
+            p.setString(2, password);
+            rs = p.executeQuery();
+            if (rs.next()) {
+                Role r = new Role(rs.getInt(11), rs.getString(12));
+                return new Staff(rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4), rs.getString(5),
+                        rs.getString(6), rs.getString(7), rs.getString(8),
+                        rs.getDate(9), rs.getString(10), rs.getInt(11), r);
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
 
     public boolean checkAccountExisted(String userName) {
         String sql = "select * from Customer where Username = ? ";
@@ -95,7 +100,7 @@ public class Dao extends DBContext implements ILoginDAO {
         }
         return false;
     }
-    
+
     public void RegisterCustomer(Customer c) {
         String sql = "INSERT INTO [dbo].[Customer]\n"
                 + "           ([Username]\n"
@@ -127,9 +132,10 @@ public class Dao extends DBContext implements ILoginDAO {
         } catch (Exception e) {
         }
     }
-    
+
     public static void main(String[] args) {
         Dao d = new Dao();
-    
+        Staff s = d.StaffLogin("admin1", "password123");
+        System.out.println(s.getStaffId());
     }
 }

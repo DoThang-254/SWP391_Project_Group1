@@ -6,6 +6,7 @@ package Controller;
 
 import Dal.Dao;
 import Model.Customer;
+import Model.Staff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -79,8 +80,9 @@ public class LoginController extends HttpServlet {
         String userName = request.getParameter("userName");
         String passWord = request.getParameter("passWord");
         String rememberMe = request.getParameter("rememberMe");
-        Customer c = d.Login(userName, passWord);
-        if (c != null) {
+        Staff s = d.StaffLogin(userName, passWord);
+        Customer c = (s == null) ? d.Login(userName, passWord) : null;
+        if (c != null || s != null) {
             if (rememberMe != null) {
                 Cookie userNameCookie = new Cookie("username", userName);
                 userNameCookie.setMaxAge(60 * 60 * 24 * 7);
@@ -96,10 +98,32 @@ public class LoginController extends HttpServlet {
                 passWordCookie.setMaxAge(0);
                 response.addCookie(passWordCookie);
             }
-            response.sendRedirect("CustomerHomePage.jsp");
-            request.getSession().setAttribute("Customer", c);
-        }
-        else {
+
+            if (s != null) {
+                request.getSession().setAttribute("Staff", s);
+                if (s.getRole().getRoleId() == 1) {
+                    response.sendRedirect("Admin.jsp");
+
+                }
+                if (s.getRole().getRoleId() == 2) {
+                    response.sendRedirect("Technician.jsp");
+
+                }
+                if (s.getRole().getRoleId() == 3) {
+                    response.sendRedirect("ServiceManager.jsp");
+
+                }
+                if (s.getRole().getRoleId() == 4) {
+                    response.sendRedirect("Cashier.jsp");
+                }
+            } else {
+                request.getSession().setAttribute("Customer", c);
+                response.sendRedirect("CustomerHomePage.jsp");
+
+            }
+        } else {
+            request.setAttribute("userName", userName);
+            request.setAttribute("password", passWord);
             request.setAttribute("msg", "this account is not existed");
             request.getRequestDispatcher("Login.jsp").forward(request, response);
         }

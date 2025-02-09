@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
 /**
  *
  * @author thang
@@ -121,7 +120,14 @@ public class RegisterController extends HttpServlet {
         }
 
         request.setAttribute("msg", msg);
-
+        request.setAttribute("userName", userName);
+        request.setAttribute("firstName", firstName);
+        request.setAttribute("lastName", lastName);
+        request.setAttribute("email", email);
+        request.setAttribute("gender", gender);
+        request.setAttribute("dob", dob);
+        request.setAttribute("phone", phone);
+        request.setAttribute("address", address);
         request.getRequestDispatcher("Register.jsp").forward(request, response);
 
     }

@@ -42,6 +42,14 @@ public class Customer {
         this.status = status;
         this.address = address;
     }
+    
+    public Customer(int customerId, String username, String password, String email) {
+        this.customerId = customerId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        
+    }
 
     public Customer(String username, String password, String firstName,
             String lastName, String phone, String email, String gender, Date birthDate,

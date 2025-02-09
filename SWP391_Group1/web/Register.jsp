@@ -14,48 +14,49 @@
     </head>
     <body>
 
-        <form action="register" method="POST">
-            <h2>Register</h2>
-            Username<input type="text" name="userName" required />
+        <h2>Register</h2>
+        <form action="register" method="post">
+            Username <input type="text" name="userName" value="${requestScope.userName}" required />
             <br>
-            Password <input type="password" name="passWord" required/> <br>
-            Confirm Password <input type="password" name="confirmPassword"  required/> <br>
-            First name<input type="text" name="firstName" required /> <br>
-            Last name<input type="text" name="lastName" required /> <br>
+            Password <input type="password" name="passWord" required /> <br>
+            Confirm Password <input type="password" name="confirmPassword" required /> <br>
+            First name <input type="text" name="firstName" value="${requestScope.firstName}" required /> <br>
+            Last name <input type="text" name="lastName" value="${requestScope.lastName}" required /> <br>
 
             <select name="gender">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
+                <option value="Male" ${requestScope.gender == 'Male' ? 'selected' : ''}>Male</option>
+                <option value="Female" ${requestScope.gender == 'Female' ? 'selected' : ''}>Female</option>
+                <option value="Other" ${requestScope.gender == 'Other' ? 'selected' : ''}>Other</option>
             </select>
-            Email<input type="text" name="email" required /> <br>
-            Phone<input type="text" name="phone" required /> <br>
-            Birth Date <input type="date" name="birthdate" required /> <br>
-            Address <input type="text" name="address" required /> <br>
+
+            Email <input type="text" name="email" value="${requestScope.email}" required /> <br>
+            Phone <input type="text" name="phone" value="${requestScope.phone}" required /> <br>
+            Birth Date <input type="date" name="birthdate" value="${requestScope.dob}" required /> <br>
+            Address <input type="text" name="address" value="${requestScope.address}" required /> <br>
 
             <input type="hidden" name="status" value="Inactive" /> <br>
 
-            <br>
             <c:if test="${requestScope.msg != null}">
-                <p style="color: red"> ${requestScope.msg}</p>
+                <p style="color: red">${requestScope.msg}</p>
             </c:if>
             <c:if test="${requestScope.msg2 != null}">
-                <p style="color: greenyellow"> ${requestScope.msg2}</p>
+                <p style="color: greenyellow">${requestScope.msg2}</p>
             </c:if>
-            <input type="submit" value="Register" />
-            <p> <a href="login">Back</a></p>
 
+            <input type="submit" value="Register" />
+            <p><a href="login">Back</a></p>
         </form>
+
     </body>
 </html>
 <style>
     h2 {
-    text-align: center; /* Căn giữa */
-    font-size: 28px; /* Tăng kích thước */
-    color: #333; /* Màu chữ */
-    font-weight: bold; /* In đậm */
-    margin-bottom: 20px;
-}
+        text-align: center; /* Căn giữa */
+        font-size: 28px; /* Tăng kích thước */
+        color: #333; /* Màu chữ */
+        font-weight: bold; /* In đậm */
+        margin-bottom: 20px;
+    }
 
     body {
         font-family: Arial, sans-serif;
