@@ -34,7 +34,7 @@
             Birth Date <input type="date" name="birthdate" value="${requestScope.dob}" required /> <br>
             Address <input type="text" name="address" value="${requestScope.address}" required /> <br>
 
-            <input type="hidden" name="status" value="Inactive" /> <br>
+            <input type="hidden" name="status" value="active" /> <br>
 
             <c:if test="${requestScope.msg != null}">
                 <p style="color: red">${requestScope.msg}</p>

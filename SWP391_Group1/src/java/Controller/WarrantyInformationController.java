@@ -60,6 +60,7 @@ public class WarrantyInformationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+       
         if (request.getServletPath().equals("/searchinformation")) {
             searchWarrantyInformation(request, response);
         }
@@ -72,13 +73,14 @@ public class WarrantyInformationController extends HttpServlet {
 
     protected void searchWarrantyInformation(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Customer c = (Customer) request.getSession().getAttribute("Customer");
         String input = request.getParameter("index");
         if (input == null || input.isBlank()) {
             input = "1";
         }
 
         int index = Integer.parseInt(input);
-        Customer c = (Customer) request.getSession().getAttribute("Customer");
+
         String searchBox = request.getParameter("table_search");
         String brand = request.getParameter("filterBrand");
         Product newProduct = new Product(null, null, null, 0, brand, null, c.getCustomerId());

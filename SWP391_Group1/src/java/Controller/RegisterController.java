@@ -13,6 +13,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -61,7 +63,7 @@ public class RegisterController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("Register.jsp");
+        request.getRequestDispatcher("Register.jsp").forward(request, response);
     }
 
     /**
@@ -75,35 +77,41 @@ public class RegisterController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String userName = request.getParameter("userName");
-        String password = request.getParameter("passWord");
-        String cPassword = request.getParameter("confirmPassword");
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        String email = request.getParameter("email");
+        String userName = request.getParameter("userName").trim().replaceAll("\\s+", "");
+        String password = request.getParameter("passWord").trim().replaceAll("\\s+", "");
+        String cPassword = request.getParameter("confirmPassword").trim();
+        String firstName = request.getParameter("firstName").trim().replaceAll("\\s+", "");
+        String lastName = request.getParameter("lastName").trim().replaceAll("\\s+", "");
+        String email = request.getParameter("email").trim().replaceAll("\\s+", "");
         String gender = request.getParameter("gender");
         String dob = request.getParameter("birthdate");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
+        String phone = request.getParameter("phone").trim().replaceAll("\\s+", "");
+        String address = request.getParameter("address").trim().replaceAll("\\s+", "");
         String status = request.getParameter("status");
 
-        String msg = "";
+        List<String> msg = new ArrayList<>();
         if (!v.checkMatching(password, cPassword)) {
-            msg += "password and confirm password are not matching";
+            msg.add("password and confirm password are not matching");
         }
         if (d.checkAccountExisted(userName)) {
-            msg += " , username is existed";
+            msg.add(" , username is existed");
 
         } else {
             if (v.checkHashOfPassword(password)) {
-
-                if (d.checkPhoneExisted(phone)) {
-                    msg += " phone number is existed";
+                if (!v.isValidVietnamesePhoneNumber(phone)) {
+                    msg.add(" , phone number is invalid");
                 }
-                if (d.checkEmailExisted(email)) {
-                    msg += " email is existed";
+                if (d.checkPhoneExisted(phone) && d.checkPhoneExistedInStaff(phone)) {
+                    msg.add(" , phone number is existed");
                 }
-                if (!d.checkEmailExisted(email) && !d.checkPhoneExisted(phone)) {
+                if (d.checkEmailExisted(email) && d.checkEmailExistedInStaff(email)) {
+                    msg.add(" , email is existed");
+                }
+                if (!v.isValidEmail(email)) {
+                    msg.add(" , email is invalid");
+                }
+                if (!d.checkEmailExisted(email) && !d.checkPhoneExisted(phone) && !d.checkPhoneExistedInStaff(phone)
+                        && !d.checkEmailExistedInStaff(email) && v.isValidEmail(email) && v.isValidVietnamesePhoneNumber(phone)) {
                     String hashPassword = v.encode(password);
                     java.sql.Date sqlDate = java.sql.Date.valueOf(dob);
                     Customer newCustomer = new Customer(userName, hashPassword, firstName, lastName, phone, email, gender, sqlDate, status, address);
@@ -113,7 +121,7 @@ public class RegisterController extends HttpServlet {
                 }
 
             } else {
-                msg += "the password is weak";
+                msg.add(" , the password is weak");
 
             }
 

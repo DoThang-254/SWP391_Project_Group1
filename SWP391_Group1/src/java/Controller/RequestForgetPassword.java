@@ -60,7 +60,7 @@ public class RequestForgetPassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("requestPassword.jsp");
+        request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
     }
 
     ResetService r = new ResetService();
@@ -71,7 +71,7 @@ public class RequestForgetPassword extends HttpServlet {
             throws ServletException, IOException {
         String email = request.getParameter("email");
         Staff s = tfd.GetStaffByEmail(email);
-        Customer c =  tfd.GetCustomerByEmail(email);
+        Customer c = tfd.GetCustomerByEmail(email);
 
         if (c == null && s == null) {
             request.setAttribute("mess", "email is not existed");

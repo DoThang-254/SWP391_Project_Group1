@@ -7,6 +7,7 @@ package Validation;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -55,12 +56,32 @@ public class Validation {
         return hasUppercase && hasLowercase && hasDigit || hasSpecialChar;
     }
 
-    public String generateResetToken() {
-        SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[6]; 
-        random.nextBytes(bytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    public boolean isValidEmail(String email) {
+        // Regex kiểm tra email hợp lệ
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
+
+        // Biên dịch regex
+        Pattern pattern = Pattern.compile(emailRegex);
+
+        // So khớp với email đầu vào
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.matches(); // Trả về true nếu email hợp lệ
     }
-    
-    
+
+    public boolean isValidVietnamesePhoneNumber(String phoneNumber) {
+        // Xóa khoảng trắng nếu có
+        phoneNumber = phoneNumber.trim();
+
+        // Regex kiểm tra số điện thoại Việt Nam hợp lệ
+        String phoneRegex = "^(0[235789])[0-9]{8}$";
+
+        // Biên dịch regex
+        Pattern pattern = Pattern.compile(phoneRegex);
+
+        // So khớp với số điện thoại đầu vào
+        Matcher matcher = pattern.matcher(phoneNumber);
+
+        return matcher.matches(); // Trả về true nếu hợp lệ
+    }
 }

@@ -383,42 +383,12 @@
                                                     </div>
 
 
-                                                    <a href="javascript:void(0);" class="btn btn-info btn-sm view-details" 
-                                                       data-productid="${c.productId}" title="View Details">
+                                                    <a href="detail?productid=${c.productId}" class="btn btn-info btn-sm" title="View Details">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
-                                                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                                                    <script>
-                                                        $(document).ready(function () {
-                                                            $(".view-details").click(function () {
-                                                                var productId = $(this).data("productid");
 
-                                                                $.ajax({
-                                                                    url: "detail",
-                                                                    type: "GET",
-                                                                    data: {productid: productId},
-                                                                    dataType: "json",
-                                                                    success: function (data) {
-                                                                        if (data.error) {
-                                                                            alert(data.error);
-                                                                        } else {
-                                                                            $("#modalProductId").text(data.productId);
-                                                                            $("#modalProductName").text(data.name);
-                                                                            $("#modalProductBrand").text(data.brand);
-                                                                            $("#modalProductPrice").text(data.price);
-                                                                            $("#modalProductDescription").text(data.description);
 
-                                                                            // Hiển thị modal Bootstrap
-                                                                            $("#productModal").modal("show");
-                                                                        }
-                                                                    },
-                                                                    error: function () {
-                                                                        alert("Error loading product details.");
-                                                                    }
-                                                                });
-                                                            });
-                                                        });
-                                                    </script>
+
 
                                                 </td>
                                             </tr>

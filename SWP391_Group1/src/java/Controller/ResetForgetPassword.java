@@ -122,6 +122,12 @@ public class ResetForgetPassword extends HttpServlet {
             request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
             return;
         }
+        if(!v.checkHashOfPassword(password)){
+            request.setAttribute("mess", "password is weak");
+            request.setAttribute("email", email);
+            request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
+            return;
+        }
         String tokenStr = (String) request.getSession().getAttribute("token");
         TokenForgetPassword tokenForgetPassword = tfd.getTokenPassword(tokenStr);
         if (tokenForgetPassword == null) {

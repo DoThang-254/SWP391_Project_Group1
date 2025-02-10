@@ -57,39 +57,22 @@ public class detail extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
- @Override
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
+        
         String productId = request.getParameter("productid");
         Customer c = (Customer) request.getSession().getAttribute("Customer");
-
+        
         if (c == null || productId == null || productId.isBlank()) {
-            response.getWriter().write("{\"error\": \"Invalid request\"}");
-            return;
+            
         }
-
+        
         CustomerDao cd = new CustomerDao();
         Product p = cd.ProductDetail(c.getCustomerId(), productId);
-
-        if (p == null) {
-            response.getWriter().write("{\"error\": \"Product not found\"}");
-            return;
-        }
-
-        // Convert Product object to JSON
-        String json = "{"
-                + "\"productId\": \"" + p.getProductId() + "\","
-                + "\"name\": \"" + p.getProductName()+ "\","
-                + "\"brand\": \"" + p.getBrand() + "\","
-                + "\"price\": " + p.getPrice() + ","
-                + "\"buytime\": \"" + p.getBuyTime()+ "\""
-                + "}";
-
-        response.getWriter().write(json);
+        request.setAttribute("product", p);
+        request.getRequestDispatcher("detail.jsp").forward(request, response);
+        
     }
 
     /**

@@ -100,6 +100,36 @@ public class Dao extends DBContext implements ILoginDAO {
         }
         return false;
     }
+    
+    public boolean checkPhoneExistedInStaff(String phone) {
+        String sql = "select phone from Staff where Phone = ? ";
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, phone);
+            rs = p.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
+
+    public boolean checkEmailExistedInStaff(String email) {
+        String sql = "select Email from Staff where Email = ?  ";
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, email);
+            rs = p.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
 
     public void RegisterCustomer(Customer c) {
         String sql = "INSERT INTO [dbo].[Customer]\n"

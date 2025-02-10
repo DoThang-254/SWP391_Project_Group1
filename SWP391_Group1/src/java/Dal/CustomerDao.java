@@ -4,7 +4,6 @@
  */
 package Dal;
 
-import Model.Customer;
 import Model.Product;
 import Model.Staff;
 import Model.WarrantyInformation;
@@ -33,9 +32,10 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
             System.out.println(w.getProductId());
         }
         System.out.println(c.GetTotalProductByProductId(1, "Laptop A", newProduct));
+        String search = "    l       ap     ";
+        String searchPattern = "%" + search.replaceAll("\\s+", " ") + "%";
+        System.out.println(searchPattern);
     }
-    
-    
 
     public int GetTotalProductByProductId(int CustomerId, String search, Product product) {
         String sql = "SELECT count(*) FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId WHERE c.CustomerId = ? ";
@@ -54,7 +54,7 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
 
             int index = 2;
             if (search != null && !search.trim().isEmpty()) {
-                String searchPattern = "%" + search + "%";
+                String searchPattern = "%" + search.replaceAll("\\s+", "") + "%";
                 p.setString(index++, searchPattern);
                 p.setString(index++, searchPattern);
             }
@@ -106,7 +106,7 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
 
             int paramIndex = 2;
             if (search != null && !search.trim().isEmpty()) {
-                String searchPattern = "%" + search + "%";
+                String searchPattern = "%" + search.replaceAll("\\s+", "") + "%";
                 p.setString(paramIndex++, searchPattern);
                 p.setString(paramIndex++, searchPattern);
             }

@@ -11,7 +11,6 @@ import Validation.Validation;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +20,6 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author thang
  */
-
 public class LoginController extends HttpServlet {
 
     /**
@@ -62,7 +60,8 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("Login.jsp");
+        request.getRequestDispatcher("Login.jsp").forward(request, response);
+
     }
 
     /**
@@ -75,6 +74,7 @@ public class LoginController extends HttpServlet {
      */
     Dao d = new Dao();
     Validation v = new Validation();
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -83,7 +83,7 @@ public class LoginController extends HttpServlet {
         String rememberMe = request.getParameter("rememberMe");
         String hashPassword = v.encode(passWord);
         Staff s = d.StaffLogin(userName, hashPassword);
-        Customer c =  d.Login(userName, hashPassword) ;
+        Customer c = d.Login(userName, hashPassword);
         if (c != null || s != null) {
             if (rememberMe != null) {
                 Cookie userNameCookie = new Cookie("username", userName);
