@@ -11,17 +11,17 @@ package Model;
 public class Report {
     private int reportId;
     private String comment;
-    private int customerId;
-    private int informationId;
+    private Customer customer;
+    private WarrantyInformation information;
 
     public Report() {
     }
 
-    public Report(int reportId, String comment, int customerId, int informationId) {
+    public Report(int reportId, String comment, Customer customer, WarrantyInformation information) {
         this.reportId = reportId;
         this.comment = comment;
-        this.customerId = customerId;
-        this.informationId = informationId;
+        this.customer = customer;
+        this.information = information;
     }
 
     public int getReportId() {
@@ -40,19 +40,19 @@ public class Report {
         this.comment = comment;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public int getInformationId() {
-        return informationId;
+    public WarrantyInformation getInformation() {
+        return information;
     }
 
-    public void setInformationId(int informationId) {
-        this.informationId = informationId;
+    public void setInformation(WarrantyInformation information) {
+        this.information = information;
     }
 }

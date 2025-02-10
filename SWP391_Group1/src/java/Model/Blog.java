@@ -11,15 +11,15 @@ package Model;
 public class Blog {
     private int blogId;
     private String content;
-    private String staffId;
+    private Staff staff;
 
     public Blog() {
     }
 
-    public Blog(int blogId, String content, String staffId) {
+    public Blog(int blogId, String content, Staff staff) {
         this.blogId = blogId;
         this.content = content;
-        this.staffId = staffId;
+        this.staff = staff;
     }
 
     public int getBlogId() {
@@ -38,12 +38,12 @@ public class Blog {
         this.content = content;
     }
 
-    public String getStaffId() {
-        return staffId;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setStaffId(String staffId) {
-        this.staffId = staffId;
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 }
 

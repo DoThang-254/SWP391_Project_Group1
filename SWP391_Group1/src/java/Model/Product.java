@@ -32,6 +32,13 @@ public class Product {
         this.buyTime = buyTime;
         this.customerId = customerId;
     }
+    
+     public Product(String productId, String productName, 
+                    String brand) {
+        this.productId = productId;
+        this.productName = productName;
+        this.brand = brand;
+    }
 
     public String getProductId() {
         return productId;

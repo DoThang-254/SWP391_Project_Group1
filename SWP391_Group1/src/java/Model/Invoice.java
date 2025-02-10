@@ -14,17 +14,17 @@ public class Invoice {
     private float price;
     private String status;
     private String note;
-    private int formId;
+    private WarrantyForm form;
 
     public Invoice() {
     }
 
-    public Invoice(int invoiceId, float price, String status, String note, int formId) {
+    public Invoice(int invoiceId, float price, String status, String note, WarrantyForm form) {
         this.invoiceId = invoiceId;
         this.price = price;
         this.status = status;
         this.note = note;
-        this.formId = formId;
+        this.form = form;
     }
 
     public int getInvoiceId() {
@@ -59,11 +59,11 @@ public class Invoice {
         this.note = note;
     }
 
-    public int getFormId() {
-        return formId;
+    public WarrantyForm getForm() {
+        return form;
     }
 
-    public void setFormId(int formId) {
-        this.formId = formId;
+    public void setForm(WarrantyForm form) {
+        this.form = form;
     }
 }
