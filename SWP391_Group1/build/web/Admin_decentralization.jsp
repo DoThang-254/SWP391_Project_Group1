@@ -444,7 +444,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <!-- DATA TABLE -->
-                                    <h3 class="title-5 m-b-35"><i class="zmdi zmdi-account-calendar"></i> User data table</h3>
+                                    <h3 class="title-5 m-b-35"><i class="zmdi zmdi-account-calendar"></i> personnel management</h3>
                                     <form id="filterForm" action="admin-management" method="GET">
                                         <div class="table-data__tool">
                                             <div class="table-data__tool-left" style="display: flex">

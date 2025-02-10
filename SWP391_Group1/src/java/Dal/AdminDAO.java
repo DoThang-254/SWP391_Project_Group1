@@ -32,8 +32,8 @@ public class AdminDAO extends DBContext {
                 + "    s.Status, \n"
                 + "    s.RoleId, \n"
                 + "    r.RoleName  \n"
-                + "FROM [test].[dbo].[Staff] s  \n"
-                + "JOIN [test].[dbo].[Role] r ON s.RoleId = r.RoleId \n"
+                + "FROM [demo4].[dbo].[Staff] s  \n"
+                + "JOIN [demo4].[dbo].[Role] r ON s.RoleId = r.RoleId \n"
                 + "WHERE 1 = 1");
         if (searchKeyword != null && !searchKeyword.isEmpty()) {
             sql.append(" AND (s.Username LIKE ? OR s.Email LIKE ? OR s.Phone LIKE ?)");
