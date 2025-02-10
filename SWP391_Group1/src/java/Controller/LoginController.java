@@ -73,7 +73,7 @@ public class LoginController extends HttpServlet {
     throws ServletException, IOException {
         Customer c = d.Login(request.getParameter("username"), request.getParameter("password"));
         if(c != null){
-            response.sendRedirect("Customer.jsp");
+            response.sendRedirect("ServiceManager.jsp");
             request.getSession().setAttribute("Customer", c);
         }
     }
