@@ -158,6 +158,7 @@ VALUES
     ('Customer Service');
 INSERT INTO Staff (StaffId, Username, Password, FirstName, LastName, Email, Phone, Gender, BirthDate, Status, RoleId)
 VALUES 
+ ('S004', 'thang1', '123', 'Thang', 'Do', 'thangmoneo2542004@gmail.com', '0329894798', 'Male', '1985-05-15', 'Active', 2),
     ('S001', 'admin1', 'password123', 'John', 'Doe', 'admin1@example.com', '0123456789', 'Male', '1985-05-15', 'Active', 1),
     ('S002', 'tech1', 'password123', 'Jane', 'Smith', 'tech1@example.com', '0987654321', 'Female', '1990-07-20', 'Active', 2),
     ('S003', 'service1', 'password123', 'Emily', 'Brown', 'service1@example.com', '0112233445', 'Female', '1992-10-10', 'Active', 3);

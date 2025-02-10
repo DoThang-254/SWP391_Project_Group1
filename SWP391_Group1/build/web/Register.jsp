@@ -40,7 +40,7 @@
                 <p style="color: red">${requestScope.msg}</p>
             </c:if>
             <c:if test="${requestScope.msg2 != null}">
-                <p style="color: greenyellow">${requestScope.msg2}</p>
+                <p style="color: green">${requestScope.msg2}</p>
             </c:if>
 
             <input type="submit" value="Register" />

@@ -5,6 +5,7 @@
 package Dal;
 
 import Model.Customer;
+import Model.Staff;
 import Model.TokenForgetPassword;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +20,22 @@ public class TokenForgetDao extends DBContext {
 
     private PreparedStatement p;
     private ResultSet rs;
+
+    public Staff GetStaffByEmail(String email) {
+        String sql = "select StaffId , Username ,Password , Email from Staff where Email = ? ";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, email);
+            rs = p.executeQuery();
+            if (rs.next()) {
+                return new Staff(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public Customer GetCustomerByEmail(String email) {
         String sql = "select * from Customer where Email = ?";
@@ -35,8 +52,6 @@ public class TokenForgetDao extends DBContext {
         }
         return null;
     }
-    
-    
 
     public boolean insertTokenForget(TokenForgetPassword tokenForget) {
         String sql = "INSERT INTO [dbo].[TokenForgetPassword]\n"
@@ -54,6 +69,29 @@ public class TokenForgetDao extends DBContext {
             p.setBoolean(3, tokenForget.isIsUsed());
             p.setInt(4, tokenForget.getCustomerId());
             p.setString(5, tokenForget.getStaffId());
+            return p.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    public boolean insertStaffTokenForget(TokenForgetPassword tokenForget) {
+        String sql = "INSERT INTO [dbo].[TokenForgetPassword]\n"
+                + "           ([Token]\n"
+                + "           ,[ExpiryTime]\n"
+                + "           ,[IsUsed]\n"
+                + "           \n"
+                + "           ,[StaffId])\n"
+                + "     VALUES\n"
+                + "           (?,?,?,?)";
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, tokenForget.getToken());
+            p.setTimestamp(2, Timestamp.valueOf(tokenForget.getExpiryTime())); // Sửa đúng kiểu dữ liệu
+            p.setBoolean(3, tokenForget.isIsUsed());
+            p.setString(4, tokenForget.getStaffId());
+
             return p.executeUpdate() > 0;
         } catch (SQLException e) {
             System.out.println(e);
@@ -97,6 +135,21 @@ public class TokenForgetDao extends DBContext {
         return null;
     }
 
+    public Staff getEmailByStaffId(String staffId) {
+        String sql = "select Email from Staff where StaffId = ? ";
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, staffId);
+            rs = p.executeQuery();
+            while (rs.next()) {
+                return new Staff(null, null, null, rs.getString(1));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
     public void updatePassword(int customerId, String password) {
         String sql = "UPDATE [dbo].[Customer]\n"
                 + "   SET \n"
@@ -107,6 +160,22 @@ public class TokenForgetDao extends DBContext {
             p = connection.prepareStatement(sql);
             p.setString(1, password);
             p.setInt(2, customerId);
+            p.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void updateStaffPassword(String staffId, String password) {
+        String sql = "UPDATE [dbo].[Staff]\n"
+                + "   SET \n"
+                + "		[Password] = ?\n"
+                + "     \n"
+                + " WHERE StaffId = ?";
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, password);
+            p.setString(2, staffId);
             p.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -128,4 +197,5 @@ public class TokenForgetDao extends DBContext {
             System.out.println(e);
         }
     }
+
 }

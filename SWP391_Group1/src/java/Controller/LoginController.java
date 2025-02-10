@@ -7,6 +7,7 @@ package Controller;
 import Dal.Dao;
 import Model.Customer;
 import Model.Staff;
+import Validation.Validation;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,7 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author thang
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/login"})
+
 public class LoginController extends HttpServlet {
 
     /**
@@ -73,15 +74,16 @@ public class LoginController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     Dao d = new Dao();
-
+    Validation v = new Validation();
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String userName = request.getParameter("userName");
         String passWord = request.getParameter("passWord");
         String rememberMe = request.getParameter("rememberMe");
-        Staff s = d.StaffLogin(userName, passWord);
-        Customer c = (s == null) ? d.Login(userName, passWord) : null;
+        String hashPassword = v.encode(passWord);
+        Staff s = d.StaffLogin(userName, hashPassword);
+        Customer c =  d.Login(userName, hashPassword) ;
         if (c != null || s != null) {
             if (rememberMe != null) {
                 Cookie userNameCookie = new Cookie("username", userName);

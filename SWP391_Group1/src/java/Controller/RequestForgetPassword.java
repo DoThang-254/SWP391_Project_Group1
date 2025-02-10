@@ -4,9 +4,9 @@
  */
 package Controller;
 
-import Dal.CustomerDao;
 import Dal.TokenForgetDao;
 import Model.Customer;
+import Model.Staff;
 import Model.TokenForgetPassword;
 import Validation.ResetService;
 import java.io.IOException;
@@ -15,7 +15,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
 
 /**
  *
@@ -64,7 +63,6 @@ public class RequestForgetPassword extends HttpServlet {
         response.sendRedirect("requestPassword.jsp");
     }
 
-    CustomerDao cd = new CustomerDao();
     ResetService r = new ResetService();
     TokenForgetDao tfd = new TokenForgetDao();
 
@@ -72,31 +70,54 @@ public class RequestForgetPassword extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String email = request.getParameter("email");
-        Customer c = cd.GetCustomerByEmail(email);
-        if (c == null) {
+        Staff s = tfd.GetStaffByEmail(email);
+        Customer c =  tfd.GetCustomerByEmail(email);
+
+        if (c == null && s == null) {
             request.setAttribute("mess", "email is not existed");
             request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
             return;
         }
-        String token = r.generateToken();
-        String linkReset = "http://localhost:9999/SWP391_Group1/resetforget?token=" + token;
+        if (c != null) {
+            String token = r.generateToken();
+            String linkReset = "http://localhost:9999/SWP391_Group1/resetforget?token=" + token;
 
-        TokenForgetPassword tokenforget = new TokenForgetPassword(c.getCustomerId(),
-                false, token, r.expireDateTime());
-        boolean isInsert = tfd.insertTokenForget(tokenforget);
-        if (!isInsert) {
-            request.setAttribute("mess", "have error in server");
+            TokenForgetPassword tokenforget = new TokenForgetPassword(c.getCustomerId(),
+                    false, token, r.expireDateTime());
+            boolean isInsert = tfd.insertTokenForget(tokenforget);
+            if (!isInsert) {
+                request.setAttribute("mess", "have error in server");
+                request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+                return;
+            }
+            boolean isSendEmail = r.sendEmail(email, linkReset, c.getUsername());
+            if (!isSendEmail) {
+                request.setAttribute("mess", "can not send request");
+                request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+                return;
+            }
+            request.setAttribute("mess", "send request success");
             request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
-            return;
         }
-        boolean isSendEmail = r.sendEmail(email, linkReset, c.getUsername());
-        if (!isSendEmail) {
-            request.setAttribute("mess", "can not send request");
+        if (s != null) {
+            String token = r.generateToken();
+            String linkReset = "http://localhost:9999/SWP391_Group1/resetforget?token=" + token;
+            TokenForgetPassword tokenforget = new TokenForgetPassword(s.getStaffId(), false, token, r.expireDateTime());
+            boolean isInsert = tfd.insertStaffTokenForget(tokenforget);
+            if (!isInsert) {
+                request.setAttribute("mess", "have error in server");
+                request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+                return;
+            }
+            boolean isSendEmail = r.sendEmail(email, linkReset, s.getUsername());
+            if (!isSendEmail) {
+                request.setAttribute("mess", "can not send request");
+                request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+                return;
+            }
+            request.setAttribute("mess", "send request success");
             request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
-            return;
         }
-        request.setAttribute("mess", "send request success");
-        request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
     }
 
     /**

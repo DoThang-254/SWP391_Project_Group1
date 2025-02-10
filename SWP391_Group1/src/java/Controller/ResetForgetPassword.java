@@ -4,11 +4,12 @@
  */
 package Controller;
 
-import Dal.CustomerDao;
 import Dal.TokenForgetDao;
 import Model.Customer;
+import Model.Staff;
 import Model.TokenForgetPassword;
 import Validation.ResetService;
+import Validation.Validation;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -59,7 +60,7 @@ public class ResetForgetPassword extends HttpServlet {
      */
     ResetService r = new ResetService();
     TokenForgetDao tfd = new TokenForgetDao();
-
+    Validation v = new Validation();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -81,8 +82,16 @@ public class ResetForgetPassword extends HttpServlet {
                 request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
                 return;
             }
+
+            Staff s = tfd.getEmailByStaffId(tokenForget.getStaffId());
             Customer c = tfd.getEmailById(tokenForget.getCustomerId());
-            request.setAttribute("email", c.getEmail());
+
+            if (c != null) {
+                request.setAttribute("email", c.getEmail());
+            }
+            if (s != null) {
+                request.setAttribute("email", s.getEmail());
+            }
             request.getSession().setAttribute("token", tokenForget.getToken());
 
             request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
@@ -130,11 +139,21 @@ public class ResetForgetPassword extends HttpServlet {
             request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
             return;
         }
+
         tokenForgetPassword.setToken(tokenStr);
         tokenForgetPassword.setIsUsed(true);
+        Staff s = tfd.GetStaffByEmail(email);
         Customer c = tfd.GetCustomerByEmail(email);
-        tfd.updatePassword(c.getCustomerId(), password);
-        tfd.updateStatus(tokenForgetPassword);
+        String hashPassword = v.encode(password);
+        if (c != null) {
+            tfd.updatePassword(c.getCustomerId(), hashPassword);
+            tfd.updateStatus(tokenForgetPassword);
+        }
+        if (s != null) {
+            tfd.updateStaffPassword(s.getStaffId(), hashPassword);
+            tfd.updateStatus(tokenForgetPassword);
+        }
+
         request.getRequestDispatcher("Login.jsp").forward(request, response);
     }
 

@@ -95,22 +95,22 @@ public class RegisterController extends HttpServlet {
             msg += " , username is existed";
 
         } else {
-//            if (v.checkHashOfPassword(password)) {
+            if (v.checkHashOfPassword(password)) {
 
-            if (d.checkPhoneExisted(phone)) {
-                msg += " phone number is existed";
-            }
-            if (d.checkEmailExisted(email)) {
-                msg += " email is existed";
-            }
-            if (!d.checkEmailExisted(email) && !d.checkPhoneExisted(phone)) {
-//                    String hashPassword = v.encode(password);
-                java.sql.Date sqlDate = java.sql.Date.valueOf(dob);
-                Customer newCustomer = new Customer(userName, password, firstName, lastName, phone, email, gender, sqlDate, status, address);
+                if (d.checkPhoneExisted(phone)) {
+                    msg += " phone number is existed";
+                }
+                if (d.checkEmailExisted(email)) {
+                    msg += " email is existed";
+                }
+                if (!d.checkEmailExisted(email) && !d.checkPhoneExisted(phone)) {
+                    String hashPassword = v.encode(password);
+                    java.sql.Date sqlDate = java.sql.Date.valueOf(dob);
+                    Customer newCustomer = new Customer(userName, hashPassword, firstName, lastName, phone, email, gender, sqlDate, status, address);
 
-                d.RegisterCustomer(newCustomer);
-                request.setAttribute("msg2", "Sign up successfully");
-                //}
+                    d.RegisterCustomer(newCustomer);
+                    request.setAttribute("msg2", "Sign up successfully");
+                }
 
             } else {
                 msg += "the password is weak";
