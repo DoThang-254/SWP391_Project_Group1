@@ -11,8 +11,8 @@ package Model;
 public class Notification {
 
     private int notificationId;
-    private int customerId;
-    private int requirementId;
+    private Customer customer;
+    private WarrantyRequirement requirement;
     private String title;
     private String message;
     private char isRead;
@@ -21,11 +21,11 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(int notificationId, int customerId, int requirementId, String title,
+    public Notification(int notificationId, Customer customer, WarrantyRequirement requirement, String title,
             String message, char isRead, java.util.Date sendTime) {
         this.notificationId = notificationId;
-        this.customerId = customerId;
-        this.requirementId = requirementId;
+        this.customer = customer;
+        this.requirement = requirement;
         this.title = title;
         this.message = message;
         this.isRead = isRead;
@@ -40,20 +40,20 @@ public class Notification {
         this.notificationId = notificationId;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public int getRequirementId() {
-        return requirementId;
+    public WarrantyRequirement getRequirementId() {
+        return requirement;
     }
 
-    public void setRequirementId(int requirementId) {
-        this.requirementId = requirementId;
+    public void setRequirementId(WarrantyRequirement requirement) {
+        this.requirement = requirement;
     }
 
     public String getTitle() {

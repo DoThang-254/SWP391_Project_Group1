@@ -1,4 +1,5 @@
-﻿CREATE TABLE Role (
+﻿
+CREATE TABLE Role (
     RoleId INT IDENTITY(1,1) PRIMARY KEY,
     RoleName VARCHAR(255) NOT NULL
 );
@@ -24,13 +25,24 @@ CREATE TABLE Customer (
     Password VARCHAR(255) NOT NULL,
     FirstName VARCHAR(255),
     LastName VARCHAR(255),
+	Phone VARCHAR(255),
     Email VARCHAR(255),
     Gender VARCHAR(255),
     BirthDate DATE,
     Status VARCHAR(255),
     Address VARCHAR(255)
 );
+CREATE TABLE TokenForgetPassword (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Token VARCHAR(255) NOT NULL,
+    ExpiryTime DATETIME NOT NULL,
+    IsUsed BIT NOT NULL DEFAULT 0,
+    CustomerId INT ,
+	StaffId VARCHAR(255)  ,
+    FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
+	FOREIGN KEY (StaffId) REFERENCES Staff( StaffId)
 
+);
 CREATE TABLE Product (
     ProductId VARCHAR(255) PRIMARY KEY,
     ProductName VARCHAR(255),
@@ -146,15 +158,27 @@ VALUES
     ('Customer Service');
 INSERT INTO Staff (StaffId, Username, Password, FirstName, LastName, Email, Phone, Gender, BirthDate, Status, RoleId)
 VALUES 
+ ('S004', 'thang1', '123', 'Thang', 'Do', 'thangmoneo2542004@gmail.com', '0329894798', 'Male', '1985-05-15', 'Active', 2),
     ('S001', 'admin1', 'password123', 'John', 'Doe', 'admin1@example.com', '0123456789', 'Male', '1985-05-15', 'Active', 1),
     ('S002', 'tech1', 'password123', 'Jane', 'Smith', 'tech1@example.com', '0987654321', 'Female', '1990-07-20', 'Active', 2),
     ('S003', 'service1', 'password123', 'Emily', 'Brown', 'service1@example.com', '0112233445', 'Female', '1992-10-10', 'Active', 3);
-INSERT INTO Customer (Username, Password, FirstName, LastName, Email, Gender, BirthDate, Status, Address)
+INSERT INTO Customer (Username, Password, FirstName, LastName, Phone, Email, Gender, BirthDate, Status, Address)
 VALUES 
-    ('cust1', 'password123', 'Alice', 'Johnson', 'alice.j@example.com', 'Female', '1995-12-05', 'Active', '123 Main Street'),
-    ('cust2', 'password123', 'Bob', 'Williams', 'bob.w@example.com', 'Male', '1988-03-25', 'Active', '456 Elm Street');
+('user1', 'password123', 'John', 'Doe', '0123456789', 'john.doe@example.com', 'Male', '1990-05-15', 'Active', '123 Main St'),
+('user2', 'password456', 'Jane', 'Smith', '0987654321', 'jane.smith@example.com', 'Female', '1995-08-25', 'Active', '456 Elm St');
+
 INSERT INTO Product (ProductId, ProductName, WarrantyDateTime, Price, Brand, BuyTime, CustomerId)
 VALUES 
+  ('P003', 'Laptop C', '2025-03-01', 1400.00, 'BrandX', '2024-03-01', 1),
+    ('P004', 'Laptop D', '2025-04-01', 1600.00, 'BrandZ', '2024-04-01', 1),
+    ('P005', 'Laptop E', '2025-05-01', 1300.00, 'BrandY', '2024-05-01', 1),
+    ('P006', 'Laptop F', '2025-07-01', 1700.00, 'BrandX', '2024-07-01', 1),
+    ('P007', 'Laptop G', '2025-08-01', 1350.00, 'BrandZ', '2024-08-01', 1),
+    ('P008', 'Laptop H', '2025-09-01', 1550.00, 'BrandY', '2024-09-01', 1),
+    ('P009', 'Laptop I', '2025-10-01', 1450.00, 'BrandX', '2024-10-01', 1),
+    ('P010', 'Laptop J', '2025-11-01', 1250.00, 'BrandZ', '2024-11-01', 1),
+    ('P011', 'Laptop K', '2025-12-01', 1800.00, 'BrandY', '2024-12-01', 1),
+    ('P012', 'Laptop L', '2026-01-01', 1750.00, 'BrandX', '2025-01-01', 1) , 
     ('P001', 'Laptop A', '2025-01-01', 1500.00, 'BrandX', '2024-01-01', 1),
     ('P002', 'Laptop B', '2025-06-01', 1200.00, 'BrandY', '2024-06-01', 2);
 INSERT INTO Invoice (Price, Status, Note, FormId)

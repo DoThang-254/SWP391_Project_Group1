@@ -17,18 +17,18 @@ public class Schedule {
     private Time startTime;
     private Time endTime;
     private Date date;
-    private String staffId;
+    private Staff staff;
 
     public Schedule() {
     }
 
     public Schedule(int scheduleId, Time startTime, Time endTime, 
-                    Date date, String staffId) {
+                    Date date, Staff staff) {
         this.scheduleId = scheduleId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
-        this.staffId = staffId;
+        this.staff = staff;
     }
 
     public int getScheduleId() {
@@ -63,12 +63,12 @@ public class Schedule {
         this.date = date;
     }
 
-    public String getStaffId() {
-        return staffId;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setStaffId(String staffId) {
-        this.staffId = staffId;
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 }
 

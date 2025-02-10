@@ -15,22 +15,22 @@ public class Component {
     private String status;
     private float price;
     private int amount;
-    private String staffId;
-    private int invoiceId;
+    private Staff staff;
+    private Invoice invoice;
 
     public Component() {
     }
 
     public Component(int componentId, String componentName, String brand, String status, 
-                     float price, int amount, String staffId, int invoiceId) {
+                     float price, int amount, Staff staff, Invoice invoice) {
         this.componentId = componentId;
         this.componentName = componentName;
         this.brand = brand;
         this.status = status;
         this.price = price;
         this.amount = amount;
-        this.staffId = staffId;
-        this.invoiceId = invoiceId;
+        this.staff = staff;
+        this.invoice = invoice;
     }
 
     public int getComponentId() {
@@ -81,19 +81,19 @@ public class Component {
         this.amount = amount;
     }
 
-    public String getStaffId() {
-        return staffId;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setStaffId(String staffId) {
-        this.staffId = staffId;
+    public void setStaffId(Staff staff) {
+        this.staff = staff;
     }
 
-    public int getInvoiceId() {
-        return invoiceId;
+    public Invoice getInvoiceId() {
+        return invoice;
     }
 
-    public void setInvoiceId(int invoiceId) {
-        this.invoiceId = invoiceId;
+    public void setInvoiceId(Invoice invoice) {
+        this.invoice = invoice;
     }
 }

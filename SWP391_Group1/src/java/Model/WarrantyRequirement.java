@@ -13,20 +13,20 @@ public class WarrantyRequirement {
     private String status;
     private String description;
     private java.util.Date registerDate;
-    private int customerId;
-    private String staffId;
+    private Customer customer;
+    private Staff staff;
 
     public WarrantyRequirement() {
     }
 
     public WarrantyRequirement(int requirementId, String status, String description, java.util.Date registerDate,
-                       int customerId, String staffId) {
+                       Customer customer, Staff staff) {
         this.requirementId = requirementId;
         this.status = status;
         this.description = description;
         this.registerDate = registerDate;
-        this.customerId = customerId;
-        this.staffId = staffId;
+        this.customer = customer;
+        this.staff = staff;
     }
 
     public int getRequirementId() {
@@ -61,20 +61,20 @@ public class WarrantyRequirement {
         this.registerDate = registerDate;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public String getStaffId() {
-        return staffId;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setStaffId(String staffId) {
-        this.staffId = staffId;
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 }
 
