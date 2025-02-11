@@ -55,6 +55,8 @@ public class Dao extends DBContext implements ILoginDAO {
         }
         return null;
     }
+    
+    
 
     public boolean checkAccountExisted(String userName) {
         String sql = "select * from Customer where Username = ? ";

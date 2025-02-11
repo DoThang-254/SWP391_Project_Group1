@@ -129,6 +129,8 @@ public class RegisterController extends HttpServlet {
 
         request.setAttribute("msg", msg);
         request.setAttribute("userName", userName);
+        request.setAttribute("password", password);
+        request.setAttribute("cpassword", cPassword);
         request.setAttribute("firstName", firstName);
         request.setAttribute("lastName", lastName);
         request.setAttribute("email", email);
@@ -137,7 +139,7 @@ public class RegisterController extends HttpServlet {
         request.setAttribute("phone", phone);
         request.setAttribute("address", address);
         request.getRequestDispatcher("Register.jsp").forward(request, response);
-
+        
     }
 
     /**

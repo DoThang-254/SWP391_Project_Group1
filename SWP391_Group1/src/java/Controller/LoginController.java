@@ -104,15 +104,15 @@ public class LoginController extends HttpServlet {
             if (s != null) {
                 request.getSession().setAttribute("Staff", s);
                 if (s.getRole().getRoleId() == 1) {
-                    response.sendRedirect("Admin.jsp");
+                    response.sendRedirect("role?roleId=1");
 
                 }
                 if (s.getRole().getRoleId() == 2) {
-                    response.sendRedirect("Technician.jsp");
+                    response.sendRedirect("role?roleId=2");
 
                 }
                 if (s.getRole().getRoleId() == 3) {
-                    response.sendRedirect("ServiceManager.jsp");
+                    response.sendRedirect("role?roleId=3");
 
                 }
                 if (s.getRole().getRoleId() == 4) {
