@@ -261,4 +261,11 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         }
         return list;
     }
+    public static void main(String[] args) {
+        CustomerDao d = new CustomerDao();
+        List<Product> list = d.ReadAllProductByCustomerId(1);
+        for (Product product : list) {
+            System.out.println(product.getProductId());
+        }
+    }
 }
