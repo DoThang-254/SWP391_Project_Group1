@@ -16,30 +16,37 @@ import java.util.List;
 public class TechnicianDAO extends DBContext {
 
     // Add a new technician
-    public void addTechnician(Staff Staff) {
+    public boolean addTechnician(Staff staff) {
+        if (isStaffIdExists(staff.getStaffId())) {
+            return false;
+        }
+
         String query = "INSERT INTO Staff (StaffId, Username, Password, FirstName, LastName, Email, Phone, Gender, BirthDate, Status, RoleId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setString(1, Staff.getStaffId());
-            ps.setString(2, Staff.getUsername());
-            ps.setString(3, "password123");
-            ps.setString(4, Staff.getFirstName());
-            ps.setString(5, Staff.getLastName());
-            ps.setString(6, Staff.getEmail());
-            ps.setString(7, Staff.getPhone());
-            ps.setString(8, Staff.getGender());
-            if (Staff.getBirthDate() != null) {
-                ps.setDate(9, new java.sql.Date(Staff.getBirthDate().getTime()));
+            ps.setString(1, staff.getStaffId());
+            ps.setString(2, staff.getUsername());
+            ps.setString(3, "password123"); // Mật khẩu mặc định
+            ps.setString(4, staff.getFirstName());
+            ps.setString(5, staff.getLastName());
+            ps.setString(6, staff.getEmail());
+            ps.setString(7, staff.getPhone());
+            ps.setString(8, staff.getGender());
+
+            if (staff.getBirthDate() != null) {
+                ps.setDate(9, new java.sql.Date(staff.getBirthDate().getTime()));
             } else {
                 ps.setNull(9, Types.DATE);
             }
 
-            ps.setString(10, Staff.getStatus());
-            ps.setInt(11, Staff.getRoleId());
+            ps.setString(10, staff.getStatus());
+            ps.setInt(11, staff.getRoleId());
 
             ps.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     // Get technician by StaffId
@@ -199,5 +206,65 @@ public class TechnicianDAO extends DBContext {
         return technicians;
     }
 
-    
+    // Get total number of technicians
+    public int getTotalTechnicians() {
+        String query = "SELECT COUNT(*) FROM Staff WHERE RoleId = 2";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    // Get paginated list of technicians
+    public List<Staff> getTechniciansByPage(int page, int recordsPerPage) {
+        List<Staff> technicians = new ArrayList<>();
+        int start = (page - 1) * recordsPerPage;
+
+        String query = "SELECT * FROM Staff WHERE RoleId = 2 ORDER BY StaffId OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, start);
+            ps.setInt(2, recordsPerPage);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Staff staff = new Staff();
+                staff.setStaffId(rs.getString("StaffId"));
+                staff.setUsername(rs.getString("Username"));
+                staff.setFirstName(rs.getString("FirstName"));
+                staff.setLastName(rs.getString("LastName"));
+                staff.setEmail(rs.getString("Email"));
+                staff.setPhone(rs.getString("Phone"));
+                staff.setGender(rs.getString("Gender"));
+                staff.setBirthDate(rs.getDate("BirthDate"));
+                staff.setStatus(rs.getString("Status"));
+                staff.setRoleId(rs.getInt("RoleId"));
+                technicians.add(staff);
+            }
+            System.out.println("Technicians fetched: " + technicians.size());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return technicians;
+    }
+
+    public boolean isStaffIdExists(String staffId) {
+        String query = "SELECT COUNT(*) FROM Staff WHERE StaffId = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, staffId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
