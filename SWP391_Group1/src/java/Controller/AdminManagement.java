@@ -4,8 +4,8 @@
  */
 package Controller;
 
-import Dal.AdminDAO;
-import Model.Staff;
+import Dal.*;
+import Model.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -96,7 +96,28 @@ public class AdminManagement extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String staffId = request.getParameter("staffId");
+        String status = request.getParameter("status");
+        if (staffId != null && status != null) {
+            AdminDAO adminDAO = new AdminDAO();
+            String newStatus = status.equals("Active") ? "Inactive" : "Active";
+            adminDAO.deactiveStaves(staffId, newStatus);
+        }
+
+        String searchKeyword = request.getParameter("searchKeyword");
+        String roleIdParam = request.getParameter("roleId");
+        String xpage = request.getParameter("page");
+
+        if (xpage == null) {
+            xpage = "1";
+        }
+        if (roleIdParam == null) {
+            roleIdParam = "";
+        }
+        if (searchKeyword == null) {
+            searchKeyword = "";
+        }
+        response.sendRedirect("/SWP391_Group1/admin-management?roleId=" + roleIdParam + "&searchKeyword=" + searchKeyword + "&page=" + xpage);
     }
 
     /**

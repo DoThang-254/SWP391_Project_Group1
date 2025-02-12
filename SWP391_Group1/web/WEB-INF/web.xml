@@ -8,6 +8,10 @@
         <servlet-name>AdminManagement</servlet-name>
         <servlet-class>Controller.AdminManagement</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserDetail</servlet-name>
+        <servlet-class>Controller.UserDetail</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SearchWarrantyInformationController</servlet-name>
         <url-pattern>/searchwarrantyinformation</url-pattern>
@@ -15,5 +19,9 @@
     <servlet-mapping>
         <servlet-name>AdminManagement</servlet-name>
         <url-pattern>/admin-management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserDetail</servlet-name>
+        <url-pattern>/admin-management/userdetail</url-pattern>
     </servlet-mapping>
 </web-app>

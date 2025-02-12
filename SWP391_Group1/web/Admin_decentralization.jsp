@@ -33,6 +33,7 @@
 
         <!-- Main CSS-->
         <link href="css/theme.css" rel="stylesheet" media="all">
+        <link href="css/admin_manger.css" rel="stylesheet" media="all">
     </head>
     <body class="animsition">
         <div class="page-wrapper">
@@ -514,26 +515,41 @@
                                                                 </td>
                                                                 <td>${staff.birthDate}</td>
                                                                 <td>
-                                                                    <c:choose>
-                                                                        <c:when test="${staff.status eq 'Active'}">
-                                                                            <span class="status--process">${staff.status}</span>
-                                                                        </c:when>
-                                                                        <c:otherwise>
-                                                                            <span class="status--denied">${staff.status}</span>
-                                                                        </c:otherwise>
-                                                                    </c:choose>
+                                                                    <form method="post" action="admin-management">
+                                                                        <input type="hidden" name="staffId" value="${staff.staffId}">
+                                                                        <input type="hidden" name="status" value="${staff.status}">
+
+                                                                        <c:choose>
+                                                                            <c:when test="${staff.status eq 'Active'}">
+                                                                                <span class="status--process">${staff.status}</span>
+                                                                                <button type="submit" class="item" data-toggle="tooltip" title="Change">
+                                                                                    <i class="zmdi zmdi-refresh"></i>
+                                                                                </button>
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                <span class="status--denied">${staff.status}</span>
+                                                                                <button type="submit" class="item" data-toggle="tooltip" title="Change">
+                                                                                    <i class="zmdi zmdi-refresh"></i>
+                                                                                </button>
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </form>
+
                                                                 </td>
+
                                                                 <td>
                                                                     <div class="table-data-feature">
                                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                                             <i class="zmdi zmdi-edit"></i>
                                                                         </button>
-                                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                            <i class="zmdi zmdi-delete"></i>
-                                                                        </button>
-                                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Detail">
-                                                                            <i class="zmdi zmdi-more"></i>
-                                                                        </button>
+                                                                        <form action="admin-management" method="GET">
+                                                                            <input type="hidden" name="getdetailId" value="${staff.staffId}">
+                                                                            <button  class="item open-button" data-toggle="tooltip" data-placement="top" title="Detail" onclick="openForm()">
+                                                                                <i class="zmdi zmdi-more"></i>
+                                                                            </button>
+                                                                        </form>
+
+
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -544,99 +560,129 @@
 
                                             </tbody>
                                         </table>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="pagination m-auto">
-                                                    <form method="get" action="admin-management">
-                                                        <nav aria-label="Page navigation example">
-                                                            <ul class="pagination pagination-sm no-margin pull-right">
-                                                                <li class="page-item ${page == 1 ? 'disabled' : ''}">
-                                                                    <button name="page" value="${page - 1}" class="page-link" ${page == 1 ? 'disabled' : ''}>Previous</button>
-                                                                </li>
-                                                                <li class="page-item">
-                                                                    <input name="roleId" value="${filter}" class="d-none">
-                                                                </li>
-                                                                <li class="page-item">
-                                                                    <input name="searchKeyword" value="${searchResult}" class="d-none">
-                                                                </li>
-                                                                <c:forEach begin="${1}" end="${requestScope.num}" var="i">
-                                                                    <li class="page-item">
-                                                                        <button name="page" value="${i}" class="${i == page ? 'page-link position' : 'page-link'}">${i}</button>
-                                                                    </li>
-                                                                </c:forEach>
-                                                                <li class="page-item ${page == requestScope.num ? 'disabled' : ''}">
-                                                                    <button name="page" value="${page + 1}" class="page-link" ${page == requestScope.num ? 'disabled' : ''}>Next</button>
-                                                                </li>
-                                                            </ul>
-                                                        </nav>
-                                                    </form>
-                                                </div>
+
+                                        <!--Detail -->
+
+                                        <c:set var="ud" value="${requestScope.detail}"></c:set>
+                                            <div class="form-popup" id="myForm">
+                                                <div class="container mt-4 mb-4 p-3 d-flex justify-content-center"> 
+                                                    <div class="card p-4"> 
+                                                        <div class=" image d-flex flex-column justify-content-center align-items-center"> 
+
+                                                            <span class="name mt-3">Tên ${ud.email}</span> 
+                                                            <span class="idd">${ud.email}</span> 
+                                                        <div class="d-flex flex-row justify-content-center align-items-center gap-2"> 
+                                                            <span class="idd1"></span>
+
+                                                        </div>
+                                                    </div> 
+                                                    <div class=" d-flex mt-2"> 
+                                                        <button class="btn1 btn-dark">Edit Profile</button> 
+                                                    </div> 
+                                                    <div class="text mt-3"> 
+                                                        <span>Eleanor Pena is a creator of minimalistic x bold graphics and digital artwork.<br><br> Artist/ Creative Director by Day #NFT minting@ with FND night. 
+                                                        </span>
+                                                    </div>
+
+                                                    <button type="button" class=" cancel" onclick="closeForm()">Close</button>
+                                                </div> 
                                             </div>
                                         </div>
 
-                                        <div class="user-data__footer">
-                                            <button class="au-btn au-btn-load">load more</button>
+
+                                    </div>
+
+
+
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="pagination m-auto">
+                                                <form method="get" action="admin-management">
+                                                    <nav aria-label="Page navigation example">
+                                                        <ul class="pagination pagination-sm no-margin pull-right">
+                                                            <li class="page-item ${page == 1 ? 'disabled' : ''}">
+                                                                <button name="page" value="${page - 1}" class="page-link" ${page == 1 ? 'disabled' : ''}>Previous</button>
+                                                            </li>
+                                                            <li class="page-item">
+                                                                <input name="roleId" value="${filter}" class="d-none">
+                                                            </li>
+                                                            <li class="page-item">
+                                                                <input name="searchKeyword" value="${searchResult}" class="d-none">
+                                                            </li>
+                                                            <c:forEach begin="${1}" end="${requestScope.num}" var="i">
+                                                                <li class="page-item">
+                                                                    <button name="page" value="${i}" class="${i == page ? 'page-link position' : 'page-link'}">${i}</button>
+                                                                </li>
+                                                            </c:forEach>
+                                                            <li class="page-item ${page == requestScope.num ? 'disabled' : ''}">
+                                                                <button name="page" value="${page + 1}" class="page-link" ${page == requestScope.num ? 'disabled' : ''}>Next</button>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                    <!-- END DATA TABLE -->
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="copyright">
-                                        <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+
+                                    <div class="user-data__footer">
+                                        <button class="au-btn au-btn-load">load more</button>
                                     </div>
+                                </div>
+                                <!-- END DATA TABLE -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="copyright">
+                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- Jquery JS-->
-        <script src="vendor/jquery-3.2.1.min.js"></script>
-        <!-- Bootstrap JS-->
-        <script src="vendor/bootstrap-4.1/popper.min.js"></script>
-        <script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
-        <!-- Vendor JS       -->
-        <script src="vendor/slick/slick.min.js">
-        </script>
-        <script src="vendor/wow/wow.min.js"></script>
-        <script src="vendor/animsition/animsition.min.js"></script>
-        <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
-        </script>
-        <script src="vendor/counter-up/jquery.waypoints.min.js"></script>
-        <script src="vendor/counter-up/jquery.counterup.min.js">
-        </script>
-        <script src="vendor/circle-progress/circle-progress.min.js"></script>
-        <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
-        <script src="vendor/chartjs/Chart.bundle.min.js"></script>
-        <script src="vendor/select2/select2.min.js">
-        </script>
+    </div>
 
-        <!-- Main JS-->
-        <script src="js/main.js"></script>
-        <!--        <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        const form = document.getElementById("filterForm");
-                        const roleFilter = document.getElementById("roleFilter");
-                        const searchInput = document.getElementById("searchInput");
-        
-                        roleFilter.addEventListener("change", function () {
-                            form.submit();
-                        });
-        
-        
-                        searchInput.addEventListener("input",function () {
-                            form.submit();
-                        });
-                    });
-        
-                </script>-->
+    <!-- Jquery JS-->
+    <script src="vendor/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap JS-->
+    <script src="vendor/bootstrap-4.1/popper.min.js"></script>
+    <script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <!-- Vendor JS       -->
+    <script src="vendor/slick/slick.min.js">
+    </script>
+    <script src="vendor/wow/wow.min.js"></script>
+    <script src="vendor/animsition/animsition.min.js"></script>
+    <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+    </script>
+    <script src="vendor/counter-up/jquery.waypoints.min.js"></script>
+    <script src="vendor/counter-up/jquery.counterup.min.js">
+    </script>
+    <script src="vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="vendor/chartjs/Chart.bundle.min.js"></script>
+    <script src="vendor/select2/select2.min.js">
+    </script>
 
-    </body>
+    <!-- Main JS-->
+    <script src="js/main.js"></script>
+    <script>
+                                                            function openForm() {
+                                                                document.getElementById("myForm").style.display = "block";
+                                                            }
+
+                                                            function closeForm() {
+                                                                document.getElementById("myForm").style.display = "none";
+                                                            }
+
+    </script>
+
+
+
+</body>
 </html>
 
 

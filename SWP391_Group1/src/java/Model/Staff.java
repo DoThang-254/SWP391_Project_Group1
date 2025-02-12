@@ -27,26 +27,10 @@ public class Staff {
 
     public Staff() {
     }
+    
+    
 
-    public Staff(String staffId, String username, String firstName, String lastName, String email, String phone, String gender, Date birthDate, String status, int roleId, Role role) {
-        this.staffId = staffId;
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.gender = gender;
-        this.birthDate = birthDate;
-        this.status = status;
-        this.roleId = roleId;
-        this.role = role;
-    }
-
-   
-
-    public Staff(String staffId, String username, String password, String firstName,
-            String lastName, String email, String phone, String gender,
-            Date birthDate, String status, int roleId) {
+    public Staff(String staffId, String username, String password, String firstName, String lastName, String email, String phone, String gender, Date birthDate, String status, int roleId, Role role) {
         this.staffId = staffId;
         this.username = username;
         this.password = password;
@@ -58,6 +42,35 @@ public class Staff {
         this.birthDate = birthDate;
         this.status = status;
         this.roleId = roleId;
+        this.role = role;
+    }
+
+    public Staff(String staffId, String username, String password, String email) {
+        this.staffId = staffId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
+    public Staff(String username, String password, String firstName, String lastName, String email, String phone, String gender, Date birthDate, String status, int roleId, Role role) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.status = status;
+        this.role = role;
+    }
+
+    public Staff(String staffId, String firstName, String lastName, String email, String phone) {
+        this.staffId = staffId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
     }
 
     public String getStaffId() {
