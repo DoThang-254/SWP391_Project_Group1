@@ -3,8 +3,10 @@
     Created on : Jan 24, 2025, 8:55:03 PM
     Author     : thang
 --%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
     <head>
@@ -255,89 +257,121 @@
             <aside class="right-side">
 
                 <!-- Main content -->
-               <section class="content">
-    <div class="row">
-        <div class="col-md-8">
-            <section class="panel">
-                <header class="panel-heading">
-                    Technician List
-                </header>
-
-                <div class="panel-body table-responsive">
-                    <div class="box-tools m-b-15">
-                        <form action="technicianlist" method="get" class="input-group">
-                            <input type="text" name="search" class="form-control input-sm pull-right"
-                                style="width: 150px;" placeholder="Search" value="${param.search}" />
-                            <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default input-sm">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>StaffID</th>
-                                <th>Username</th>
-                                <th>Fullname</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="technician" items="${technicians}">
-                                <tr>
-                                    <td>${technician.staffId}</td>
-                                    <td>${technician.username}</td>
-                                    <td>${technician.firstName} ${technician.lastName}</td>
-                                    <td>${technician.email}</td>
-                                    <td>${technician.phone}</td>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${technician.status == 'Active'}">
-                                                <span class="label label-primary">${technician.status}</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span class="label label-danger">${technician.status}</span>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-
-                                    <td>
-                                        <a href="technicianlist?action=edit&staffId=${technician.staffId}">Edit</a> |
-                                        <a href="technicianlist?action=delete&staffId=${technician.staffId}">Delete</a>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
+                <section class="content">
 
                     <div class="row">
-                        <div class="col-md-6">
-                            <a class="btn btn-success btn-sm" href="addTechnician.jsp">Add New</a>
-                        </div>
-                        <div class="col-md-6 text-right">
-                            <ul class="pagination pagination-sm no-margin pull-right">
-                                <li><a href="#">&laquo;</a></li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">&raquo;</a></li>
-                            </ul>
-                        </div>
+
+                        <div class="col-md-8">
+                            <section class="panel">
+                                <header class="panel-heading">
+                                    Work Progress
+                                </header>
+                                <div class="panel-body table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Project</th>
+                                                <th>Manager</th>
+                                                <!-- <th>Client</th> -->
+                                                <th>Deadline</th>
+                                                <!-- <th>Price</th> -->
+                                                <th>Status</th>
+                                                <th>Progress</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Facebook</td>
+                                                <td>Mark</td>
+                                                <!-- <td>Steve</td> -->
+                                                <td>10/10/2014</td>
+                                                <!-- <td>$1500</td> -->
+                                                <td><span class="label label-danger">in progress</span></td>
+                                                <td><span class="badge badge-info">50%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Twitter</td>
+                                                <td>Evan</td>
+                                                <!-- <td>Darren</td> -->
+                                                <td>10/8/2014</td>
+                                                <!-- <td>$1500</td> -->
+                                                <td><span class="label label-success">completed</span></td>
+                                                <td><span class="badge badge-success">100%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>Google</td>
+                                                <td>Larry</td>
+                                                <!-- <td>Nick</td> -->
+                                                <td>10/12/2014</td>
+                                                <!-- <td>$2000</td> -->
+                                                <td><span class="label label-warning">in progress</span></td>
+                                                <td><span class="badge badge-warning">75%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>LinkedIn</td>
+                                                <td>Allen</td>
+                                                <!-- <td>Rock</td> -->
+                                                <td>10/01/2015</td>
+                                                <!-- <td>$2000</td> -->
+                                                <td><span class="label label-info">in progress</span></td>
+                                                <td><span class="badge badge-info">65%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>5</td>
+                                                <td>Tumblr</td>
+                                                <td>David</td>
+                                                <!-- <td>HHH</td> -->
+                                                <td>01/11/2014</td>
+                                                <!-- <td>$2000</td> -->
+                                                <td><span class="label label-warning">in progress</span></td>
+                                                <td><span class="badge badge-danger">95%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>6</td>
+                                                <td>Tesla</td>
+                                                <td>Musk</td>
+                                                <!-- <td>HHH</td> -->
+                                                <td>01/11/2014</td>
+                                                <!-- <td>$2000</td> -->
+                                                <td><span class="label label-info">in progress</span></td>
+                                                <td><span class="badge badge-success">95%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>7</td>
+                                                <td>Ghost</td>
+                                                <td>XXX</td>
+                                                <!-- <td>HHH</td> -->
+                                                <td>01/11/2014</td>
+                                                <!-- <td>$2000</td> -->
+                                                <td><span class="label label-info">in progress</span></td>
+                                                <td><span class="badge badge-success">95%</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    <div class=" add-task-row">
+                                         <div class="table-foot">
+                                        <ul class="pagination pagination-sm no-margin pull-right">
+                                            <li><a href="#">&laquo;</a></li>
+                                            <li><a href="#">1</a></li>
+                                            <li><a href="#">2</a></li>
+                                            <li><a href="#">3</a></li>
+                                            <li><a href="#">&raquo;</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </section>
+
+
+                        </div><!--end col-6 -->
+
+
                     </div>
-                </div>
-            </section>
-        </div>
-    </div>
-</section>
-
-
-                    
                     <div class="row">
 
                         <div class="col-md-7">
@@ -490,9 +524,8 @@
                     </div>
                     <!-- row end -->
                 </section><!-- /.content -->
-
                 <div class="footer-main">
-                    Copyright &copy Director, 2025
+                    Copyright &copy Director, 2014
                 </div>
             </aside><!-- /.right-side -->
 
