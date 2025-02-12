@@ -151,6 +151,7 @@ CREATE TABLE Blog (
     FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
 );
 
+
 INSERT INTO Role (RoleName)
 VALUES 
     ('Admin'),
