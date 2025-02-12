@@ -29,25 +29,6 @@ public class Staff {
     }
 
     public Staff(String staffId, String username, String password, String firstName, String lastName, String email, String phone, String gender, Date birthDate, String status, int roleId, Role role) {
-//    public Staff(String staffId, String username, String firstName, String lastName, String email, String phone, String gender, Date birthDate, String status, int roleId, Role role) {
-        this.staffId = staffId;
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.gender = gender;
-        this.birthDate = birthDate;
-        this.status = status;
-        this.roleId = roleId;
-        this.role = role;
-    }
-
-   
-
-    public Staff(String staffId, String username, String password, String firstName,
-            String lastName, String email, String phone, String gender,
-            Date birthDate, String status, int roleId) {
         this.staffId = staffId;
         this.username = username;
         this.password = password;

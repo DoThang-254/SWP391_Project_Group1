@@ -22,7 +22,6 @@
         <servlet-class>Controller.SearchWarrantyInformationController</servlet-class>
     </servlet>
     <servlet>
-<<<<<<< HEAD
         <servlet-name>RegisterController</servlet-name>
         <servlet-class>Controller.RegisterController</servlet-class>
     </servlet>
@@ -53,17 +52,12 @@
     <servlet>
         <servlet-name>RoleController</servlet-name>
         <servlet-class>Controller.RoleController</servlet-class>
-=======
-        <servlet-name>AdminManagement</servlet-name>
-        <servlet-class>Controller.AdminManagement</servlet-class>
->>>>>>> origin/tuan
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-<<<<<<< HEAD
         <servlet-name>WarrantyInformationController</servlet-name>
         <url-pattern>/searchinformation</url-pattern>
     </servlet-mapping>
@@ -98,9 +92,4 @@
     <welcome-file-list>
         <welcome-file>home</welcome-file>
     </welcome-file-list>
-=======
-        <servlet-name>AdminManagement</servlet-name>
-        <url-pattern>/admin-management</url-pattern>
-    </servlet-mapping>
->>>>>>> origin/tuan
 </web-app>
