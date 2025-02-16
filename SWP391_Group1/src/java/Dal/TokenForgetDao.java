@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 public class TokenForgetDao extends DBContext {
 
     private PreparedStatement p;
-    private ResultSet rs;
+    private ResultSet rs;   
 
     public Staff GetStaffByEmail(String email) {
         String sql = "select StaffId , Username ,Password , Email from Staff where Email = ? ";

@@ -65,12 +65,12 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
 
             rs = p.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1); 
+                return rs.getInt(1);  // Lấy giá trị count(*) chính xác
             }
         } catch (Exception e) {
-            e.printStackTrace();  
+            e.printStackTrace();  // In lỗi ra để dễ debug
         }
-        return 0; 
+        return 0;  // Trả về 0 nếu có lỗi
     }
 
     public List<Product> SearchingProductByProductId(int index, int CustomerId, String search, Product product, String sort, String order, String priceRange) {
@@ -186,12 +186,12 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
 
             ResultSet rs = p.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1);  
+                return rs.getInt(1);  // Lấy giá trị count(*) chính xác
             }
         } catch (Exception e) {
-            e.printStackTrace();  
+            e.printStackTrace();  // In lỗi ra để dễ debug
         }
-        return 0;  
+        return 0;  // Trả về 0 nếu có lỗi
     }
 
     public List<WarrantyInformation> WarrantyProductInformation(int index, int CustomerId, String search, Product product, String sort, String order, String priceRange) {

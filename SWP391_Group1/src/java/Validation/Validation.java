@@ -57,8 +57,10 @@ public class Validation {
     }
 
     public boolean isValidEmail(String email) {
+        // Regex kiểm tra email hợp lệ
         String emailRegex = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
 
+        // Biên dịch regex
         Pattern pattern = Pattern.compile(emailRegex);
 
         // So khớp với email đầu vào
@@ -68,16 +70,18 @@ public class Validation {
     }
 
     public boolean isValidVietnamesePhoneNumber(String phoneNumber) {
+        // Xóa khoảng trắng nếu có
         phoneNumber = phoneNumber.trim();
 
         // Regex kiểm tra số điện thoại Việt Nam hợp lệ
         String phoneRegex = "^(0[235789])[0-9]{8}$";
 
+        // Biên dịch regex
         Pattern pattern = Pattern.compile(phoneRegex);
 
         // So khớp với số điện thoại đầu vào
         Matcher matcher = pattern.matcher(phoneNumber);
 
-        return matcher.matches(); 
+        return matcher.matches(); // Trả về true nếu hợp lệ
     }
 }
