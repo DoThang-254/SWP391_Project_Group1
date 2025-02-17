@@ -542,12 +542,9 @@
                                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                                             <i class="zmdi zmdi-edit"></i>
                                                                         </button>
-                                                                        <form action="admin-management" method="GET">
-                                                                            <input type="hidden" name="getdetailId" value="${staff.staffId}">
-                                                                            <button  class="item open-button" data-toggle="tooltip" data-placement="top" title="Detail" onclick="openForm()">
-                                                                                <i class="zmdi zmdi-more"></i>
-                                                                            </button>
-                                                                        </form>
+                                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Detail" onclick="showDetail('${staff.staffId}')">
+                                                                            <i class="zmdi zmdi-more"></i>
+                                                                        </button>
 
 
                                                                     </div>
@@ -564,44 +561,27 @@
                                         <!--Detail -->
 
                                         <c:set var="ud" value="${requestScope.detail}"></c:set>
+
                                             <div class="form-popup" id="myForm">
-                                                <div class="container mt-4 mb-4 p-3 d-flex justify-content-center"> 
-                                                    <div class="card p-4"> 
-                                                        <div class=" image d-flex flex-column justify-content-center align-items-center"> 
-
-                                                            <span class="name mt-3">Tên ${ud.email}</span> 
-                                                            <span class="idd">${ud.email}</span> 
-                                                        <div class="d-flex flex-row justify-content-center align-items-center gap-2"> 
-                                                            <span class="idd1"></span>
-
-                                                        </div>
-                                                    </div> 
-                                                    <div class=" d-flex mt-2"> 
-                                                        <button class="btn1 btn-dark">Edit Profile</button> 
-                                                    </div> 
-                                                    <div class="text mt-3"> 
-                                                        <span>Eleanor Pena is a creator of minimalistic x bold graphics and digital artwork.<br><br> Artist/ Creative Director by Day #NFT minting@ with FND night. 
-                                                        </span>
-                                                    </div>
-
-                                                    <button type="button" class=" cancel" onclick="closeForm()">Close</button>
-                                                </div> 
+                                                <div id="detailSection">
+                                                    <!-- Chi tiết sẽ được hiển thị ở đây -->
+                                                </div>
+                                                <button type="button" class="cancel" onclick="closeForm()">Close</button>
                                             </div>
+
+
                                         </div>
 
 
-                                    </div>
 
 
-
-
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="pagination m-auto">
-                                                <form method="get" action="admin-management">
-                                                    <nav aria-label="Page navigation example">
-                                                        <ul class="pagination pagination-sm no-margin pull-right">
-                                                            <li class="page-item ${page == 1 ? 'disabled' : ''}">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="pagination m-auto">
+                                                    <form method="get" action="admin-management">
+                                                        <nav aria-label="Page navigation example">
+                                                            <ul class="pagination pagination-sm no-margin pull-right">
+                                                                <li class="page-item ${page == 1 ? 'disabled' : ''}">
                                                                 <button name="page" value="${page - 1}" class="page-link" ${page == 1 ? 'disabled' : ''}>Previous</button>
                                                             </li>
                                                             <li class="page-item">
@@ -670,15 +650,48 @@
     <!-- Main JS-->
     <script src="js/main.js"></script>
     <script>
-                                                            function openForm() {
-                                                                document.getElementById("myForm").style.display = "block";
-                                                            }
+                                                    function openForm() {
+                                                        document.getElementById("myForm").style.display = "block";
+                                                    }
 
-                                                            function closeForm() {
-                                                                document.getElementById("myForm").style.display = "none";
-                                                            }
+                                                    function closeForm() {
+                                                        document.getElementById("myForm").style.display = "none";
+                                                    }
 
     </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+                                                    function showDetail(staffId) {
+                                                        $.ajax({
+                                                            url: "admin-management", 
+                                                            type: "GET",
+                                                            data: {getdetailId: staffId}, 
+                                                            success: function (response) {
+                                                                $("#detailSection").html(response); 
+                                                                openForm();
+                                                            }
+                                                        });
+                                                    }
+
+                                                    function openForm() {
+                                                        document.getElementById("myForm").style.display = "block";
+                                                    }
+
+                                                    function closeForm() {
+                                                        document.getElementById("myForm").style.display = "none";
+                                                    }
+    </script>
+    
+
+    <!-- jQuery 2.0.2 -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    <!-- Director App -->
+    <script src="js/Director/app.js" type="text/javascript"></script>
 
 
 

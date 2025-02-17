@@ -58,6 +58,15 @@ public class AdminManagement extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String detailId = request.getParameter("getdetailId");
+        if (detailId != null) {
+            AdminDAO adminDAO = new AdminDAO();
+            Staff staffDetail = adminDAO.userDetail(detailId);
+            request.setAttribute("detail", staffDetail);
+            request.getRequestDispatcher("/detail2.jsp").forward(request, response);
+            return;
+        }
+
         String searchKeyword = request.getParameter("searchKeyword");
         String roleIdParam = request.getParameter("roleId");
         Integer roleId = null;
@@ -68,7 +77,7 @@ public class AdminManagement extends HttpServlet {
         List<Staff> staffList = adminDAO.getListOfUser(searchKeyword, roleId);
         int page, numberpage = 5;
         int size = staffList.size();
-        int num = (size % 5 == 0 ? (size / 5) : (size / 5) + 1); //number page
+        int num = (size % 5 == 0 ? (size / 5) : (size / 5) + 1);
         String xpage = request.getParameter("page");
         if (xpage == null) {
             page = 1;
