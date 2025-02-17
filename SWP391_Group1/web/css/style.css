@@ -2217,7 +2217,7 @@ content: '';
 .btn.btn-primary:hover,
 .btn.btn-primary:active,
 .btn.btn-primary.hover {
-    background-color: #2f7db2;
+    background-color: #ba0000;
     border: none;
     -webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
@@ -2246,7 +2246,7 @@ content: '';
     transition: all .3s ease;
 }
 .btn.btn-info {
-    background-color: #23b7e5;
+    background-color: #ba0000 !important;
     border: none;
     -webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
