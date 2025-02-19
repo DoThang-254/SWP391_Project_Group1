@@ -316,28 +316,31 @@
                                         </tbody>
                                     </table>
 
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <a class="btn btn-success btn-sm" href="addTechnician.jsp">Add New</a>
-                                        </div>
-                                        <div class="col-md-6 text-right">
-                                            <ul class="pagination pagination-sm no-margin pull-right">
-                                                <c:if test="${currentPage > 1}">
-                                                    <li><a href="technicianlist?page=${currentPage - 1}">&laquo;</a></li>
-                                                    </c:if>
+                                                   <div class="row">
+                                                       <div class="col-md-6">
+                                                           <a class="btn btn-success btn-sm" href="addTechnician.jsp">Add New</a>
+                                                       </div>
+                                                       <div class="col-md-6 text-right">
+                                                           <span style="margin-right: 20px" class="total-records">
+                                                                ${startRecord}-${endRecord} of ${totalTechnicians}
+                                                           </span>
+                                                           <ul class="pagination pagination-sm no-margin pull-right">
+                                                               <c:if test="${currentPage > 1}">
+                                                                   <li><a href="technicianlist?page=${currentPage - 1}">&laquo;</a></li>
+                                                                   </c:if>
+                                                                   <c:forEach var="i" begin="1" end="${totalPages}">
+                                                                   <li class="${i == currentPage ? 'active' : ''}">
+                                                                       <a href="technicianlist?page=${i}">${i}</a>
+                                                                   </li>
+                                                               </c:forEach>
+                                                               <c:if test="${currentPage < totalPages}">
+                                                                   <li><a href="technicianlist?page=${currentPage + 1}">&raquo;</a></li>
+                                                                   </c:if>
+                                                           </ul>
+                                                       </div>
+                                                   </div>
 
-                                                <c:forEach var="i" begin="1" end="${totalPages}">
-                                                    <li class="${i == currentPage ? 'active' : ''}">
-                                                        <a href="technicianlist?page=${i}">${i}</a>
-                                                    </li>
-                                                </c:forEach>
 
-                                                <c:if test="${currentPage < totalPages}">
-                                                    <li><a href="technicianlist?page=${currentPage + 1}">&raquo;</a></li>
-                                                    </c:if>
-                                            </ul>
-                                        </div>
-                                    </div>
 
 
                                 </div>

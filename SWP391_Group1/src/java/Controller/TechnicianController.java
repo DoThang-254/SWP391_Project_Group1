@@ -12,11 +12,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.sql.Date;
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class TechnicianController extends HttpServlet {
 
@@ -27,48 +26,52 @@ public class TechnicianController extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+    String action = request.getParameter("action");
 
-        if ("edit".equals(action)) {
-            String staffId = request.getParameter("staffId");
-            Staff technician = technicianDAO.getTechnicianById(staffId);
-            request.setAttribute("technician", technician);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("editTechnician.jsp");
-            dispatcher.forward(request, response);
-        } else if ("delete".equals(action)) {
-            String staffId = request.getParameter("staffId");
-            technicianDAO.deleteTechnician(staffId);
-            response.sendRedirect("technicianlist");
-        } else {
-            String searchQuery = request.getParameter("search");
-            int page = 1;
-            int recordsPerPage = 10;
+    if ("edit".equals(action)) {
+        String staffId = request.getParameter("staffId");
+        Staff technician = technicianDAO.getTechnicianById(staffId);
+        request.setAttribute("technician", technician);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("editTechnician.jsp");
+        dispatcher.forward(request, response);
+    } else if ("delete".equals(action)) {
+        String staffId = request.getParameter("staffId");
+        technicianDAO.deleteTechnician(staffId);
+        response.sendRedirect("technicianlist");
+    } else {
+        String searchQuery = request.getParameter("search");
+        int page = 1;
+        int recordsPerPage = 10; 
 
-            if (request.getParameter("page") != null) {
-                page = Integer.parseInt(request.getParameter("page"));
-            }
-
-            int totalRecords = technicianDAO.getTotalTechnicians();
-            int totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
-
-            List<Staff> technicians;
-            if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-                technicians = technicianDAO.searchTechnicianByName(searchQuery);
-            } else {
-                technicians = technicianDAO.getTechniciansByPage(page, recordsPerPage);
-            }
-
-            System.out.println("Technicians in Controller: " + technicians.size());
-
-            request.setAttribute("technicians", technicians);
-            request.setAttribute("currentPage", page);
-            request.setAttribute("totalPages", totalPages);
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("ServiceManager.jsp");
-            dispatcher.forward(request, response);
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
         }
 
+        int totalRecords = technicianDAO.getTotalTechnicians();
+        int totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
+
+        int startRecord = (page - 1) * recordsPerPage + 1;
+        int endRecord = Math.min(page * recordsPerPage, totalRecords);
+
+        List<Staff> technicians;
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            technicians = technicianDAO.searchTechnicianByName(searchQuery);
+        } else {
+            technicians = technicianDAO.getTechniciansByPage(page, recordsPerPage);
+        }
+
+        request.setAttribute("technicians", technicians);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("totalTechnicians", totalRecords);
+        request.setAttribute("startRecord", startRecord); 
+        request.setAttribute("endRecord", endRecord); 
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("ServiceManager.jsp");
+        dispatcher.forward(request, response);
     }
+}
+
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String staffId = request.getParameter("staffId");
@@ -109,30 +112,26 @@ public class TechnicianController extends HttpServlet {
     Date birthDate = null;
     if (birthDateStr != null && !birthDateStr.isEmpty()) {
     try {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date utilDate = sdf.parse(birthDateStr);
-        birthDate = new java.sql.Date(utilDate.getTime());
-
-        Calendar todayCal = Calendar.getInstance();
-        todayCal.set(Calendar.HOUR_OF_DAY, 0);
-        todayCal.set(Calendar.MINUTE, 0);
-        todayCal.set(Calendar.SECOND, 0);
-        todayCal.set(Calendar.MILLISECOND, 0);
-        java.util.Date today = todayCal.getTime();
-
-        if (!utilDate.before(today)) {
+        LocalDate birthDateLocal = LocalDate.parse(birthDateStr);
+        LocalDate today = LocalDate.now();
+        
+        if (!birthDateLocal.isBefore(today)) {
             request.setAttribute("error", "Ngày sinh không hợp lệ! Phải trước ngày hôm nay.");
             RequestDispatcher dispatcher = request.getRequestDispatcher("addTechnician.jsp");
             dispatcher.forward(request, response);
             return;
         }
-    } catch (ParseException e) {
+        
+        birthDate = Date.valueOf(birthDateLocal);
+    } catch (DateTimeParseException e) {
         request.setAttribute("error", "Ngày sinh không hợp lệ! Vui lòng nhập đúng định dạng yyyy-MM-dd.");
         RequestDispatcher dispatcher = request.getRequestDispatcher("addTechnician.jsp");
         dispatcher.forward(request, response);
         return;
     }
 }
+
+
 
 
     Staff s = new Staff();

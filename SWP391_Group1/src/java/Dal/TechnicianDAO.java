@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TechnicianDAO extends DBContext {
+    public TechnicianDAO() {
+        super();  
+    }
 
     // Add a new technician
     public boolean addTechnician(Staff staff) {
@@ -151,14 +154,25 @@ public class TechnicianDAO extends DBContext {
         }
     }
 
-    public List<Staff> searchTechnicianByName(String name) {
-        List<Staff> technicians = new ArrayList<>();
-        String query = "SELECT * FROM Staff WHERE RoleId = 2 AND (FirstName LIKE ? OR LastName LIKE ? OR Username LIKE ?)";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setString(1, "%" + name + "%");
-            ps.setString(2, "%" + name + "%");
-            ps.setString(3, "%" + name + "%");
-            ResultSet rs = ps.executeQuery();
+ public List<Staff> searchTechnicianByName(String name) {
+    List<Staff> technicians = new ArrayList<>();
+
+    if (name == null || name.trim().isEmpty()) {
+        return technicians; 
+    }
+
+  
+    String cleanedName = name.trim().replaceAll("\\s+", "%");
+
+    String query = "SELECT * FROM Staff WHERE RoleId = 2 AND (FirstName LIKE ? OR LastName LIKE ? OR Username LIKE ?)";
+
+    try (PreparedStatement ps = connection.prepareStatement(query)) {
+        String searchPattern = "%" + cleanedName + "%";
+        ps.setString(1, searchPattern);
+        ps.setString(2, searchPattern);
+        ps.setString(3, searchPattern);
+
+        try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Staff staff = new Staff();
                 staff.setStaffId(rs.getString("StaffId"));
@@ -173,11 +187,14 @@ public class TechnicianDAO extends DBContext {
                 staff.setRoleId(rs.getInt("RoleId"));
                 technicians.add(staff);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return technicians;
+    } catch (SQLException e) {
+        e.printStackTrace(); 
     }
+    return technicians;
+}
+
+
 
 // Lọc theo ID
     public List<Staff> searchTechnicianById(String staffId) {
