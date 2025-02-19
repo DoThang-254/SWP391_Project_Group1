@@ -273,7 +273,16 @@
                                                 <option value="BrandX" ${requestScope.brand == 'BrandX' ? 'selected' : ''}>BrandX</option>
                                             </select>
                                         </div>
+                                        <div class="col-md-3">
+                                            <label for="filterBrand">amount of product</label>
+                                            <select name="amount" id="filterBrand" class="form-control">
+                                                <option value="">-- All --</option>
 
+                                                <option value="5" > 5 </option>
+                                                <option value="6" >6</option>
+                                                <option value="7">7</option>
+                                            </select>
+                                        </div>
 
 
 
@@ -401,7 +410,7 @@
                                             <c:forEach begin="1" end="${requestScope.endpage}" var="i">
                                                 <li>
                                                     <a class="${tag == i ? 'active' : ''}"
-                                                       href="searchinformation?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}">${i}</a>
+                                                       href="searchinformation?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}&amount=${requestScope.amount}">${i}</a>
                                                 </li>
                                             </c:forEach>
                                         </ul>
