@@ -84,4 +84,24 @@ public class Validation {
 
         return matcher.matches(); // Trả về true nếu hợp lệ
     }
+    
+    public boolean isValidDOB(String dob) {
+    try {
+        java.util.Date date = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(dob);
+        
+        // Kiểm tra xem ngày sinh có phải trong quá khứ không
+        java.util.Date currentDate = new java.util.Date();
+        int yearOfBirth = Integer.parseInt(new java.text.SimpleDateFormat("yyyy").format(date));
+        
+        // Kiểm tra năm sinh có từ 1900 đến nay không
+        if (yearOfBirth < 1900 || yearOfBirth > Integer.parseInt(new java.text.SimpleDateFormat("yyyy").format(currentDate))) {
+            return false; // Nếu năm sinh không hợp lệ
+        }
+        
+        return date.before(currentDate);  // Kiểm tra ngày sinh có trước ngày hiện tại
+    } catch (Exception e) {
+        return false;  // Nếu không phải định dạng đúng hoặc ngày không hợp lệ
+    }
+
+}
 }

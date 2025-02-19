@@ -20,13 +20,16 @@ public class TokenForgetPassword {
     public TokenForgetPassword() {
     }
 
-    public TokenForgetPassword(int id, int customerId, boolean isUsed, String token, LocalDateTime expiryTime) {
+    public TokenForgetPassword(int id, int customerId ,String staffId , boolean isUsed, String token, LocalDateTime expiryTime) {
         this.id = id;
         this.customerId = customerId;
+        this.staffId = staffId;
         this.isUsed = isUsed;
         this.token = token;
         this.expiryTime = expiryTime;
     }
+    
+    
 
     public TokenForgetPassword(int customerId, boolean isUsed, String token, LocalDateTime expiryTime) {
         this.customerId = customerId;

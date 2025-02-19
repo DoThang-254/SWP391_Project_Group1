@@ -27,14 +27,14 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         Product newProduct = new Product(null, null, null, 0, null, null, 1);
 
 //        List<WarrantyInformation> list = c.WarrantyProductInformation(1, 1, "Laptop A", newProduct, null, null , null);
-        List<Product> list = c.SearchingProductByProductId(1, 1, "Laptop A", newProduct, null, null, null);
+        List<Product> list = c.SearchingProductByProductId(2, 1, "laptop     a", newProduct, null, null, null , 5);
         for (Product w : list) {
             System.out.println(w.getProductId());
         }
-        System.out.println(c.GetTotalProductByProductId(1, "Laptop A", newProduct));
-        String search = "    l       ap     ";
-        String searchPattern = "%" + search.replaceAll("\\s+", " ") + "%";
-        System.out.println(searchPattern);
+//        System.out.println(c.GetTotalProductByProductId(1, "Laptop A", newProduct));
+//        String search = "laptop       a    ";
+//        String searchPattern = "%" + search.replaceAll("\\s+", " ") + "%";
+//        System.out.println(searchPattern);
     }
 
     public int GetTotalProductByProductId(int CustomerId, String search, Product product) {
@@ -54,7 +54,7 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
 
             int index = 2;
             if (search != null && !search.trim().isEmpty()) {
-                String searchPattern = "%" + search.replaceAll("\\s+", "") + "%";
+                String searchPattern = "%" + search.replaceAll("\\s+", " ") + "%";
                 p.setString(index++, searchPattern);
                 p.setString(index++, searchPattern);
             }
@@ -73,7 +73,7 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         return 0;  // Trả về 0 nếu có lỗi
     }
 
-    public List<Product> SearchingProductByProductId(int index, int CustomerId, String search, Product product, String sort, String order, String priceRange) {
+    public List<Product> SearchingProductByProductId(int index, int CustomerId, String search, Product product, String sort, String order, String priceRange , int amount) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId WHERE c.CustomerId = ? ";
 
@@ -97,8 +97,9 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         } else {
             sql += " ORDER BY p.ProductId ASC"; // Mặc định sắp xếp theo ProductId
         }
-
-        sql += " OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY";
+        
+        
+        sql += " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
             p = connection.prepareStatement(sql);
@@ -106,7 +107,7 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
 
             int paramIndex = 2;
             if (search != null && !search.trim().isEmpty()) {
-                String searchPattern = "%" + search.replaceAll("\\s+", "") + "%";
+                String searchPattern = "%" + search.replaceAll("\\s+", " ") + "%";
                 p.setString(paramIndex++, searchPattern);
                 p.setString(paramIndex++, searchPattern);
             }
@@ -123,7 +124,9 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
                 paramIndex++;
             }
 
-            p.setInt(paramIndex, (index - 1) * 10);
+            p.setInt(paramIndex, (index - 1) * amount); // sửa 10 = amount
+            paramIndex++;
+            p.setInt(paramIndex, amount); //thêm 1 trường amount để chia
             rs = p.executeQuery();
 
             while (rs.next()) {

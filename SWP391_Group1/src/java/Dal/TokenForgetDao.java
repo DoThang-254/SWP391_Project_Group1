@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -109,6 +110,7 @@ public class TokenForgetDao extends DBContext {
                 return new TokenForgetPassword(
                         rs.getInt(1),
                         rs.getInt(5),
+                        rs.getString(6),
                         rs.getBoolean(4),
                         rs.getString(2),
                         rs.getTimestamp(3).toLocalDateTime()
@@ -119,6 +121,8 @@ public class TokenForgetDao extends DBContext {
         }
         return null;
     }
+    
+     
 
     public Customer getEmailById(int customerId) {
         String sql = "select Email from Customer where CustomerId = ? ";

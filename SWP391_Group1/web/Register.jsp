@@ -18,8 +18,8 @@
         <form action="register" method="post">
             Username <input type="text" name="userName" value="${requestScope.userName}" required />
             <br>
-            Password <input type="password" name="passWord" required /> <br>
-            Confirm Password <input type="password" name="confirmPassword" required /> <br>
+            Password <input type="password" name="passWord" value="${requestScope.password}" required /> <br>
+            Confirm Password <input type="password" name="confirmPassword" value="${requestScope.confirmPassword}" required /> <br>
             First name <input type="text" name="firstName" value="${requestScope.firstName}" required /> <br>
             Last name <input type="text" name="lastName" value="${requestScope.lastName}" required /> <br>
 

@@ -110,8 +110,12 @@ public class RegisterController extends HttpServlet {
                 if (!v.isValidEmail(email)) {
                     msg.add(" , email is invalid");
                 }
+                if (!v.isValidDOB(dob)) {
+                    msg.add(" , the date of birth is invalid or in the future");
+                }
                 if (!d.checkEmailExisted(email) && !d.checkPhoneExisted(phone) && !d.checkPhoneExistedInStaff(phone)
-                        && !d.checkEmailExistedInStaff(email) && v.isValidEmail(email) && v.isValidVietnamesePhoneNumber(phone)) {
+                        && !d.checkEmailExistedInStaff(email) && v.isValidEmail(email) && v.isValidVietnamesePhoneNumber(phone)
+                        && v.isValidDOB(dob)) {
                     String hashPassword = v.encode(password);
                     java.sql.Date sqlDate = java.sql.Date.valueOf(dob);
                     Customer newCustomer = new Customer(userName, hashPassword, firstName, lastName, phone, email, gender, sqlDate, status, address);
@@ -129,6 +133,8 @@ public class RegisterController extends HttpServlet {
 
         request.setAttribute("msg", msg);
         request.setAttribute("userName", userName);
+        request.setAttribute("password", password);
+        request.setAttribute("confirmPassword", cPassword);
         request.setAttribute("firstName", firstName);
         request.setAttribute("lastName", lastName);
         request.setAttribute("email", email);
