@@ -649,16 +649,7 @@
 
     <!-- Main JS-->
     <script src="js/main.js"></script>
-    <script>
-                                                    function openForm() {
-                                                        document.getElementById("myForm").style.display = "block";
-                                                    }
-
-                                                    function closeForm() {
-                                                        document.getElementById("myForm").style.display = "none";
-                                                    }
-
-    </script>
+    
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
