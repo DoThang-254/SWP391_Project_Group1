@@ -1,4 +1,4 @@
-﻿--create database LaptopWarranty
+﻿--create database  test
 CREATE TABLE Role (
     RoleId INT IDENTITY(1,1) PRIMARY KEY,
     RoleName VARCHAR(255) NOT NULL
@@ -12,9 +12,10 @@ CREATE TABLE Staff (
     LastName VARCHAR(255),
     Email VARCHAR(255),
     Phone VARCHAR(255),
-    Gender VARCHAR(255),
+    Gender VARCHAR(50),
     BirthDate DATE,
-    Status VARCHAR(255),
+    Status VARCHAR(50),
+	IsWork BIT DEFAULT 1, -- '0' busy , '1' available
     RoleId INT,
     FOREIGN KEY (RoleId) REFERENCES Role(RoleId)
 );
@@ -27,10 +28,98 @@ CREATE TABLE Customer (
     LastName VARCHAR(255),
 	Phone VARCHAR(255),
     Email VARCHAR(255),
-    Gender VARCHAR(255),
+    Gender VARCHAR(50),
     BirthDate DATE,
-    Status VARCHAR(255),
+    Status VARCHAR(50),
     Address VARCHAR(255)
+);
+
+CREATE TABLE Product (
+    ProductId VARCHAR(255) PRIMARY KEY,
+    ProductName VARCHAR(255) NOT NULL,
+    Brand VARCHAR(255),
+    Price bigint,
+    CustomerId INT,
+    FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId)
+);
+
+CREATE TABLE WarrantyForm (
+    FormId INT IDENTITY(1,1) PRIMARY KEY,
+    ProductId VARCHAR(255) NOT NULL,
+    StartDate DATE NOT NULL,
+    EndDate DATE NOT NULL,
+    Status VARCHAR(50) DEFAULT 'Active', -- Active / Completed / Canceled
+    VerificationCode VARCHAR(255),
+    VerificationMethod VARCHAR(255),
+    Verified BIT DEFAULT 0, -- '1' nếu đã xác nhận, '0' nếu chưa
+    FOREIGN KEY (ProductId) REFERENCES Product(ProductId)
+);
+
+CREATE TABLE WarrantyRequirement (
+    RequirementId INT IDENTITY(1,1) PRIMARY KEY,
+    ProductId VARCHAR(255) NOT NULL,
+    CustomerId INT NOT NULL,
+    StaffId VARCHAR(255) NULL, -- Technician tiếp nhận
+    Status VARCHAR(50) DEFAULT 'Pending', -- Pending / Approved / Rejected
+    Description VARCHAR(255),
+    RegisterDate DATE NOT NULL,
+    FOREIGN KEY (ProductId) REFERENCES Product(ProductId),
+    FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
+    FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
+);
+
+CREATE TABLE Invoice (
+    InvoiceId INT IDENTITY(1,1) PRIMARY KEY,
+    RequirementId INT UNIQUE NULL, -- Chỉ có invoice nếu yêu cầu bảo hành có phí
+    Price bigint NOT NULL,
+    Status VARCHAR(50) DEFAULT 'Unpaid', -- Unpaid / Paid
+    Note VARCHAR(255),
+    FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId)
+);
+
+CREATE TABLE Component (
+    ComponentId INT IDENTITY(1,1) PRIMARY KEY,
+    ComponentName VARCHAR(255) NOT NULL,
+    Brand VARCHAR(255),
+    Status VARCHAR(50),
+    Price bigint,
+	Amount INT NOT NULL DEFAULT 0,
+    StaffId VARCHAR(255),
+    InvoiceId INT NULL, -- Linh kiện có thể có hóa đơn riêng
+    FOREIGN KEY (StaffId) REFERENCES Staff(StaffId),
+    FOREIGN KEY (InvoiceId) REFERENCES Invoice(InvoiceId)
+);
+
+CREATE TABLE Notification (
+    NotificationId INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerId INT,
+    RequirementId INT,
+    Title VARCHAR(255),
+    Message TEXT,
+    IsRead BIT DEFAULT 0, -- 'Y' nếu đã đọc, 'N' nếu chưa
+    SendTime DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
+    FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId)
+);
+
+CREATE TABLE Schedule (
+    ScheduleId INT IDENTITY(1,1) PRIMARY KEY,
+    StaffId VARCHAR(255),
+    StartTime TIME,
+    EndTime TIME,
+    Date DATE,
+    FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
+);
+
+CREATE TABLE WarrantyProcessing (
+    ProcessingId INT IDENTITY(1,1) PRIMARY KEY,
+    RequirementId INT NOT NULL,
+    StaffId VARCHAR(255) NOT NULL,
+    Status VARCHAR(255),
+    Note VARCHAR(255),
+    UpdateTime DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId),
+    FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
 );
 CREATE TABLE TokenForgetPassword (
     ID INT IDENTITY(1,1) PRIMARY KEY,
@@ -43,179 +132,61 @@ CREATE TABLE TokenForgetPassword (
 	FOREIGN KEY (StaffId) REFERENCES Staff( StaffId)
 
 );
-CREATE TABLE Product (
-    ProductId VARCHAR(255) PRIMARY KEY,
-    ProductName VARCHAR(255),
-    WarrantyDateTime DATE,
-    Price FLOAT(10),
-    Brand VARCHAR(255),
-    BuyTime DATE,
-    CustomerId INT,
-    FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId)
-);
-
-CREATE TABLE Invoice (
-    InvoiceId INT IDENTITY(1,1) PRIMARY KEY,
-    Price FLOAT,
-    Status VARCHAR(255),
-    Note VARCHAR(255),
-    FormId INT UNIQUE
-);
-
-CREATE TABLE Component (
-    ComponentId INT IDENTITY(1,1) PRIMARY KEY,
-    ComponentName VARCHAR(255),
-    Brand VARCHAR(255),
-    Status VARCHAR(255),
-    Price FLOAT,
-    Amount INT,
-    StaffId VARCHAR(255),
-    InvoiceId INT,
-    FOREIGN KEY (StaffId) REFERENCES Staff(StaffId),
-    FOREIGN KEY (InvoiceId) REFERENCES Invoice(InvoiceId)
-);
-
-
-CREATE TABLE WarrantyRequirement (
-    RequirementId INT IDENTITY(1,1) PRIMARY KEY,
-    Status VARCHAR(255),
-    Description VARCHAR(255),
-    RegisterDate DATE,
-    CustomerId INT,
-    StaffId VARCHAR(255),
-    FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
-    FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
-);
-
-CREATE TABLE WarrantyForm (
-    FormId INT IDENTITY(1,1) PRIMARY KEY,
-    StartDate DATE,
-    EndDate DATE,
-    Status VARCHAR(255),
-    RequirementId INT UNIQUE,
-    VerificationCode VARCHAR(255),
-    VerificationMethod VARCHAR(255),
-    Verified CHAR(1),
-    Price FLOAT,
-    InvoiceId INT UNIQUE, 
-    FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId),
-    FOREIGN KEY (InvoiceId) REFERENCES Invoice(InvoiceId) 
-);
-
-
-CREATE TABLE Notification (
-    NotificationId INT IDENTITY(1,1) PRIMARY KEY,
-    CustomerId INT,
-    RequirementId INT,
-    Title VARCHAR(255),
-    Message VARCHAR(255),
-    IsRead CHAR(1),
-    SendTime DATE,
-    FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
-    FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId)
-);
-
-CREATE TABLE WarrantyInformation (
-    InformationId INT IDENTITY(1,1) PRIMARY KEY,
-    Status VARCHAR(255),
-    Note VARCHAR(255),
-    ReturnDate DATE,
-    ProductId VARCHAR(255),
-    StaffId VARCHAR(255),
-    FOREIGN KEY (ProductId) REFERENCES Product(ProductId),
-    FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
-);
-
-CREATE TABLE Schedule (
-    ScheduleId INT IDENTITY(1,1) PRIMARY KEY,
-    StartTime TIME(7),
-    EndTime TIME(7),
-    Date DATE,
-    StaffId VARCHAR(255),
-    FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
-);
-
 CREATE TABLE Report (
     ReportId INT IDENTITY(1,1) PRIMARY KEY,
     Comment VARCHAR(255),
     CustomerId INT,
-    InformationId INT,
+    ProcessingId INT,
     FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
-    FOREIGN KEY (InformationId) REFERENCES WarrantyInformation(InformationId)
+    FOREIGN KEY (ProcessingId ) REFERENCES WarrantyProcessing(ProcessingId)
 );
 
 CREATE TABLE Blog (
     BlogId INT IDENTITY(1,1) PRIMARY KEY,
-    Content VARCHAR(255),
+    Title VARCHAR(255) NOT NULL, -- Tiêu đề blog
+    Description TEXT, -- Mô tả ngắn hiển thị bên ngoài
+    Content TEXT, -- Nội dung đầy đủ khi nhấn vào xem chi tiết
+    ImageUrl VARCHAR(500), -- URL ảnh đại diện cho blog
+    CreatedAt DATETIME DEFAULT GETDATE(), -- Thời gian tạo
     StaffId VARCHAR(255),
     FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
 );
+-- Chèn dữ liệu vào bảng Role
+INSERT INTO Role (RoleName) VALUES
+('Technician'),
+('Service Manager'),
+('Admin'),
+('Cashier');
 
-INSERT INTO Role (RoleName)
-VALUES 
-    ('Admin'),
-    ('Technician'),
-    ('Customer Service');
-INSERT INTO Staff (StaffId, Username, Password, FirstName, LastName, Email, Phone, Gender, BirthDate, Status, RoleId)
-VALUES 
- ('S004', 'thang1', '123', 'Thang', 'Do', 'thangmoneo2542004@gmail.com', '0329894798', 'Male', '1985-05-15', 'Active', 2),
-    ('S001', 'admin1', 'password123', 'John', 'Doe', 'admin1@example.com', '0123456789', 'Male', '1985-05-15', 'Active', 1),
-    ('S002', 'tech1', 'password123', 'Jane', 'Smith', 'tech1@example.com', '0987654321', 'Female', '1990-07-20', 'Active', 2),
-    ('S003', 'service1', 'password123', 'Emily', 'Brown', 'service1@example.com', '0112233445', 'Female', '1992-10-10', 'Active', 3);
+-- Chèn dữ liệu vào bảng Staff
+INSERT INTO Staff (StaffId, Username, Password, FirstName, LastName, Email, Phone, Gender, BirthDate, Status, IsWork, RoleId) VALUES
+('S001', 'tech1', 'pass123', 'John', 'Doe', 'john@example.com', '123456789', 'Male', '1990-05-15', 'Active', 1, 1),
+('S002', 'tech2', 'pass123', 'Jane', 'Smith', 'jane@example.com', '987654321', 'Female', '1992-08-22', 'Active', 1, 1),
+('S003', 'manager1', 'pass123', 'Michael', 'Brown', 'michael@example.com', '1122334455', 'Male', '1985-03-10', 'Active', 1, 2),
+('S004', 'admin1', 'pass123', 'Alice', 'Johnson', 'alice@example.com', '2233445566', 'Female', '1988-12-05', 'Active', 1, 3),
+('S005', 'cashier1', 'pass123', 'David', 'Wilson', 'david@example.com', '3344556677', 'Male', '1995-07-18', 'Active', 1, 4),
+('S006', 'tech3', 'pass123', 'Laura', 'Miller', 'laura@example.com', '4455667788', 'Female', '1993-04-25', 'Active', 1, 1),
+('S007', 'tech4', 'pass123', 'Kevin', 'Anderson', 'kevin@example.com', '5566778899', 'Male', '1991-11-30', 'Active', 1, 1),
+('S008', 'manager2', 'pass123', 'Sophia', 'Martinez', 'sophia@example.com', '6677889900', 'Female', '1987-07-14', 'Active', 1, 2),
+('S009', 'admin2', 'pass123', 'James', 'Taylor', 'james@example.com', '7788990011', 'Male', '1986-02-28', 'Active', 1, 3),
+('S010', 'cashier2', 'pass123', 'Olivia', 'Harris', 'olivia@example.com', '8899001122', 'Female', '1994-09-05', 'Active', 1, 4);
+
+-- Chèn dữ liệu vào bảng Customer
 INSERT INTO Customer (Username, Password, FirstName, LastName, Phone, Email, Gender, BirthDate, Status, Address)
 VALUES 
 ('user1', 'password123', 'John', 'Doe', '0123456789', 'thangbachi2542004@gmail.com', 'Male', '1990-05-15', 'Active', '123 Main St'),
 ('user2', 'password456', 'Jane', 'Smith', '0987654321', 'jane.smith@example.com', 'Female', '1995-08-25', 'Active', '456 Elm St');
 
-INSERT INTO Product (ProductId, ProductName, WarrantyDateTime, Price, Brand, BuyTime, CustomerId)
-VALUES 
-  ('P003', 'Laptop C', '2025-03-01', 1400.00, 'BrandX', '2024-03-01', 1),
-    ('P004', 'Laptop D', '2025-04-01', 1600.00, 'BrandZ', '2024-04-01', 1),
-    ('P005', 'Laptop E', '2025-05-01', 1300.00, 'BrandY', '2024-05-01', 1),
-    ('P006', 'Laptop F', '2025-07-01', 1700.00, 'BrandX', '2024-07-01', 1),
-    ('P007', 'Laptop G', '2025-08-01', 1350.00, 'BrandZ', '2024-08-01', 1),
-    ('P008', 'Laptop H', '2025-09-01', 1550.00, 'BrandY', '2024-09-01', 1),
-    ('P009', 'Laptop I', '2025-10-01', 1450.00, 'BrandX', '2024-10-01', 1),
-    ('P010', 'Laptop J', '2025-11-01', 1250.00, 'BrandZ', '2024-11-01', 1),
-    ('P011', 'Laptop K', '2025-12-01', 1800.00, 'BrandY', '2024-12-01', 1),
-    ('P012', 'Laptop L', '2026-01-01', 1750.00, 'BrandX', '2025-01-01', 1) , 
-    ('P001', 'Laptop A', '2025-01-01', 1500.00, 'BrandX', '2024-01-01', 1),
-    ('P002', 'Laptop B', '2025-06-01', 1200.00, 'BrandY', '2024-06-01', 2);
-INSERT INTO Invoice (Price, Status, Note, FormId)
-VALUES 
-    (200.00, 'Paid', 'Warranty fee', 1), 
-    (100.00, 'Pending', 'Component replacement', 2);
-INSERT INTO Component (ComponentName, Brand, Status, Price, Amount, StaffId, InvoiceId)
-VALUES 
-    ('Battery', 'BrandX', 'In Stock', 50.00, 10, 'S002', 1),
-    ('Keyboard', 'BrandY', 'In Stock', 30.00, 5, 'S002', 2);
-INSERT INTO WarrantyRequirement (Status, Description, RegisterDate, CustomerId, StaffId)
-VALUES 
-    ('Pending', 'Laptop not powering on', '2025-01-15', 1, 'S003'), 
-    ('Approved', 'Screen flickering issue', '2025-01-20', 2, 'S002'); 
-INSERT INTO WarrantyForm (StartDate, EndDate, Status, RequirementId, VerificationCode, VerificationMethod, Verified, Price, InvoiceId)
-VALUES 
-    ('2025-01-15', '2025-01-30', 'Active', 1, 'ABC123', 'Email', 'Y', 0.00, 1),
-    ('2025-01-20', '2025-02-10', 'Pending', 2, 'XYZ789', 'SMS', 'N', 50.00, 2);
-INSERT INTO Notification (CustomerId, RequirementId, Title, Message, IsRead, SendTime)
-VALUES 
-    (1, 1, 'Warranty Request Received', 'Your warranty request has been received and is being processed.', 'N', '2025-01-15'),
-    (2, 2, 'Warranty Request Approved', 'Your warranty request has been approved.', 'N', '2025-01-20');
-INSERT INTO WarrantyInformation (Status, Note, ReturnDate, ProductId, StaffId)
-VALUES 
-    ('In Progress', 'Diagnosing issue', NULL, 'P001', 'S002'),
-    ('Completed', 'Screen replaced', '2025-01-22', 'P002', 'S002');
-INSERT INTO Schedule (StartTime, EndTime, Date, StaffId)
-VALUES 
-    ('09:00:00', '17:00:00', '2025-01-25', 'S002'),
-    ('10:00:00', '18:00:00', '2025-01-26', 'S003');
-INSERT INTO Report (Comment, CustomerId, InformationId)
-VALUES 
-    ('Service was quick and efficient.', 1, 1),
-    ('Satisfied with the replacement.', 2, 2);
-INSERT INTO Blog (Content, StaffId)
-VALUES 
-    ('Tips to maintain your laptop battery.', 'S003'),
-    ('How to clean your keyboard safely.', 'S002');
-
-
+INSERT INTO Product (ProductId, ProductName, Brand, Price, CustomerId) VALUES
+('P001', 'Laptop Dell XPS 13', 'Dell', 35000000, 1),
+('P002', 'Laptop HP Spectre x360', 'HP', 32000000, 1),
+('P003', 'Laptop MacBook Pro 14', 'Apple', 45000000, 1),
+('P004', 'Laptop Asus ROG Strix', 'Asus', 38000000, 1),
+('P005', 'Laptop Lenovo ThinkPad X1', 'Lenovo', 30000000, 1),
+('P006', 'Laptop Acer Predator Helios', 'Acer', 34000000, 1),
+('P007', 'Laptop MSI Stealth 15M', 'MSI', 36000000, 1),
+('P008', 'Laptop Samsung Galaxy Book3', 'Samsung', 28000000, 1),
+('P009', 'Laptop Razer Blade 15', 'Razer', 50000000, 1),
+('P010', 'Laptop Microsoft Surface Laptop 5', 'Microsoft', 33000000, 1),
+('P011', 'Laptop LG Gram 17', 'LG', 29000000, 1),
+('P012', 'Laptop Huawei MateBook X Pro', 'Huawei', 31000000, 1);

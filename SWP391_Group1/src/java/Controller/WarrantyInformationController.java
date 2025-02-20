@@ -89,7 +89,7 @@ public class WarrantyInformationController extends HttpServlet {
 
         String searchBox = request.getParameter("table_search");
         String brand = request.getParameter("filterBrand");
-        Product newProduct = new Product(null, null, null, 0, brand, null, c.getCustomerId());
+        Product newProduct = new Product(null, null, 0, brand, c.getCustomerId());
         String sort = request.getParameter("sort");
         String order = request.getParameter("order");
         int count = cd.GetTotalProductByProductId(c.getCustomerId(), searchBox, newProduct);
@@ -123,7 +123,7 @@ public class WarrantyInformationController extends HttpServlet {
         Customer c = (Customer) request.getSession().getAttribute("Customer");
         String searchBox = request.getParameter("table_search");
         String brand = request.getParameter("filterBrand");
-        Product newProduct = new Product(null, null, null, 0, brand, null, c.getCustomerId());
+        Product newProduct = new Product(null, null, 0, brand, c.getCustomerId());
         int count = cd.GetTotalProductWarrantyByCustomerId(c.getCustomerId(), searchBox, newProduct);
 
         int endPage = count / 10;

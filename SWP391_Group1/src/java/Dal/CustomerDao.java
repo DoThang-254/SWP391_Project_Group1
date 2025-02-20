@@ -24,7 +24,7 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
 
     public static void main(String[] args) {
         CustomerDao c = new CustomerDao();
-        Product newProduct = new Product(null, null, null, 0, null, null, 1);
+        Product newProduct = new Product(null, null, 0, null, 1);
 
 //        List<WarrantyInformation> list = c.WarrantyProductInformation(1, 1, "Laptop A", newProduct, null, null , null);
         List<Product> list = c.SearchingProductByProductId(2, 1, null, newProduct, null, null, null , 5);
@@ -128,8 +128,8 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
             rs = p.executeQuery();
 
             while (rs.next()) {
-                list.add(new Product(rs.getString(1), rs.getString(2), rs.getDate(3),
-                        rs.getFloat(4), rs.getString(5), rs.getDate(6), rs.getInt(7)));
+                 list.add(new Product(rs.getString(1), rs.getString(2),rs.getLong(4),
+                         rs.getString(3), rs.getInt(5)));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -149,8 +149,8 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
             rs = p.executeQuery();
 
             while (rs.next()) {
-                return new Product(rs.getString(1), rs.getString(2), rs.getDate(3),
-                        rs.getFloat(4), rs.getString(5), rs.getDate(6), rs.getInt(7));
+                return new Product(rs.getString(1), rs.getString(2),rs.getLong(4),
+                         rs.getString(3), rs.getInt(5));
             }
         } catch (Exception e) {
             e.printStackTrace();

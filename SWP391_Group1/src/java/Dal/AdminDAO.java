@@ -31,8 +31,8 @@ public class AdminDAO extends DBContext {
                 + "    s.Status, \n"
                 + "    s.RoleId, \n"
                 + "    r.RoleName  \n"
-                + "FROM [demo4].[dbo].[Staff] s  \n"
-                + "JOIN [demo4].[dbo].[Role] r ON s.RoleId = r.RoleId \n"
+                + "FROM [Staff] s  \n"
+                + "JOIN [Role] r ON s.RoleId = r.RoleId \n"
                 + "WHERE 1 = 1");
         if (searchKeyword != null && !searchKeyword.isEmpty()) {
             sql.append(" AND (\n" +
@@ -120,8 +120,8 @@ public class AdminDAO extends DBContext {
                 + "    s.Status, \n"
                 + "    s.RoleId, \n"
                 + "    r.RoleName  \n"
-                + "FROM [demo4].[dbo].[Staff] s  \n"
-                + "JOIN [demo4].[dbo].[Role] r ON s.RoleId = r.RoleId \n"
+                + "FROM [Staff] s  \n"
+                + "JOIN [Role] r ON s.RoleId = r.RoleId \n"
                 + "WHERE s.StaffId = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
             p.setString(1, StaffId);
