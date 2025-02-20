@@ -4,6 +4,8 @@
  */
 package Model;
 
+import java.util.Date;
+
 /**
  *
  * @author thang
@@ -15,19 +17,22 @@ public class WarrantyRequirement {
     private java.util.Date registerDate;
     private Customer customer;
     private Staff staff;
+    private Product product;
 
     public WarrantyRequirement() {
     }
 
-    public WarrantyRequirement(int requirementId, String status, String description, java.util.Date registerDate,
-                       Customer customer, Staff staff) {
+    public WarrantyRequirement(int requirementId, String status, String description, Date registerDate, Customer customer, Staff staff, Product product) {
         this.requirementId = requirementId;
         this.status = status;
         this.description = description;
         this.registerDate = registerDate;
         this.customer = customer;
         this.staff = staff;
+        this.product = product;
     }
+
+    
 
     public int getRequirementId() {
         return requirementId;
@@ -75,6 +80,14 @@ public class WarrantyRequirement {
 
     public void setStaff(Staff staff) {
         this.staff = staff;
+    }
+    
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }
 

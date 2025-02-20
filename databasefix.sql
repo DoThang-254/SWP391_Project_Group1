@@ -1,4 +1,4 @@
-﻿--create database  test
+﻿--create database LaptopWarranty
 CREATE TABLE Role (
     RoleId INT IDENTITY(1,1) PRIMARY KEY,
     RoleName VARCHAR(255) NOT NULL
@@ -62,7 +62,7 @@ CREATE TABLE WarrantyRequirement (
     StaffId VARCHAR(255) NULL, -- Technician tiếp nhận
     Status VARCHAR(50) DEFAULT 'Pending', -- Pending / Approved / Rejected
     Description VARCHAR(255),
-    RegisterDate DATE NOT NULL,
+    RegisterDate DATE DEFAULT GETDATE() NOT NULL,
     FOREIGN KEY (ProductId) REFERENCES Product(ProductId),
     FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
     FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
@@ -73,7 +73,7 @@ CREATE TABLE Invoice (
     RequirementId INT UNIQUE NULL, -- Chỉ có invoice nếu yêu cầu bảo hành có phí
     Price bigint NOT NULL,
     Status VARCHAR(50) DEFAULT 'Unpaid', -- Unpaid / Paid
-    Note VARCHAR(255),
+    Note text,
     FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId)
 );
 
@@ -117,7 +117,7 @@ CREATE TABLE WarrantyProcessing (
     StaffId VARCHAR(255) NOT NULL,
     Status VARCHAR(255),
     Note VARCHAR(255),
-    UpdateTime DATETIME DEFAULT GETDATE(),
+    ReturnDate DATE,
     FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId),
     FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
 );
@@ -134,7 +134,7 @@ CREATE TABLE TokenForgetPassword (
 );
 CREATE TABLE Report (
     ReportId INT IDENTITY(1,1) PRIMARY KEY,
-    Comment VARCHAR(255),
+    Comment text,
     CustomerId INT,
     ProcessingId INT,
     FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),

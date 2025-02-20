@@ -12,16 +12,16 @@ public class Report {
     private int reportId;
     private String comment;
     private Customer customer;
-    private WarrantyInformation information;
+    private WarrantyProcessing processing;
 
     public Report() {
     }
 
-    public Report(int reportId, String comment, Customer customer, WarrantyInformation information) {
+    public Report(int reportId, String comment, Customer customer, WarrantyProcessing processing) {
         this.reportId = reportId;
         this.comment = comment;
         this.customer = customer;
-        this.information = information;
+        this.processing = processing;
     }
 
     public int getReportId() {
@@ -48,11 +48,13 @@ public class Report {
         this.customer = customer;
     }
 
-    public WarrantyInformation getInformation() {
-        return information;
+    public WarrantyProcessing getProcessing() {
+        return processing;
     }
 
-    public void setInformation(WarrantyInformation information) {
-        this.information = information;
+    public void setProcessing(WarrantyProcessing processing) {
+        this.processing = processing;
     }
+
+    
 }

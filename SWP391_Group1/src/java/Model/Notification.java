@@ -8,6 +8,8 @@ package Model;
  *
  * @author thang
  */
+import java.util.Date;
+
 public class Notification {
 
     private int notificationId;
@@ -15,14 +17,14 @@ public class Notification {
     private WarrantyRequirement requirement;
     private String title;
     private String message;
-    private char isRead;
-    private java.util.Date sendTime;
+    private boolean isRead;
+    private Date sendTime;
 
     public Notification() {
     }
 
     public Notification(int notificationId, Customer customer, WarrantyRequirement requirement, String title,
-            String message, char isRead, java.util.Date sendTime) {
+            String message, boolean isRead, Date sendTime) {
         this.notificationId = notificationId;
         this.customer = customer;
         this.requirement = requirement;
@@ -72,19 +74,20 @@ public class Notification {
         this.message = message;
     }
 
-    public char getIsRead() {
+    public boolean getIsRead() {
         return isRead;
     }
 
-    public void setIsRead(char isRead) {
+    public void setIsRead(boolean isRead) {
         this.isRead = isRead;
     }
 
-    public java.util.Date getSendTime() {
+    public Date getSendTime() {
         return sendTime;
     }
 
-    public void setSendTime(java.util.Date sendTime) {
+    public void setSendTime(Date sendTime) {
         this.sendTime = sendTime;
     }
+
 }

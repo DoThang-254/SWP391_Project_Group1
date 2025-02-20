@@ -13,7 +13,7 @@ public class Component {
     private String componentName;
     private String brand;
     private String status;
-    private float price;
+    private long price;
     private int amount;
     private Staff staff;
     private Invoice invoice;
@@ -22,7 +22,7 @@ public class Component {
     }
 
     public Component(int componentId, String componentName, String brand, String status, 
-                     float price, int amount, Staff staff, Invoice invoice) {
+                     long price, int amount, Staff staff, Invoice invoice) {
         this.componentId = componentId;
         this.componentName = componentName;
         this.brand = brand;
@@ -65,11 +65,11 @@ public class Component {
         this.status = status;
     }
 
-    public float getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 

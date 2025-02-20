@@ -7,7 +7,7 @@ package Controller;
 import Dal.CustomerDao;
 import Model.Customer;
 import Model.Product;
-import Model.WarrantyInformation;
+import Model.WarrantyProcessing;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -135,9 +135,9 @@ public class WarrantyInformationController extends HttpServlet {
         String order = request.getParameter("order");
         String priceRange = request.getParameter("filterPriceRange");
 
-        List<WarrantyInformation> list = cd.WarrantyProductInformation(index, c.getCustomerId(), searchBox, newProduct, sort, order, priceRange);
+        //List<WarrantyInformation> list = cd.WarrantyProductInformation(index, c.getCustomerId(), searchBox, newProduct, sort, order, priceRange);
         request.setAttribute("endpage", endPage);
-        request.setAttribute("listA", list);
+      //  request.setAttribute("listA", list);
         request.setAttribute("tag", index);
         request.setAttribute("brand", brand);
         request.setAttribute("sort", sort);

@@ -11,20 +11,20 @@ package Model;
 public class Invoice {
 
     private int invoiceId;
-    private float price;
+    private long price;
     private String status;
     private String note;
-    private WarrantyForm form;
+    private WarrantyRequirement requirement;
 
     public Invoice() {
     }
 
-    public Invoice(int invoiceId, float price, String status, String note, WarrantyForm form) {
+    public Invoice(int invoiceId, long price, String status, String note, WarrantyRequirement requirement) {
         this.invoiceId = invoiceId;
         this.price = price;
         this.status = status;
         this.note = note;
-        this.form = form;
+        this.requirement = requirement;
     }
 
     public int getInvoiceId() {
@@ -35,11 +35,11 @@ public class Invoice {
         this.invoiceId = invoiceId;
     }
 
-    public float getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 
@@ -59,11 +59,13 @@ public class Invoice {
         this.note = note;
     }
 
-    public WarrantyForm getForm() {
-        return form;
+    public WarrantyRequirement getRequirement() {
+        return requirement;
     }
 
-    public void setForm(WarrantyForm form) {
-        this.form = form;
+    public void setRequirement(WarrantyRequirement requirement) {
+        this.requirement = requirement;
     }
+    
+   
 }

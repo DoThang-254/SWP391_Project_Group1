@@ -6,7 +6,7 @@ package Dal;
 
 import Model.Product;
 import Model.Staff;
-import Model.WarrantyInformation;
+import Model.WarrantyProcessing;
 import Repository.ICustomerDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -195,71 +195,71 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         return 0;  // Trả về 0 nếu có lỗi
     }
 
-    public List<WarrantyInformation> WarrantyProductInformation(int index, int CustomerId, String search, Product product, String sort, String order, String priceRange) {
-        List<WarrantyInformation> list = new ArrayList<>();
-        String sql = "select w.* , p.ProductName , p.Brand , s.FirstName , s.LastName , s.Phone , s.StaffId\n"
-                + "from Product p join WarrantyInformation w on p.ProductId = w.ProductId\n"
-                + "join Staff s on s.StaffId = w.StaffId\n"
-                + "where p.CustomerId = ? and w.Status = 'In Progress'";
-
-        if (search != null && !search.trim().isEmpty()) {
-            sql += " AND (p.ProductId LIKE ? or p.ProductName like ? )";
-        }
-        if (product.getBrand() != null && !product.getBrand().trim().isEmpty()) {
-            sql += " and p.Brand = ? ";
-        }
-
-        if (priceRange != null && !priceRange.trim().isEmpty()) {
-            if (priceRange.equals("20000+")) {
-                sql += " AND p.Price >= 20000 ";
-            } else {
-                sql += " AND p.Price BETWEEN ? AND ? ";
-            }
-        }
-        if (sort != null && !sort.trim().isEmpty() && order != null && !order.trim().isEmpty()) {
-            sql += " ORDER BY p." + sort + " " + order;
-        } else {
-            sql += " ORDER BY w.InformationId ASC"; // Mặc định sắp xếp theo ProductId
-        }
-        sql += " OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY";
-
-        try {
-            p = connection.prepareStatement(sql);
-            p.setInt(1, CustomerId);
-
-            int paramIndex = 2;
-            if (search != null && !search.trim().isEmpty()) {
-                String searchPattern = "%" + search + "%";
-                p.setString(paramIndex++, searchPattern);
-                p.setString(paramIndex++, searchPattern);
-            }
-            if (product.getBrand() != null && !product.getBrand().trim().isEmpty()) {
-                p.setString(paramIndex, product.getBrand());
-                paramIndex++;
-            }
-            if (priceRange != null && !priceRange.trim().isEmpty() && !priceRange.equals("20000+")) {
-                String[] range = priceRange.split("-");
-                p.setFloat(paramIndex, Float.parseFloat(range[0]));
-                paramIndex++;
-                p.setFloat(paramIndex, Float.parseFloat(range[1]));
-                paramIndex++;
-            }
-            p.setInt(paramIndex, (index - 1) * 10);
-            rs = p.executeQuery();
-
-            while (rs.next()) {
-                Staff s = new Staff(rs.getString(6), rs.getString(9),
-                        rs.getString(10), rs.getString(11), rs.getString(12));
-                Product newProduct = new Product(rs.getString(5), rs.getString(7), rs.getString(8));
-                list.add(
-                        new WarrantyInformation(rs.getInt(1), rs.getString(2),
-                                rs.getString(3), rs.getDate(4), newProduct,
-                                s));
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
+//    public List<WarrantyProcessing> WarrantyProductInformation(int index, int CustomerId, String search, Product product, String sort, String order, String priceRange) {
+//        List<WarrantyInformation> list = new ArrayList<>();
+//        String sql = "select w.* , p.ProductName , p.Brand , s.FirstName , s.LastName , s.Phone , s.StaffId\n"
+//                + "from Product p join WarrantyInformation w on p.ProductId = w.ProductId\n"
+//                + "join Staff s on s.StaffId = w.StaffId\n"
+//                + "where p.CustomerId = ? and w.Status = 'In Progress'";
+//
+//        if (search != null && !search.trim().isEmpty()) {
+//            sql += " AND (p.ProductId LIKE ? or p.ProductName like ? )";
+//        }
+//        if (product.getBrand() != null && !product.getBrand().trim().isEmpty()) {
+//            sql += " and p.Brand = ? ";
+//        }
+//
+//        if (priceRange != null && !priceRange.trim().isEmpty()) {
+//            if (priceRange.equals("20000+")) {
+//                sql += " AND p.Price >= 20000 ";
+//            } else {
+//                sql += " AND p.Price BETWEEN ? AND ? ";
+//            }
+//        }
+//        if (sort != null && !sort.trim().isEmpty() && order != null && !order.trim().isEmpty()) {
+//            sql += " ORDER BY p." + sort + " " + order;
+//        } else {
+//            sql += " ORDER BY w.InformationId ASC"; // Mặc định sắp xếp theo ProductId
+//        }
+//        sql += " OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY";
+//
+//        try {
+//            p = connection.prepareStatement(sql);
+//            p.setInt(1, CustomerId);
+//
+//            int paramIndex = 2;
+//            if (search != null && !search.trim().isEmpty()) {
+//                String searchPattern = "%" + search + "%";
+//                p.setString(paramIndex++, searchPattern);
+//                p.setString(paramIndex++, searchPattern);
+//            }
+//            if (product.getBrand() != null && !product.getBrand().trim().isEmpty()) {
+//                p.setString(paramIndex, product.getBrand());
+//                paramIndex++;
+//            }
+//            if (priceRange != null && !priceRange.trim().isEmpty() && !priceRange.equals("20000+")) {
+//                String[] range = priceRange.split("-");
+//                p.setFloat(paramIndex, Float.parseFloat(range[0]));
+//                paramIndex++;
+//                p.setFloat(paramIndex, Float.parseFloat(range[1]));
+//                paramIndex++;
+//            }
+//            p.setInt(paramIndex, (index - 1) * 10);
+//            rs = p.executeQuery();
+//
+//            while (rs.next()) {
+//                Staff s = new Staff(rs.getString(6), rs.getString(9),
+//                        rs.getString(10), rs.getString(11), rs.getString(12));
+//                Product newProduct = new Product(rs.getString(5), rs.getString(7), rs.getString(8));
+//                list.add(
+//                        new WarrantyInformation(rs.getInt(1), rs.getString(2),
+//                                rs.getString(3), rs.getDate(4), newProduct,
+//                                s));
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return list;
+//    }
 }

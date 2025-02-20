@@ -10,33 +10,40 @@ import java.util.Date;
  *
  * @author thang
  */
-public class WarrantyInformation {
-    private int informationId;
+public class WarrantyProcessing {
+    private int processingId;
+    private WarrantyRequirement requirement;
     private String status;
     private String note;
     private Date returnDate;
-    private Product product;
     private Staff staff;
 
-    public WarrantyInformation() {
+    public WarrantyProcessing() {
     }
 
-    public WarrantyInformation(int informationId, String status, String note, java.util.Date returnDate, 
-                        Product product,Staff staff) {
-        this.informationId = informationId;
+    public WarrantyProcessing(int processingId, WarrantyRequirement requirement, String status, String note, Date returnDate, Staff staff) {
+        this.processingId = processingId;
+        this.requirement = requirement;
         this.status = status;
         this.note = note;
         this.returnDate = returnDate;
-        this.product = product;
         this.staff = staff;
     }
 
-    public int getInformationId() {
-        return informationId;
+    public int getProcessingId() {
+        return processingId;
     }
 
-    public void setInformationId(int informationId) {
-        this.informationId = informationId;
+    public void setProcessingId(int processingId) {
+        this.processingId = processingId;
+    }
+
+    public WarrantyRequirement getRequirement() {
+        return requirement;
+    }
+
+    public void setRequirement(WarrantyRequirement requirement) {
+        this.requirement = requirement;
     }
 
     public String getStatus() {
@@ -55,20 +62,12 @@ public class WarrantyInformation {
         this.note = note;
     }
 
-    public java.util.Date getReturnDate() {
+    public Date getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(java.util.Date returnDate) {
+    public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public Staff getStaff() {
@@ -78,5 +77,7 @@ public class WarrantyInformation {
     public void setStaff(Staff staff) {
         this.staff = staff;
     }
+
+    
 }
 

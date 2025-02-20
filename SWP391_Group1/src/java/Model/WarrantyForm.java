@@ -4,6 +4,8 @@
  */
 package Model;
 
+import java.util.Date;
+
 /**
  *
  * @author thang
@@ -13,29 +15,22 @@ public class WarrantyForm {
     private java.util.Date startDate;
     private java.util.Date endDate;
     private String status;
-    private WarrantyRequirement requirement;
     private String verificationCode;
     private String verificationMethod;
-    private char verified;
-    private float price;
-    private Invoice invoice;
-
+    private boolean verified;
+    private Product product;
     public WarrantyForm() {
     }
 
-    public WarrantyForm(int formId, java.util.Date startDate, java.util.Date endDate, String status, 
-                        WarrantyRequirement requirement, String verificationCode, String verificationMethod, 
-                        char verified, float price, Invoice invoice) {
+    public WarrantyForm(int formId, Date startDate, Date endDate, String status, String verificationCode, String verificationMethod, boolean verified, Product product) {
         this.formId = formId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
-        this.requirement = requirement;
         this.verificationCode = verificationCode;
         this.verificationMethod = verificationMethod;
         this.verified = verified;
-        this.price = price;
-        this.invoice = invoice;
+        this.product = product;
     }
 
     public int getFormId() {
@@ -46,19 +41,19 @@ public class WarrantyForm {
         this.formId = formId;
     }
 
-    public java.util.Date getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(java.util.Date startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public java.util.Date getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(java.util.Date endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
@@ -68,14 +63,6 @@ public class WarrantyForm {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public WarrantyRequirement getRequirementId() {
-        return requirement;
-    }
-
-    public void setRequirementId(WarrantyRequirement requirement) {
-        this.requirement = requirement;
     }
 
     public String getVerificationCode() {
@@ -94,27 +81,20 @@ public class WarrantyForm {
         this.verificationMethod = verificationMethod;
     }
 
-    public char getVerified() {
+    public boolean isVerified() {
         return verified;
     }
 
-    public void setVerified(char verified) {
+    public void setVerified(boolean verified) {
         this.verified = verified;
     }
 
-    public float getPrice() {
-        return price;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setProduct(Product product) {
+        this.product = product;
     }
-
-    public Invoice getInvoiceId() {
-        return invoice;
-    }
-
-    public void setInvoiceId(Invoice invoice) {
-        this.invoice = invoice;
-    }
+    
 }
