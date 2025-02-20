@@ -75,7 +75,7 @@ public class AdminManagement extends HttpServlet {
         }
         AdminDAO adminDAO = new AdminDAO();
         List<Staff> staffList = adminDAO.getListOfUser(searchKeyword, roleId);
-        int page, numberpage = 5;
+        int page, numberpage = 100;
         int size = staffList.size();
         int num = (size % 5 == 0 ? (size / 5) : (size / 5) + 1);
         String xpage = request.getParameter("page");

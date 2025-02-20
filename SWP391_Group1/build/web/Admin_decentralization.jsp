@@ -468,7 +468,7 @@
                                             </div>
                                         </div>
                                     </form>
-
+                                     
                                     <div class="table-responsive table-responsive-data2">
                                         <table class="table table-data2">
                                             <thead>
@@ -598,6 +598,9 @@
                                                             <li class="page-item ${page == requestScope.num ? 'disabled' : ''}">
                                                                 <button name="page" value="${page + 1}" class="page-link" ${page == requestScope.num ? 'disabled' : ''}>Next</button>
                                                             </li>
+                                                            <select>
+                                                                
+                                                            </select>
                                                         </ul>
                                                     </nav>
                                                 </form>

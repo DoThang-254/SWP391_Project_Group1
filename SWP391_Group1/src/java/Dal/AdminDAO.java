@@ -35,7 +35,11 @@ public class AdminDAO extends DBContext {
                 + "JOIN [demo4].[dbo].[Role] r ON s.RoleId = r.RoleId \n"
                 + "WHERE 1 = 1");
         if (searchKeyword != null && !searchKeyword.isEmpty()) {
-            sql.append(" AND (s.Username LIKE ? OR s.Email LIKE ? OR s.Phone LIKE ?)");
+            sql.append(" AND (\n" +
+"    REPLACE(s.Username, ' ', ' ') LIKE REPLACE(?, ' ', '') \n" +
+"    OR REPLACE(s.Email, ' ', ' ') LIKE REPLACE(?, ' ', '') \n" +
+"    OR REPLACE(s.LastName, ' ', '') = ?\n" +
+");");
         }
 
         if (roleId != null) {
@@ -143,6 +147,8 @@ public class AdminDAO extends DBContext {
         return null;
     }
 
+  
+    
     // Test
     public static void main(String[] args) {
         AdminDAO dao = new AdminDAO();
