@@ -109,6 +109,7 @@ public class TokenForgetDao extends DBContext {
                 return new TokenForgetPassword(
                         rs.getInt(1),
                         rs.getInt(5),
+                        rs.getString(6),
                         rs.getBoolean(4),
                         rs.getString(2),
                         rs.getTimestamp(3).toLocalDateTime()

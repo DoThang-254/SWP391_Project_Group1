@@ -60,7 +60,7 @@ public class WarrantyInformationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+
         if (request.getServletPath().equals("/searchinformation")) {
             searchWarrantyInformation(request, response);
         }
@@ -73,6 +73,12 @@ public class WarrantyInformationController extends HttpServlet {
 
     protected void searchWarrantyInformation(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String amountRaw = request.getParameter("amount");
+        if (amountRaw == null || amountRaw.trim().isEmpty()) {
+            amountRaw = "10";
+        }
+
+        int amount = Integer.parseInt(amountRaw);
         Customer c = (Customer) request.getSession().getAttribute("Customer");
         String input = request.getParameter("index");
         if (input == null || input.isBlank()) {
@@ -87,12 +93,12 @@ public class WarrantyInformationController extends HttpServlet {
         String sort = request.getParameter("sort");
         String order = request.getParameter("order");
         int count = cd.GetTotalProductByProductId(c.getCustomerId(), searchBox, newProduct);
-        int endPage = count / 10;
-        if (count % 10 != 0) {
+        int endPage = count / amount;
+        if (count % amount != 0) {
             endPage++;
         }
         String priceRange = request.getParameter("filterPriceRange");
-        List<Product> list = cd.SearchingProductByProductId(index, c.getCustomerId(), searchBox, newProduct, sort, order, priceRange);
+        List<Product> list = cd.SearchingProductByProductId(index, c.getCustomerId(), searchBox, newProduct, sort, order, priceRange, amount);
 
         request.setAttribute("endpage", endPage);
         request.setAttribute("listA", list);
@@ -102,6 +108,8 @@ public class WarrantyInformationController extends HttpServlet {
         request.setAttribute("order", order);
         request.setAttribute("priceRange", priceRange);
         request.setAttribute("save", searchBox);
+        request.setAttribute("amount", amount);
+
         request.getRequestDispatcher("SearchInformation.jsp").forward(request, response);
     }
 
@@ -128,7 +136,6 @@ public class WarrantyInformationController extends HttpServlet {
         String priceRange = request.getParameter("filterPriceRange");
 
         List<WarrantyInformation> list = cd.WarrantyProductInformation(index, c.getCustomerId(), searchBox, newProduct, sort, order, priceRange);
-        //List<WarrantyInformation> list2 = cd.WarrantyProductInformation(index, c.getCustomerId(), newProduct, sort, order);
         request.setAttribute("endpage", endPage);
         request.setAttribute("listA", list);
         request.setAttribute("tag", index);
