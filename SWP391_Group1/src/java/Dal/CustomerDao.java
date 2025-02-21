@@ -6,6 +6,7 @@ package Dal;
 
 import Model.Product;
 import Model.Staff;
+import Model.WarrantyForm;
 import Model.WarrantyProcessing;
 import Repository.ICustomerDAO;
 import java.sql.PreparedStatement;
@@ -27,9 +28,10 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         Product newProduct = new Product(null, null, 0, null, 1);
 
 //        List<WarrantyInformation> list = c.WarrantyProductInformation(1, 1, "Laptop A", newProduct, null, null , null);
-        List<Product> list = c.SearchingProductByProductId(2, 1, null, newProduct, null, null, null , 5);
-        for (Product w : list) {
-            System.out.println(w.getProductId());
+//
+        List<WarrantyForm> list = c.ProductDetail(1, "P001");
+        for (WarrantyForm w : list) {
+            System.out.println(w.getProduct().getProductId());
         }
 //        System.out.println(c.GetTotalProductByProductId(1, "Laptop A", newProduct));
 //        String search = "    l       ap     ";
@@ -73,7 +75,7 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         return 0;  // Trả về 0 nếu có lỗi
     }
 
-    public List<Product> SearchingProductByProductId(int index, int CustomerId, String search, Product product, String sort, String order, String priceRange , int amount) {
+    public List<Product> SearchingProductByProductId(int index, int CustomerId, String search, Product product, String sort, String order, String priceRange, int amount) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId WHERE c.CustomerId = ? ";
 
@@ -128,8 +130,8 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
             rs = p.executeQuery();
 
             while (rs.next()) {
-                 list.add(new Product(rs.getString(1), rs.getString(2),rs.getLong(4),
-                         rs.getString(3), rs.getInt(5)));
+                list.add(new Product(rs.getString(1), rs.getString(2), rs.getLong(4),
+                        rs.getString(3), rs.getInt(5)));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,9 +139,12 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         return list;
     }
 
-    public Product ProductDetail(int customerId, String productId) {
-        List<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId WHERE c.CustomerId = ? and p.ProductId = ?";
+    public List<WarrantyForm> ProductDetail(int customerId, String productId) {
+        List<WarrantyForm> list = new ArrayList<>();
+        String sql = "SELECT wf.* , p.ProductName , p.Brand , p.Price , p.CustomerId\n"
+                + "FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId \n"
+                + "join WarrantyForm wf on wf.ProductId = p.ProductId\n"
+                + "WHERE c.CustomerId = ? and p.ProductId = ? and wf.Verified = 1";
 
         try {
             p = connection.prepareStatement(sql);
@@ -149,13 +154,16 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
             rs = p.executeQuery();
 
             while (rs.next()) {
-                return new Product(rs.getString(1), rs.getString(2),rs.getLong(4),
-                         rs.getString(3), rs.getInt(5));
+
+                list.add(new WarrantyForm(rs.getInt(1), rs.getDate(3), rs.getDate(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7),
+                        rs.getBoolean(8), new Product(rs.getString(2), rs.getString(9),
+                        rs.getString(10))));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return list;
     }
 
     public int GetTotalProductWarrantyByCustomerId(int CustomerId, String search, Product product) {
