@@ -73,10 +73,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- Filter Product Name -->
 
-
-                                        <!-- Filter Brand -->
                                         <div class="col-md-3">
                                             <label for="filterBrand">Brand</label>
                                             <select name="filterBrand" id="filterBrand" class="form-control">
@@ -157,6 +154,9 @@
                                                 <th>View Details
 
                                                 </th>
+                                                <th>Warranty Request
+
+                                                </th>
                                             </tr>
                                         </thead>
                                         <c:if test="${requestScope.listA == null || requestScope.listA.isEmpty()}">
@@ -171,16 +171,14 @@
                                                 <td>${c.price}</td>
                                                 <td>${c.brand}</td>
                                                 <td>
-                                                    
-
-
                                                     <a href="warrantyformdetail?productid=${c.productId}" class="btn btn-info btn-sm" title="View Details">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
-
-
-
-
+                                                </td>
+                                                <td>
+                                                    <a href="warrantyrequest?productid=${c.productId}">
+                                                        Request 
+                                                    </a>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -198,6 +196,9 @@
                                         </ul>
                                     </div>
                                 </div>
+                                ${requestScope.errorMessage}
+
+
                             </div>
                         </div>
                     </div>

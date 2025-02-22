@@ -29,14 +29,11 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
 
 //        List<WarrantyInformation> list = c.WarrantyProductInformation(1, 1, "Laptop A", newProduct, null, null , null);
 //
-        List<WarrantyForm> list = c.ProductDetail(1, "P001");
-        for (WarrantyForm w : list) {
-            System.out.println(w.getProduct().getProductId());
-        }
-//        System.out.println(c.GetTotalProductByProductId(1, "Laptop A", newProduct));
-//        String search = "    l       ap     ";
-//        String searchPattern = "%" + search.replaceAll("\\s+", " ") + "%";
-//        System.out.println(searchPattern);
+//        List<WarrantyForm> list = c.ProductDetail(1, "P001");
+//        for (WarrantyForm w : list) {
+//            System.out.println(w.getProduct().getProductId());
+//        }
+        System.out.println(c.GetTotalProductDetail(1, "P001"));
     }
 
     public int GetTotalProductByProductId(int CustomerId, String search, Product product) {
@@ -139,9 +136,8 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         return list;
     }
 
-    public List<WarrantyForm> ProductDetail(int customerId, String productId) {
-        List<WarrantyForm> list = new ArrayList<>();
-        String sql = "SELECT wf.* , p.ProductName , p.Brand , p.Price , p.CustomerId\n"
+    public int GetTotalProductDetail(int customerId, String productId) {
+        String sql = "SELECT count(*)\n"
                 + "FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId \n"
                 + "join WarrantyForm wf on wf.ProductId = p.ProductId\n"
                 + "WHERE c.CustomerId = ? and p.ProductId = ? and wf.Verified = 1";
@@ -149,8 +145,34 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         try {
             p = connection.prepareStatement(sql);
             p.setInt(1, customerId);
-
             p.setString(2, productId);
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<WarrantyForm> ProductDetail(int index, int customerId, String productId, int amount) {
+        List<WarrantyForm> list = new ArrayList<>();
+        String sql = "SELECT wf.* , p.ProductName , p.Brand , p.Price , p.CustomerId\n"
+                + "FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId \n"
+                + "join WarrantyForm wf on wf.ProductId = p.ProductId\n"
+                + "WHERE c.CustomerId = ? and p.ProductId = ? and wf.Verified = 1\n"
+                + "order by p.ProductId \n"
+                + "offset ? rows fetch next ? rows only";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, customerId);
+            p.setString(2, productId);
+            p.setInt(3, (index - 1) * amount);
+            p.setInt(4, amount);
             rs = p.executeQuery();
 
             while (rs.next()) {

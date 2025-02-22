@@ -53,7 +53,7 @@
                         <div class="col-xs-12">
                             <div class="panel">
                                 <header class="panel-heading">
-                                    Search Warranty Information
+                                    Search Warranty Form
 
                                 </header>
                                 <div class="filter-section">
@@ -119,7 +119,7 @@
                                             <button type="submit" class="btn btn-primary">
                                                 <i class="fa fa-filter"></i> Apply Filters
                                             </button>
-                                            <a href="searchinformation" class="btn btn-secondary">
+                                            <a href="warrantyformdetail?productid=${requestScope.productid}" class="btn btn-secondary">
                                                 <i class="fa fa-times"></i> Reset
                                             </a>
                                         </div>
@@ -171,12 +171,14 @@
                                             <c:forEach begin="1" end="${requestScope.endpage}" var="i">
                                                 <li>
                                                     <a class="${tag == i ? 'active' : ''}"
-                                                       href="warrantyformdetail?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}&amount=${requestScope.amount}">${i}</a>
+                                                       href="warrantyformdetail?index=${i}&productid=${requestScope.productid}">${i}</a>
                                                 </li>
                                             </c:forEach>
                                         </ul>
                                     </div>
+                                     <a href="searchinformation">Back</a>
                                 </div>
+                                           
                             </div>
                         </div>
                     </div>

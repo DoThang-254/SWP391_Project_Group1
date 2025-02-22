@@ -2,27 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Controller;
+package Controller.Admin;
 
-import Dal.CustomerDao;
-import Model.Customer;
-import Model.Product;
-import Model.WarrantyForm;
+import Dal.AdminDAO;
+import Model.Staff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
- * @author thang
+ * @author tuan7
  */
-@WebServlet(name = "detail", urlPatterns = {"/warrantyformdetail"})
-public class WarrantyFormDetail extends HttpServlet {
+public class UserDetail extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +36,10 @@ public class WarrantyFormDetail extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet detail</title>");
+            out.println("<title>Servlet UserDetail</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet detail at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UserDetail at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,21 +57,14 @@ public class WarrantyFormDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String productId = request.getParameter("productid");
-        Customer c = (Customer) request.getSession().getAttribute("Customer");
-        
-        
-//        if (c == null || productId == null || productId.isBlank()) {
-//            request.getRequestDispatcher("searchinformation").forward(request, response);
-//            return;
-//        }
-        
-        CustomerDao cd = new CustomerDao();
-        List<WarrantyForm> wf = cd.ProductDetail(c.getCustomerId(), productId);
-        request.setAttribute("form", wf);
-        request.getRequestDispatcher("WarrantyForm.jsp").forward(request, response);
-        
+        AdminDAO adminDAO = new AdminDAO();
+        String id = request.getParameter("id");
+        if (id != null) {
+            Staff staff = adminDAO.userDetail(id);
+            request.setAttribute("detail", staff);
+                    request.getRequestDispatcher("/userdetail.jsp").forward(request, response);
+
+        }
     }
 
     /**
