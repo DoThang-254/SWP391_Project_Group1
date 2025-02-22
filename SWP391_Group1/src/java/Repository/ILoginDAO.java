@@ -11,5 +11,4 @@ import Model.Customer;
  * @author thang
  */
 public interface ILoginDAO {
-    public Customer Login(String Username , String password) ;
 }

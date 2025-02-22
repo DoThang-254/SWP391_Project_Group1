@@ -5,60 +5,108 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login</title>
-        <style>
+        
+    </head>
+    <body>
+        <div class="main-content">
+            <form action="login" method="get">
+                <h2>Login</h2>
+                <label for="userName">Username</label>
+                <input type="text" id="userName" name="userName" value="${not empty param.userName ? param.userName : (not empty cookie.username.value ? cookie.username.value : '')}" />
+                
+                <label for="passWord">Password</label>
+                <input type="password" id="passWord" name="passWord" value="${not empty param.password ? param.password : (not empty cookie.password.value ? cookie.password.value : '')}" />
+                
+                <label>
+                    <input type="checkbox" name="rememberMe" /> Remember me
+                </label>
+                
+                <c:if test="${requestScope.msg != null}">
+                    <p style="color: red"> ${requestScope.msg}</p>
+                </c:if>
+                
+                <input type="submit" value="Login" />
+                
+                <!-- Google Login Button -->
+                <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:9999/SWP391_Group1/login&response_type=code&client_id=474945012613-ulids3c3kvqf9tmpbac7n9oh4cn68860.apps.googleusercontent.com&approval_prompt=force" class="google-login">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo"> Login with Google
+                </a>
+            </form>
+            <p>Don't have an account? <a href="register">Register now</a></p>
+            <p><a href="requestforget">Forgot Password</a></p>
+        </div>
+    </body>
+</html>
+<style>
             body {
                 font-family: Arial, sans-serif;
                 margin: 0;
                 padding: 0;
                 display: flex;
+                justify-content: center;
+                align-items: center;
                 min-height: 100vh;
                 background-color: #f4f4f4;
             }
-            .sidebar {
-                background-color: #d52b1e;
-                color: white;
-                width: 250px;
-                padding: 20px;
-            }
-            .sidebar h2 {
-                margin: 0;
-            }
-            .sidebar a {
-                color: white;
-                text-decoration: none;
-                display: block;
-                margin: 15px 0;
-            }
-            .sidebar a:hover {
-                text-decoration: underline;
-            }
             .main-content {
-                flex-grow: 1;
-                padding: 30px;
-            }
-            form {
+                width: 350px;
                 background: #fff;
-                padding: 20px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                border-radius: 5px;
+                padding: 30px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                text-align: center;
             }
-            form input[type="text"], form input[type="password"], form select {
-                width: 100%;
-                padding: 10px;
-                margin: 10px 0;
+            h2 {
+                margin-bottom: 20px;
+                color: #333;
+            }
+            form label {
+                display: block;
+                text-align: left;
+                font-weight: bold;
+                margin-top: 10px;
+            }
+            form input[type="text"], form input[type="password"] {
+                width: calc(100% - 24px);
+                padding: 12px;
+                margin: 5px 0;
                 border: 1px solid #ccc;
-                border-radius: 4px;
+                border-radius: 6px;
+                font-size: 14px;
+                display: block;
+            }
+            form input[type="submit"], .google-login {
+                width: 100%;
+                padding: 12px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: bold;
+                transition: background 0.3s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 10px;
             }
             form input[type="submit"] {
                 background-color: #d52b1e;
                 color: white;
-                border: none;
-                padding: 10px 15px;
-                border-radius: 4px;
-                cursor: pointer;
             }
             form input[type="submit"]:hover {
                 background-color: #b32418;
+            }
+            .google-login {
+                background-color: #db4437;
+                color: white;
+            }
+            .google-login img {
+                width: 20px;
+                height: 20px;
+                margin-right: 10px;
+            }
+            .google-login:hover {
+                background-color: #c1351d;
             }
             p a {
                 color: #d52b1e;
@@ -67,54 +115,4 @@
             p a:hover {
                 text-decoration: underline;
             }
-            .notifications {
-                margin-top: 20px;
-            }
-            .notification {
-                padding: 15px;
-                border-radius: 4px;
-                margin-bottom: 10px;
-            }
-            .error {
-                background-color: #f8d7da;
-                color: #721c24;
-            }
-            .success {
-                background-color: #d4edda;
-                color: #155724;
-            }
-            .info {
-                background-color: #d1ecf1;
-                color: #0c5460;
-            }
-            .warning {
-                background-color: #fff3cd;
-                color: #856404;
-            }
         </style>
-    </head>
-    <body>
-
-        <div class="main-content">
-            <form action="login" method="POST">
-                <h2>Login</h2>
-                <label>Username</label>
-                <input type="text" name="userName" value="${not empty param.userName ? param.userName : (not empty cookie.username.value ? cookie.username.value : '')}" />
-                <label>Password</label>
-                <input type="password" name="passWord" value="${not empty param.password ? param.password : (not empty cookie.password.value ? cookie.password.value : '')}" />
-
-
-                <label>Remember me</label> 
-                <input type="checkbox" name="rememberMe" />
-                <br>
-                <br>
-                <c:if test="${requestScope.msg != null}">
-                    <p style="color: red"> ${requestScope.msg}</p>
-                </c:if>
-                <input type="submit" value="Login" />
-            </form>
-            <p>Don't have an account? <a href="register">Register now</a></p>
-            <p><a href="requestforget">Forgot Password</a></p>
-        </div>
-    </body>
-</html>

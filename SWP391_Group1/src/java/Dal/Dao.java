@@ -20,9 +20,46 @@ public class Dao extends DBContext implements ILoginDAO {
     private PreparedStatement p;
     private ResultSet rs;
 
-    @Override
+    public static void main(String[] args) {
+        Dao d = new Dao();
+        
+        System.out.println(d.StaffLoginByEmail("thangmoneo2542004@gmail.com").getUsername());
+    }
+
+    public Customer LoginByEmail(String email) {
+        String sql = "select * from Customer where email = ?";
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, email);
+            rs = p.executeQuery();
+            if (rs.next()) {
+                return new Customer(rs.getInt(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getDate(9), rs.getString(10), rs.getString(11));
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
+    public Staff StaffLoginByEmail(String email) {
+        String sql = "select s.* , r.RoleName from Staff s join Role r on s.RoleId = r.RoleId where s.email = ?";
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, email);
+            rs = p.executeQuery();
+            if (rs.next()) {
+                Role r = new Role(rs.getInt(11), rs.getString(12));
+                return new Staff(rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4), rs.getString(5),
+                        rs.getString(6), rs.getString(7), rs.getString(8),
+                        rs.getDate(9), rs.getString(10), rs.getInt(11), r);
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
     public Customer Login(String Username, String password) {
-        String sql = "select * from Customer where Username = ? and Password = ? ";
+        String sql = "select * from Customer where Username = ? and Password = ?";
         try {
             p = connection.prepareStatement(sql);
             p.setString(1, Username);
@@ -100,7 +137,7 @@ public class Dao extends DBContext implements ILoginDAO {
         }
         return false;
     }
-    
+
     public boolean checkPhoneExistedInStaff(String phone) {
         String sql = "select phone from Staff where Phone = ? ";
         try {
@@ -163,9 +200,4 @@ public class Dao extends DBContext implements ILoginDAO {
         }
     }
 
-    public static void main(String[] args) {
-        Dao d = new Dao();
-        Staff s = d.StaffLogin("admin1", "password123");
-        System.out.println(s.getStaffId());
-    }
 }
