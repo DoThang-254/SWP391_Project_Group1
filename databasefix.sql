@@ -190,3 +190,20 @@ INSERT INTO Product (ProductId, ProductName, Brand, Price, CustomerId) VALUES
 ('P010', 'Laptop Microsoft Surface Laptop 5', 'Microsoft', 33000000, 1),
 ('P011', 'Laptop LG Gram 17', 'LG', 29000000, 1),
 ('P012', 'Laptop Huawei MateBook X Pro', 'Huawei', 31000000, 1);
+INSERT INTO WarrantyRequirement (ProductId, CustomerId, Status, Description, RegisterDate)
+VALUES ('P001', 1, 'Pending', 'Khách hàng yêu cầu bảo hành do lỗi phần cứng', GETDATE());
+
+INSERT INTO Blog (Title, Description, Content, ImageUrl, StaffId) VALUES
+('Laptop Bảo Hành Miễn Phí', 'Hướng dẫn về chính sách bảo hành miễn phí', 'Nội dung chi tiết về bảo hành miễn phí...', 'images/blog1.jpg', 'S001'),
+('Sửa Laptop Bị Lỗi Màn Hình', 'Cách khắc phục lỗi màn hình phổ biến', 'Nội dung chi tiết về sửa lỗi màn hình...', 'images/blog2.jpg', 'S002'),
+('Làm Gì Khi Laptop Không Khởi Động', 'Hướng dẫn kiểm tra và sửa lỗi khi laptop không khởi động', 'Nội dung chi tiết...', 'images/blog3.jpg', 'S003'),
+('Nâng Cấp RAM Cho Laptop', 'Lợi ích của việc nâng cấp RAM', 'Nội dung chi tiết về nâng cấp RAM...', 'images/blog4.jpg', 'S004'),
+('Bảo Vệ Pin Laptop Đúng Cách', 'Mẹo giúp kéo dài tuổi thọ pin laptop', 'Nội dung chi tiết...', 'images/blog5.jpg', 'S005'),
+('Cách Tăng Hiệu Suất Laptop', 'Các cách giúp laptop chạy nhanh hơn', 'Nội dung chi tiết...', 'images/blog6.jpg', 'S006'),
+('Khắc Phục Laptop Chạy Chậm', 'Nguyên nhân và cách xử lý khi laptop chạy chậm', 'Nội dung chi tiết...', 'images/blog7.jpg', 'S007'),
+('Cách Chọn Laptop Phù Hợp', 'Những điều cần biết trước khi mua laptop', 'Nội dung chi tiết...', 'images/blog8.jpg', 'S008'),
+('Sửa Laptop Bị Nóng', 'Nguyên nhân và cách giảm nhiệt độ laptop', 'Nội dung chi tiết...', 'images/blog9.jpg', 'S009'),
+('Tại Sao Laptop Không Nhận USB', 'Hướng dẫn sửa lỗi laptop không nhận USB', 'Nội dung chi tiết...', 'images/blog10.jpg', 'S010'),
+('Cách Vệ Sinh Laptop Đúng Cách', 'Hướng dẫn vệ sinh laptop giúp kéo dài tuổi thọ', 'Nội dung chi tiết...', 'images/blog11.jpg', 'S001'),
+('Cập Nhật Driver Cho Laptop', 'Tại sao cần cập nhật driver và cách thực hiện', 'Nội dung chi tiết...', 'images/blog12.jpg', 'S001');
+

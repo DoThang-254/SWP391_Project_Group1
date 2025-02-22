@@ -8,7 +8,6 @@
         <filter-name>LoginFilter</filter-name>
         <filter-class>Filter.LoginFilter</filter-class>
     </filter>
-   
     <filter-mapping>
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/searchinformation</url-pattern>
@@ -54,6 +53,10 @@
         <servlet-name>WarrantyRequestController</servlet-name>
         <servlet-class>Controller.Customer.WarrantyRequestController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BlogController</servlet-name>
+        <servlet-class>Controller.common.BlogController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -93,6 +96,10 @@
     <servlet-mapping>
         <servlet-name>WarrantyRequestController</servlet-name>
         <url-pattern>/warrantyrequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogController</servlet-name>
+        <url-pattern>/blog</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>home</welcome-file>

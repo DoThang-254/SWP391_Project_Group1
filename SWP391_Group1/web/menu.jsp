@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,18 +13,31 @@
         <title>JSP Page</title>
     </head>
     <body>
-<aside class="left-side sidebar-offcanvas">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            <!-- Left side column. contains the logo and sidebar -->
+            <aside class="left-side sidebar-offcanvas">
                 <!-- sidebar: style can be found in sidebar.less -->
                 <section class="sidebar">
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
-                        <div class="pull-left image">
-                            <img src="img/26115.jpg" class="img-circle" alt="User Image" />
-                        </div>
-                        <div class="pull-left info">
-                            <p>Hello, ${sessionScope.Customer.username}</p>
+                        <c:if test="${sessionScope.Customer != null}">
 
-                            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                            <div class="pull-left image">
+                                <img src="img/26115.jpg" class="img-circle" alt="User Image" />
+                            </div>
+                        </c:if>
+
+                        <div class="pull-left info">
+
+                            <c:if test="${sessionScope.Customer != null}">
+
+                                <p>Hello, ${sessionScope.Customer.username}</p>
+                                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                            </c:if>
+
+
+
                         </div>
                     </div>
                     <!-- search form -->
@@ -39,7 +53,7 @@
                     <ul class="sidebar-menu">
 
                         <li class="active">
-                            <a href="CustomerHomePage.jsp">
+                            <a href="">
                                 <i class="fa fa-dashboard"></i> <span>Home page</span>
                             </a>
                         </li>
@@ -55,8 +69,8 @@
                         </li>
 
                         <li>
-                            <a href="basic_form.html">
-                                <i class="fa fa-globe"></i> <span>Basic Elements</span>
+                            <a href="blog">
+                                <i class="fa fa-globe"></i> <span>Blog</span>
                             </a>
                         </li>
 
@@ -64,6 +78,12 @@
 
                     </ul>
                 </section>
-                <!-- /.sidebar -->
-            </aside>    </body>
+
+            </aside>
+
+            <!-- Right side column. Contains the navbar and content of the page -->
+
+        </div><!-- ./wrapper -->
+        <!-- /.sidebar -->
+    </body>
 </html>
