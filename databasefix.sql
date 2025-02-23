@@ -8,8 +8,8 @@ CREATE TABLE Staff (
     StaffId VARCHAR(255) PRIMARY KEY,
     Username VARCHAR(255) UNIQUE NOT NULL,
     Password VARCHAR(255) NOT NULL,
-    FirstName VARCHAR(255),
-    LastName VARCHAR(255),
+    FirstName NVARCHAR(255),
+    LastName NVARCHAR(255),
     Email VARCHAR(255),
     Phone VARCHAR(255),
     Gender VARCHAR(50),
@@ -24,8 +24,8 @@ CREATE TABLE Customer (
     CustomerId INT IDENTITY(1,1) PRIMARY KEY,
     Username VARCHAR(100) UNIQUE NOT NULL,
     Password VARCHAR(255) NOT NULL,
-    FirstName VARCHAR(255),
-    LastName VARCHAR(255),
+    FirstName NVARCHAR(255),
+    LastName NVARCHAR(255),
 	Phone VARCHAR(255),
     Email VARCHAR(255),
     Gender VARCHAR(50),
@@ -36,7 +36,7 @@ CREATE TABLE Customer (
 
 CREATE TABLE Product (
     ProductId VARCHAR(255) PRIMARY KEY,
-    ProductName VARCHAR(255) NOT NULL,
+    ProductName NVARCHAR(255) NOT NULL,
     Brand VARCHAR(255),
     Price bigint,
     CustomerId INT,
@@ -61,7 +61,8 @@ CREATE TABLE WarrantyRequirement (
     CustomerId INT NOT NULL,
     StaffId VARCHAR(255) NULL, -- Technician tiếp nhận
     Status VARCHAR(50) DEFAULT 'Pending', -- Pending / Approved / Rejected
-    Description VARCHAR(255),
+    Description NVARCHAR(255),
+	ImageUrl VARCHAR(500), -- URL ảnh 
     RegisterDate DATE DEFAULT GETDATE() NOT NULL,
     FOREIGN KEY (ProductId) REFERENCES Product(ProductId),
     FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
@@ -73,7 +74,7 @@ CREATE TABLE Invoice (
     RequirementId INT UNIQUE NULL, -- Chỉ có invoice nếu yêu cầu bảo hành có phí
     Price bigint NOT NULL,
     Status VARCHAR(50) DEFAULT 'Unpaid', -- Unpaid / Paid
-    Note text,
+    Note NVARCHAR(MAX),
     FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId)
 );
 
@@ -95,7 +96,7 @@ CREATE TABLE Notification (
     CustomerId INT,
     RequirementId INT,
     Title VARCHAR(255),
-    Message TEXT,
+    Message NVARCHAR(MAX),
     IsRead BIT DEFAULT 0, -- 'Y' nếu đã đọc, 'N' nếu chưa
     SendTime DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
@@ -134,7 +135,7 @@ CREATE TABLE TokenForgetPassword (
 );
 CREATE TABLE Report (
     ReportId INT IDENTITY(1,1) PRIMARY KEY,
-    Comment text,
+    Comment NVARCHAR(MAX),
     CustomerId INT,
     ProcessingId INT,
     FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
@@ -143,9 +144,9 @@ CREATE TABLE Report (
 
 CREATE TABLE Blog (
     BlogId INT IDENTITY(1,1) PRIMARY KEY,
-    Title VARCHAR(255) NOT NULL, -- Tiêu đề blog
-    Description TEXT, -- Mô tả ngắn hiển thị bên ngoài
-    Content TEXT, -- Nội dung đầy đủ khi nhấn vào xem chi tiết
+    Title NVARCHAR(255) NOT NULL, -- Tiêu đề blog
+    Description NVARCHAR(MAX), -- Mô tả ngắn hiển thị bên ngoài
+    Content NVARCHAR(MAX), -- Nội dung đầy đủ khi nhấn vào xem chi tiết
     ImageUrl VARCHAR(500), -- URL ảnh đại diện cho blog
     CreatedAt DATETIME DEFAULT GETDATE(), -- Thời gian tạo
     StaffId VARCHAR(255),

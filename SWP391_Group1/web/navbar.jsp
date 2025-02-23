@@ -14,7 +14,7 @@
     </head>
     <body>
         <header class="header">
-            <a href="Customer.jsp" class="logo">
+            <a href="home" class="logo">
                 ASUS
             </a>
             <nav class="navbar navbar-static-top" role="navigation">
