@@ -3,10 +3,8 @@
     Created on : Jan 24, 2025, 8:55:03 PM
     Author     : thang
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<!DOCTYPE html>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 
     <head>
@@ -155,7 +153,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-user"></i>
-                                <span>Jane Doe <i class="caret"></i></span>
+                                <span>Duy Khang <i class="caret"></i></span>
                             </a>
                             <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
                                 <li class="dropdown-header text-center">Account</li>
@@ -208,7 +206,7 @@
                             <img src="img/26115.jpg" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
-                            <p>Hello, Jane</p>
+                            <p>Hello, Khang</p>
 
                             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                         </div>
@@ -258,274 +256,256 @@
 
                 <!-- Main content -->
                 <section class="content">
-
                     <div class="row">
-
                         <div class="col-md-8">
                             <section class="panel">
                                 <header class="panel-heading">
-                                    Work Progress
+                                    Technician List
                                 </header>
+
                                 <div class="panel-body table-responsive">
+                                    <div class="box-tools m-b-15">
+                                        <form action="technicianlist" method="get" class="input-group">
+                                            <input type="text" name="search" class="form-control input-sm pull-right"
+                                                   style="width: 150px;" placeholder="Search" value="${param.search}" />
+                                            <div class="input-group-btn">
+                                                <button type="submit" class="btn btn-default input-sm">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th>#</th>
-                                                <th>Project</th>
-                                                <th>Manager</th>
-                                                <!-- <th>Client</th> -->
-                                                <th>Deadline</th>
-                                                <!-- <th>Price</th> -->
+                                                <th>StaffID</th>
+                                                <th>Username</th>
+                                                <th>Fullname</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
                                                 <th>Status</th>
-                                                <th>Progress</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Facebook</td>
-                                                <td>Mark</td>
-                                                <!-- <td>Steve</td> -->
-                                                <td>10/10/2014</td>
-                                                <!-- <td>$1500</td> -->
-                                                <td><span class="label label-danger">in progress</span></td>
-                                                <td><span class="badge badge-info">50%</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Twitter</td>
-                                                <td>Evan</td>
-                                                <!-- <td>Darren</td> -->
-                                                <td>10/8/2014</td>
-                                                <!-- <td>$1500</td> -->
-                                                <td><span class="label label-success">completed</span></td>
-                                                <td><span class="badge badge-success">100%</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Google</td>
-                                                <td>Larry</td>
-                                                <!-- <td>Nick</td> -->
-                                                <td>10/12/2014</td>
-                                                <!-- <td>$2000</td> -->
-                                                <td><span class="label label-warning">in progress</span></td>
-                                                <td><span class="badge badge-warning">75%</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>LinkedIn</td>
-                                                <td>Allen</td>
-                                                <!-- <td>Rock</td> -->
-                                                <td>10/01/2015</td>
-                                                <!-- <td>$2000</td> -->
-                                                <td><span class="label label-info">in progress</span></td>
-                                                <td><span class="badge badge-info">65%</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>Tumblr</td>
-                                                <td>David</td>
-                                                <!-- <td>HHH</td> -->
-                                                <td>01/11/2014</td>
-                                                <!-- <td>$2000</td> -->
-                                                <td><span class="label label-warning">in progress</span></td>
-                                                <td><span class="badge badge-danger">95%</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>Tesla</td>
-                                                <td>Musk</td>
-                                                <!-- <td>HHH</td> -->
-                                                <td>01/11/2014</td>
-                                                <!-- <td>$2000</td> -->
-                                                <td><span class="label label-info">in progress</span></td>
-                                                <td><span class="badge badge-success">95%</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>7</td>
-                                                <td>Ghost</td>
-                                                <td>XXX</td>
-                                                <!-- <td>HHH</td> -->
-                                                <td>01/11/2014</td>
-                                                <!-- <td>$2000</td> -->
-                                                <td><span class="label label-info">in progress</span></td>
-                                                <td><span class="badge badge-success">95%</span></td>
-                                            </tr>
+                                            <c:forEach var="technician" items="${technicians}">
+                                                <tr>
+                                                    <td>${technician.staffId}</td>
+                                                    <td>${technician.username}</td>
+                                                    <td>${technician.firstName} ${technician.lastName}</td>
+                                                    <td>${technician.email}</td>
+                                                    <td>${technician.phone}</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${technician.status == 'Active'}">
+                                                                <span class="label label-primary">${technician.status}</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="label label-danger">${technician.status}</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+
+                                                    <td>
+                                                        <a href="technicianlist?action=edit&staffId=${technician.staffId}">Edit</a> |
+                                                        <a href="technicianlist?action=delete&staffId=${technician.staffId}">Delete</a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
                                         </tbody>
                                     </table>
-                                    <br>
-                                    <div class=" add-task-row">
-                                         <div class="table-foot">
-                                        <ul class="pagination pagination-sm no-margin pull-right">
-                                            <li><a href="#">&laquo;</a></li>
-                                            <li><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a href="#">&raquo;</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </section>
+
+                                                   <div class="row">
+                                                       <div class="col-md-6">
+                                                           <a class="btn btn-success btn-sm" href="addTechnician.jsp">Add New</a>
+                                                       </div>
+                                                       <div class="col-md-6 text-right">
+                                                           <span style="margin-right: 20px" class="total-records">
+                                                                ${startRecord}-${endRecord} of ${totalTechnicians}
+                                                           </span>
+                                                           <ul class="pagination pagination-sm no-margin pull-right">
+                                                               <c:if test="${currentPage > 1}">
+                                                                   <li><a href="technicianlist?page=${currentPage - 1}">&laquo;</a></li>
+                                                                   </c:if>
+                                                                   <c:forEach var="i" begin="1" end="${totalPages}">
+                                                                   <li class="${i == currentPage ? 'active' : ''}">
+                                                                       <a href="technicianlist?page=${i}">${i}</a>
+                                                                   </li>
+                                                               </c:forEach>
+                                                               <c:if test="${currentPage < totalPages}">
+                                                                   <li><a href="technicianlist?page=${currentPage + 1}">&raquo;</a></li>
+                                                                   </c:if>
+                                                           </ul>
+                                                       </div>
+                                                   </div>
 
 
-                        </div><!--end col-6 -->
 
 
-                    </div>
-                    <div class="row">
-
-                        <div class="col-md-7">
-                            <section class="panel tasks-widget">
-                                <header class="panel-heading">
-                                    Manager list
-                                </header>
-                                <div class="panel-body">
-
-                                    <div class="task-content">
-
-                                        <ul class="task-list">
-                                            <li>
-
-                                                <div class="task-title">
-                                                    <span class="task-title-sp">Director is Modern Dashboard</span>
-                                                    <span class="label label-success">2 Days</span>
-                                                    <div class="pull-right hidden-phone">
-                                                        <button class="btn btn-default btn-xs">
-                                                            <i class="fa fa-eye"></i>
-                                                        </button>
-
-
-                                                        <button class="btn btn-default btn-xs"><i
-                                                                class="fa fa-pencil"></i></button>
-                                                        <button class="btn btn-default btn-xs"><i
-                                                                class="fa fa-times"></i></button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-
-                                                <div class="task-title">
-                                                    <span class="task-title-sp">Fully Responsive & Bootstrap 3.0.2
-                                                        Compatible</span>
-                                                    <span class="label label-danger">Done</span>
-                                                    <div class="pull-right hidden-phone">
-                                                        <button class="btn btn-default btn-xs">
-                                                            <i class="fa fa-eye"></i>
-                                                        </button>
-                                                        <button class="btn btn-default btn-xs"><i
-                                                                class="fa fa-pencil"></i></button>
-                                                        <button class="btn btn-default btn-xs"><i
-                                                                class="fa fa-times"></i></button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-
-                                                <div class="task-title">
-                                                    <span class="task-title-sp">Latest Design Concept</span>
-                                                    <span class="label label-warning">Company</span>
-                                                    <div class="pull-right hidden-phone">
-                                                        <button class="btn btn-default btn-xs">
-                                                            <i class="fa fa-eye"></i>
-                                                        </button>
-                                                        <button class="btn btn-default btn-xs"><i
-                                                                class="fa fa-pencil"></i></button>
-                                                        <button class="btn btn-default btn-xs"><i
-                                                                class="fa fa-times"></i></button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-
-                                                <div class="task-title">
-                                                    <span class="task-title-sp">Write well documentation for this
-                                                        theme</span>
-                                                    <span class="label label-primary">3 Days</span>
-                                                    <div class="pull-right hidden-phone">
-                                                        <button class="btn btn-default btn-xs">
-                                                            <i class="fa fa-eye"></i>
-                                                        </button>
-                                                        <button class="btn btn-default btn-xs"><i
-                                                                class="fa fa-pencil"></i></button>
-                                                        <button class="btn btn-default btn-xs"><i
-                                                                class="fa fa-times"></i></button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-
-                                                <div class="task-title">
-                                                    <span class="task-title-sp">Don't bother to download this
-                                                        Dashbord</span>
-                                                    <span class="label label-inverse">Now</span>
-                                                    <div class="pull-right">
-                                                        <button class="btn btn-default btn-xs">
-                                                            <i class="fa fa-eye"></i>
-                                                        </button>
-                                                        <button class="btn btn-default btn-xs"><i
-                                                                class="fa fa-pencil"></i></button>
-                                                        <button class="btn btn-default btn-xs"><i
-                                                                class="fa fa-times"></i></button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-
-                                                <div class="task-title">
-                                                    <span class="task-title-sp">Give feedback for the template</span>
-                                                    <span class="label label-success">2 Days</span>
-                                                    <div class="pull-right hidden-phone">
-                                                        <button class="btn btn-default btn-xs">
-                                                            <i class="fa fa-eye"></i>
-                                                        </button>
-                                                        <button class="btn btn-default btn-xs"><i
-                                                                class="fa fa-pencil"></i></button>
-                                                        <button class="btn btn-default btn-xs"><i
-                                                                class="fa fa-times"></i></button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-
-                                                <div class="task-title">
-                                                    <span class="task-title-sp">Tell your friends about this admin
-                                                        template</span>
-                                                    <span class="label label-danger">Now</span>
-                                                    <div class="pull-right hidden-phone">
-                                                        <button class="btn btn-default btn-xs">
-                                                            <i class="fa fa-eye"></i>
-                                                        </button>
-                                                        <button class="btn btn-default btn-xs"><i
-                                                                class="fa fa-pencil"></i></button>
-                                                        <button class="btn btn-default btn-xs"><i
-                                                                class="fa fa-times"></i></button>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                        </ul>
-                                    </div>
-                                   
-                                    <div class=" add-task-row">
-                                         <div class="table-foot">
-                                        <ul class="pagination pagination-sm no-margin pull-right">
-                                            <li><a href="#">&laquo;</a></li>
-                                            <li><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a href="#">&raquo;</a></li>
-                                        </ul>
-                                    </div>
-                                        <a class="btn btn-success btn-sm pull-left" href="#">Add New Tasks</a>
-                                    </div>
                                 </div>
                             </section>
                         </div>
                     </div>
-                    <!-- row end -->
+                </section>
+
+
+
+                <div class="row">
+
+                    <div class="col-md-7">
+                        <section class="panel tasks-widget">
+                            <header class="panel-heading">
+                                Manager list
+                            </header>
+                            <div class="panel-body">
+
+                                <div class="task-content">
+
+                                    <ul class="task-list">
+                                        <li>
+
+                                            <div class="task-title">
+                                                <span class="task-title-sp">Director is Modern Dashboard</span>
+                                                <span class="label label-success">2 Days</span>
+                                                <div class="pull-right hidden-phone">
+                                                    <button class="btn btn-default btn-xs">
+                                                        <i class="fa fa-eye"></i>
+                                                    </button>
+
+
+                                                    <button class="btn btn-default btn-xs"><i
+                                                            class="fa fa-pencil"></i></button>
+                                                    <button class="btn btn-default btn-xs"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+
+                                            <div class="task-title">
+                                                <span class="task-title-sp">Fully Responsive & Bootstrap 3.0.2
+                                                    Compatible</span>
+                                                <span class="label label-danger">Done</span>
+                                                <div class="pull-right hidden-phone">
+                                                    <button class="btn btn-default btn-xs">
+                                                        <i class="fa fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-default btn-xs"><i
+                                                            class="fa fa-pencil"></i></button>
+                                                    <button class="btn btn-default btn-xs"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+
+                                            <div class="task-title">
+                                                <span class="task-title-sp">Latest Design Concept</span>
+                                                <span class="label label-warning">Company</span>
+                                                <div class="pull-right hidden-phone">
+                                                    <button class="btn btn-default btn-xs">
+                                                        <i class="fa fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-default btn-xs"><i
+                                                            class="fa fa-pencil"></i></button>
+                                                    <button class="btn btn-default btn-xs"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+
+                                            <div class="task-title">
+                                                <span class="task-title-sp">Write well documentation for this
+                                                    theme</span>
+                                                <span class="label label-primary">3 Days</span>
+                                                <div class="pull-right hidden-phone">
+                                                    <button class="btn btn-default btn-xs">
+                                                        <i class="fa fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-default btn-xs"><i
+                                                            class="fa fa-pencil"></i></button>
+                                                    <button class="btn btn-default btn-xs"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+
+                                            <div class="task-title">
+                                                <span class="task-title-sp">Don't bother to download this
+                                                    Dashbord</span>
+                                                <span class="label label-inverse">Now</span>
+                                                <div class="pull-right">
+                                                    <button class="btn btn-default btn-xs">
+                                                        <i class="fa fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-default btn-xs"><i
+                                                            class="fa fa-pencil"></i></button>
+                                                    <button class="btn btn-default btn-xs"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+
+                                            <div class="task-title">
+                                                <span class="task-title-sp">Give feedback for the template</span>
+                                                <span class="label label-success">2 Days</span>
+                                                <div class="pull-right hidden-phone">
+                                                    <button class="btn btn-default btn-xs">
+                                                        <i class="fa fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-default btn-xs"><i
+                                                            class="fa fa-pencil"></i></button>
+                                                    <button class="btn btn-default btn-xs"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+
+                                            <div class="task-title">
+                                                <span class="task-title-sp">Tell your friends about this admin
+                                                    template</span>
+                                                <span class="label label-danger">Now</span>
+                                                <div class="pull-right hidden-phone">
+                                                    <button class="btn btn-default btn-xs">
+                                                        <i class="fa fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-default btn-xs"><i
+                                                            class="fa fa-pencil"></i></button>
+                                                    <button class="btn btn-default btn-xs"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+
+                                <div class=" add-task-row">
+                                    <div class="table-foot">
+                                        <ul class="pagination pagination-sm no-margin pull-right">
+                                            <li><a href="#">&laquo;</a></li>
+                                            <li><a href="#">1</a></li>
+                                            <li><a href="#">2</a></li>
+                                            <li><a href="#">3</a></li>
+                                            <li><a href="#">&raquo;</a></li>
+                                        </ul>
+                                    </div>
+                                    <a class="btn btn-success btn-sm pull-left" href="#">Add New Tasks</a>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <!-- row end -->
                 </section><!-- /.content -->
+
                 <div class="footer-main">
-                    Copyright &copy Director, 2014
+                    Copyright &copy Director, 2025
                 </div>
             </aside><!-- /.right-side -->
 

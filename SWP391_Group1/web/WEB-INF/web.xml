@@ -120,4 +120,12 @@
         <servlet-name>UserDetail</servlet-name>
         <url-pattern>/admin-management/userdetail</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>TechnicianController</servlet-name>
+        <servlet-class>Controller.TechnicianController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TechnicianController</servlet-name>
+        <url-pattern>/technicianlist</url-pattern>
+    </servlet-mapping>
 </web-app>
