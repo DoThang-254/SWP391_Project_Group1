@@ -23,18 +23,37 @@ public class BlogDao extends DBContext {
 
     public static void main(String[] args) {
         BlogDao bd = new BlogDao();
-        for (Blog b : bd.GetAllBlog()) {
+        for (Blog b : bd.GetAllBlog(1)) {
             System.out.println(b.getBlogId());
         }
     }
 
-    public List<Blog> GetAllBlog() {
-        List<Blog> list = new ArrayList<>();
-        String sql = "select * from Blog";
+    public int CountBlog() {
+        String sql = "select count(*) from Blog";
 
         try {
             p = connection.prepareStatement(sql);
 
+            rs = p.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Blog> GetAllBlog(int index) {
+        List<Blog> list = new ArrayList<>();
+        String sql = "select * from Blog order by BlogId\n"
+                + "offset ? rows fetch next 5 rows only";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, (index - 1)* 5);
             rs = p.executeQuery();
 
             while (rs.next()) {

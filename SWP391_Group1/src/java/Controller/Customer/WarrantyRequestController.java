@@ -61,7 +61,6 @@ public class WarrantyRequestController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
-    private WarrantyFormDao wfd = new WarrantyFormDao();
     private ProductDao pd = new ProductDao();
 
     @Override
@@ -90,7 +89,7 @@ public class WarrantyRequestController extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
-
+        
         String productId = request.getParameter("productId");
         String status = request.getParameter("status");
         String description = request.getParameter("description");
@@ -98,17 +97,12 @@ public class WarrantyRequestController extends HttpServlet {
 
         if (product == null) {
             request.setAttribute("errorMessage", "Sản phẩm không tồn tại.");
-            request.getRequestDispatcher("searchinformation").forward(request, response);
+            request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
             return;
         }
 
-//         WarrantyForm warrantyForm = wfd.getActiveWarrantyFormByProduct(productId);
-//
-//        if (warrantyForm == null || warrantyForm.getEndDate().before(new Date())) {
-//            request.setAttribute("errorMessage", "Sản phẩm đã hết hạn bảo hành.");
-//            request.getRequestDispatcher("product_list.jsp").forward(request, response);
-//            return;
-//        }
+      
+
         // Kiểm tra nếu đã có yêu cầu bảo hành đang chờ xử lý
         boolean hasPendingRequest = wrd.hasPendingRequest(productId);
         if (hasPendingRequest) {
@@ -134,6 +128,7 @@ public class WarrantyRequestController extends HttpServlet {
         request.setAttribute("successMessage", "Yêu cầu bảo hành đã được gửi thành công!");
         request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
     }
+    
 
     /**
      * Returns a short description of the servlet.

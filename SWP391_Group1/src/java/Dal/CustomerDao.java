@@ -26,14 +26,10 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
     public static void main(String[] args) {
         CustomerDao c = new CustomerDao();
         Product newProduct = new Product(null, null, 0, null, 1);
+        for (WarrantyForm wf : c.ProductDetail(1, 1, null, 5)) {
+            System.out.println(wf.getFormId());
+        }
 
-//        List<WarrantyInformation> list = c.WarrantyProductInformation(1, 1, "Laptop A", newProduct, null, null , null);
-//
-//        List<WarrantyForm> list = c.ProductDetail(1, "P001");
-//        for (WarrantyForm w : list) {
-//            System.out.println(w.getProduct().getProductId());
-//        }
-        System.out.println(c.GetTotalProductDetail(1, "P001"));
     }
 
     public int GetTotalProductByProductId(int CustomerId, String search, Product product) {
@@ -71,7 +67,6 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         }
         return 0;  // Trả về 0 nếu có lỗi
     }
-
     public List<Product> SearchingProductByProductId(int index, int CustomerId, String search, Product product, String sort, String order, String priceRange, int amount) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId WHERE c.CustomerId = ? ";
@@ -135,6 +130,111 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         }
         return list;
     }
+//    public int GetTotalProductByProductId(int CustomerId, String search, Product product) {
+//        String sql = "SELECT count(*) FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId \n"
+//                + "join WarrantyForm wf on p.ProductId = wf.ProductId\n"
+//                + "WHERE c.CustomerId = ? ";
+//
+//        if (search != null && !search.trim().isEmpty()) {
+//            sql += " AND (p.ProductId LIKE ? or p.ProductName like ? )";
+//        }
+//
+//        if (product.getBrand() != null && !product.getBrand().trim().isEmpty()) {
+//            sql += " AND p.Brand = ? ";
+//        }
+//
+//        try {
+//            p = connection.prepareStatement(sql);
+//            p.setInt(1, CustomerId);
+//
+//            int index = 2;
+//            if (search != null && !search.trim().isEmpty()) {
+//                String searchPattern = "%" + search.replaceAll("\\s+", "") + "%";
+//                p.setString(index++, searchPattern);
+//                p.setString(index++, searchPattern);
+//            }
+//
+//            if (product.getBrand() != null && !product.getBrand().trim().isEmpty()) {
+//                p.setString(index++, product.getBrand());
+//            }
+//
+//            rs = p.executeQuery();
+//            if (rs.next()) {
+//                return rs.getInt(1);  // Lấy giá trị count(*) chính xác
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();  // In lỗi ra để dễ debug
+//        }
+//        return 0;  // Trả về 0 nếu có lỗi
+//    }
+
+//    public List<WarrantyForm> SearchingProductByProductId(int index, int CustomerId, String search, Product product, String sort, String order, String priceRange, int amount) {
+//        List<WarrantyForm> list = new ArrayList<>();
+//        String sql = "SELECT * FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId \n"
+//                + "join WarrantyForm wf on p.ProductId = wf.ProductId\n"
+//                + "WHERE c.CustomerId = ? ";
+//
+//        if (search != null && !search.trim().isEmpty()) {
+//            sql += " AND (p.ProductId LIKE ? or p.ProductName like ? )";
+//        }
+//        if (product.getBrand() != null && !product.getBrand().trim().isEmpty()) {
+//            sql += " AND p.Brand = ? ";
+//        }
+//
+//        if (priceRange != null && !priceRange.trim().isEmpty()) {
+//            if (priceRange.equals("20000+")) {
+//                sql += " AND p.Price >= 20000 ";
+//            } else {
+//                sql += " AND p.Price BETWEEN ? AND ? ";
+//            }
+//        }
+//
+//        if (sort != null && !sort.trim().isEmpty() && order != null && !order.trim().isEmpty()) {
+//            sql += " ORDER BY p." + sort + " " + order;
+//        } else {
+//            sql += " ORDER BY p.ProductId ASC"; // Mặc định sắp xếp theo ProductId
+//        }
+//
+//        sql += " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+//
+//        try {
+//            p = connection.prepareStatement(sql);
+//            p.setInt(1, CustomerId);
+//
+//            int paramIndex = 2;
+//            if (search != null && !search.trim().isEmpty()) {
+//                String searchPattern = "%" + search.replaceAll("\\s+", " ") + "%";
+//                p.setString(paramIndex++, searchPattern);
+//                p.setString(paramIndex++, searchPattern);
+//            }
+//            if (product.getBrand() != null && !product.getBrand().trim().isEmpty()) {
+//                p.setString(paramIndex, product.getBrand());
+//                paramIndex++;
+//            }
+//
+//            if (priceRange != null && !priceRange.trim().isEmpty() && !priceRange.equals("20000+")) {
+//                String[] range = priceRange.split("-");
+//                p.setFloat(paramIndex, Float.parseFloat(range[0]));
+//                paramIndex++;
+//                p.setFloat(paramIndex, Float.parseFloat(range[1]));
+//                paramIndex++;
+//            }
+//
+//            p.setInt(paramIndex++, (index - 1) * amount);
+//            p.setInt(paramIndex, amount);
+//            rs = p.executeQuery();
+//
+//            while (rs.next()) {
+//                Product pr = new Product(rs.getString(1), rs.getString(2), rs.getLong(4),
+//                        rs.getString(3), rs.getInt(5));
+//                list.add(new WarrantyForm(rs.getInt(6), null,
+//                        null, rs.getString(10), rs.getString(11), rs.getString(12), rs.getBoolean(13), pr));
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return list;
+//    }
 
     public int GetTotalProductDetail(int customerId, String productId) {
         String sql = "SELECT count(*)\n"

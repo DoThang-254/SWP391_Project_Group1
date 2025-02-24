@@ -76,7 +76,6 @@
                                     <label for="description">Description:</label>
                                     <textarea id="description" name="description"></textarea><br>
 
-
                                     <button type="submit">Submit</button>
                                     <a href="searchinformation">Back</a>
 

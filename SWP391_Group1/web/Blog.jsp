@@ -144,7 +144,7 @@
                                             <c:forEach begin="1" end="${requestScope.endpage}" var="i">
                                                 <li>
                                                     <a class="${tag == i ? 'active' : ''}"
-                                                       href="searchinformation?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}&amount=${requestScope.amount}">${i}</a>
+                                                       href="blog?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}&amount=${requestScope.amount}">${i}</a>
                                                 </li>
                                             </c:forEach>
                                         </ul>

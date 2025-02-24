@@ -57,8 +57,19 @@ public class BlogController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        List<Blog> list = bd.GetAllBlog();
+        String input = request.getParameter("index");
+        if(input == null){
+            input = "1";
+        }
+        int index = Integer.parseInt(input);
+        int count = bd.CountBlog();
+        int endPage = count/5;
+        if(count % 5 != 0){
+            endPage++;
+        }
+        List<Blog> list = bd.GetAllBlog(index);
         request.setAttribute("list", list);
+        request.setAttribute("endpage", endPage);
         request.getRequestDispatcher("Blog.jsp").forward(request, response);
     } 
 
@@ -72,7 +83,7 @@ public class BlogController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        
     }
 
     /** 

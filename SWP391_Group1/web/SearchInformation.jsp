@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html>
 
@@ -150,13 +152,11 @@
                                                     <a href="searchinformation?sort=Brand&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
                                                     <a href="searchinformation?sort=Brand&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
-
+                                      
                                                 <th>View Details
 
                                                 </th>
-                                                <th>Warranty Request
-
-                                                </th>
+                                                
                                             </tr>
                                         </thead>
                                         <c:if test="${requestScope.listA == null || requestScope.listA.isEmpty()}">
@@ -165,21 +165,21 @@
                                             </tr>
                                         </c:if>
                                         <c:forEach var="c" items="${requestScope.listA}">
+                                           
+
                                             <tr>
                                                 <td>${c.productId}</td>
                                                 <td>${c.productName}</td>
                                                 <td>${c.price}</td>
                                                 <td>${c.brand}</td>
-                                                <td>
-                                                    <a href="warrantyformdetail?productid=${c.productId}" class="btn btn-info btn-sm" title="View Details">
-                                                        <i class="fa fa-eye"></i>
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <a href="warrantyrequest?productid=${c.productId}">
-                                                        Request 
-                                                    </a>
-                                                </td>
+                                                
+                                                
+                                                <td> 
+                                            <a href="warrantyformdetail?productid=${c.productId}" class="btn btn-info btn-sm" title="View Details">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                            </td>
+                                            
                                             </tr>
                                         </c:forEach>
                                     </table>

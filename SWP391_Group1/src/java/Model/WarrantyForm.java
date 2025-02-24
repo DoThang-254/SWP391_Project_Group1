@@ -12,8 +12,8 @@ import java.util.Date;
  */
 public class WarrantyForm {
     private int formId;
-    private java.util.Date startDate;
-    private java.util.Date endDate;
+    private Date startDate;
+    private Date endDate;
     private String status;
     private String verificationCode;
     private String verificationMethod;

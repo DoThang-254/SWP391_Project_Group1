@@ -5,6 +5,7 @@
 package Controller.Customer;
 
 import Dal.CustomerDao;
+import Dal.WarrantyFormDao;
 import Model.Customer;
 import Model.WarrantyForm;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,6 +61,7 @@ public class WarrantyFormDetail extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     CustomerDao cd = new CustomerDao();
+    private WarrantyFormDao wfd = new WarrantyFormDao();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -86,7 +89,20 @@ public class WarrantyFormDetail extends HttpServlet {
         }
 
         List<WarrantyForm> wf = cd.ProductDetail(index, c.getCustomerId(), productId, 5);
+        WarrantyForm warrantyForm = wfd.getActiveWarrantyFormByProduct(productId);
+
+        if (warrantyForm == null || warrantyForm.getEndDate().before(new Date())) {
+            request.setAttribute("output", "Sản phẩm đã hết hạn bảo hành.");
+            request.setAttribute("form", wf);
+            request.setAttribute("tag", index);
+            request.setAttribute("endpage", endPage);
+            request.setAttribute("productid", productId);
+            request.getRequestDispatcher("WarrantyForm.jsp").forward(request, response);
+            return;
+        }
         request.setAttribute("form", wf);
+        request.setAttribute("output", "Yêu cầu bảo hành");
+
         request.setAttribute("tag", index);
         request.setAttribute("endpage", endPage);
         request.setAttribute("productid", productId);

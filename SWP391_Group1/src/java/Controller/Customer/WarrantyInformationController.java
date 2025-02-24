@@ -5,8 +5,10 @@
 package Controller.Customer;
 
 import Dal.CustomerDao;
+import Dal.WarrantyFormDao;
 import Model.Customer;
 import Model.Product;
+import Model.WarrantyForm;
 import Model.WarrantyProcessing;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +16,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -99,6 +102,7 @@ public class WarrantyInformationController extends HttpServlet {
         }
         String priceRange = request.getParameter("filterPriceRange");
         List<Product> list = cd.SearchingProductByProductId(index, c.getCustomerId(), searchBox, newProduct, sort, order, priceRange, amount);
+//        List<WarrantyForm> list = cd.SearchingProductByProductId(index, c.getCustomerId(), searchBox, newProduct, sort, order, priceRange, amount);
 
         request.setAttribute("endpage", endPage);
         request.setAttribute("listA", list);
@@ -137,7 +141,7 @@ public class WarrantyInformationController extends HttpServlet {
 
         //List<WarrantyInformation> list = cd.WarrantyProductInformation(index, c.getCustomerId(), searchBox, newProduct, sort, order, priceRange);
         request.setAttribute("endpage", endPage);
-      //  request.setAttribute("listA", list);
+        //  request.setAttribute("listA", list);
         request.setAttribute("tag", index);
         request.setAttribute("brand", brand);
         request.setAttribute("sort", sort);

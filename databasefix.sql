@@ -193,18 +193,30 @@ INSERT INTO Product (ProductId, ProductName, Brand, Price, CustomerId) VALUES
 ('P012', 'Laptop Huawei MateBook X Pro', 'Huawei', 31000000, 1);
 INSERT INTO WarrantyRequirement (ProductId, CustomerId, Status, Description, RegisterDate)
 VALUES ('P001', 1, 'Pending', 'Khách hàng yêu cầu bảo hành do lỗi phần cứng', GETDATE());
-
 INSERT INTO Blog (Title, Description, Content, ImageUrl, StaffId) VALUES
-('Laptop Bảo Hành Miễn Phí', 'Hướng dẫn về chính sách bảo hành miễn phí', 'Nội dung chi tiết về bảo hành miễn phí...', 'images/blog1.jpg', 'S001'),
-('Sửa Laptop Bị Lỗi Màn Hình', 'Cách khắc phục lỗi màn hình phổ biến', 'Nội dung chi tiết về sửa lỗi màn hình...', 'images/blog2.jpg', 'S002'),
-('Làm Gì Khi Laptop Không Khởi Động', 'Hướng dẫn kiểm tra và sửa lỗi khi laptop không khởi động', 'Nội dung chi tiết...', 'images/blog3.jpg', 'S003'),
-('Nâng Cấp RAM Cho Laptop', 'Lợi ích của việc nâng cấp RAM', 'Nội dung chi tiết về nâng cấp RAM...', 'images/blog4.jpg', 'S004'),
-('Bảo Vệ Pin Laptop Đúng Cách', 'Mẹo giúp kéo dài tuổi thọ pin laptop', 'Nội dung chi tiết...', 'images/blog5.jpg', 'S005'),
-('Cách Tăng Hiệu Suất Laptop', 'Các cách giúp laptop chạy nhanh hơn', 'Nội dung chi tiết...', 'images/blog6.jpg', 'S006'),
-('Khắc Phục Laptop Chạy Chậm', 'Nguyên nhân và cách xử lý khi laptop chạy chậm', 'Nội dung chi tiết...', 'images/blog7.jpg', 'S007'),
-('Cách Chọn Laptop Phù Hợp', 'Những điều cần biết trước khi mua laptop', 'Nội dung chi tiết...', 'images/blog8.jpg', 'S008'),
-('Sửa Laptop Bị Nóng', 'Nguyên nhân và cách giảm nhiệt độ laptop', 'Nội dung chi tiết...', 'images/blog9.jpg', 'S009'),
-('Tại Sao Laptop Không Nhận USB', 'Hướng dẫn sửa lỗi laptop không nhận USB', 'Nội dung chi tiết...', 'images/blog10.jpg', 'S010'),
-('Cách Vệ Sinh Laptop Đúng Cách', 'Hướng dẫn vệ sinh laptop giúp kéo dài tuổi thọ', 'Nội dung chi tiết...', 'images/blog11.jpg', 'S001'),
-('Cập Nhật Driver Cho Laptop', 'Tại sao cần cập nhật driver và cách thực hiện', 'Nội dung chi tiết...', 'images/blog12.jpg', 'S001');
+(N'Laptop Bảo Hành Miễn Phí', N'Hướng dẫn về chính sách bảo hành miễn phí', N'Nội dung chi tiết về bảo hành miễn phí...', 'images/blog1.jpg', 'S001'),
+(N'Sửa Laptop Bị Lỗi Màn Hình', N'Cách khắc phục lỗi màn hình phổ biến', N'Nội dung chi tiết về sửa lỗi màn hình...', 'images/blog2.jpg', 'S002'),
+(N'Làm Gì Khi Laptop Không Khởi Động', N'Hướng dẫn kiểm tra và sửa lỗi khi laptop không khởi động', N'Nội dung chi tiết...', 'images/blog3.jpg', 'S003'),
+(N'Nâng Cấp RAM Cho Laptop', N'Lợi ích của việc nâng cấp RAM', N'Nội dung chi tiết về nâng cấp RAM...', 'images/blog4.jpg', 'S004'),
+(N'Bảo Vệ Pin Laptop Đúng Cách', N'Mẹo giúp kéo dài tuổi thọ pin laptop', N'Nội dung chi tiết...', 'images/blog5.jpg', 'S005'),
+(N'Cách Tăng Hiệu Suất Laptop', N'Các cách giúp laptop chạy nhanh hơn', N'Nội dung chi tiết...', 'images/blog6.jpg', 'S006'),
+(N'Khắc Phục Laptop Chạy Chậm', N'Nguyên nhân và cách xử lý khi laptop chạy chậm', N'Nội dung chi tiết...', 'images/blog7.jpg', 'S007'),
+(N'Cách Chọn Laptop Phù Hợp', N'Những điều cần biết trước khi mua laptop', N'Nội dung chi tiết...', 'images/blog8.jpg', 'S008'),
+(N'Sửa Laptop Bị Nóng', N'Nguyên nhân và cách giảm nhiệt độ laptop', N'Nội dung chi tiết...', 'images/blog9.jpg', 'S009'),
+(N'Tại Sao Laptop Không Nhận USB', N'Hướng dẫn sửa lỗi laptop không nhận USB', N'Nội dung chi tiết...', 'images/blog10.jpg', 'S010'),
+(N'Cách Vệ Sinh Laptop Đúng Cách', N'Hướng dẫn vệ sinh laptop giúp kéo dài tuổi thọ', N'Nội dung chi tiết...', 'images/blog11.jpg', 'S001'),
+(N'Cập Nhật Driver Cho Laptop', N'Tại sao cần cập nhật driver và cách thực hiện', N'Nội dung chi tiết...', 'images/blog12.jpg', 'S001');
+INSERT INTO WarrantyForm (ProductId, StartDate, EndDate, Status, VerificationCode, VerificationMethod, Verified)
+VALUES 
+('P001', '2023-01-01', '2024-01-01', 'Completed', 'ABC123', 'Email', 1),
+('P001', '2024-01-02', '2025-01-02', 'Active', 'DEF456', 'SMS', 1),
+('P001', '2024-02-01', '2025-02-01', 'Active', 'GHI789', 'Phone', 1),
+('P001', '2023-03-05', '2024-03-05', 'Completed', NULL, NULL, 0),
+('P001', '2024-04-10', '2025-04-10', 'Active', 'JKL852', 'Email', 1),
+('P001', '2023-05-15', '2024-05-15', 'Active', 'MNO963', 'SMS', 1),
+('P001', '2023-06-20', '2024-06-20', 'Active', NULL, NULL, 0),
+('P001', '2022-07-25', '2023-07-25', 'Canceled', 'PQR741', 'Phone', 0),
+('P001', '2024-08-30', '2025-08-30', 'Active', 'STU258', 'Email', 1),
+('P001', '2023-09-10', '2024-09-10', 'Active', 'VWX369', 'SMS', 1);
+
 

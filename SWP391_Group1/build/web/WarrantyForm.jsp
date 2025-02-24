@@ -139,14 +139,19 @@
                                                 <th>Verification Code</th>
                                                 <th>Verification Method</th>
                                                 <th>Verified</th>
+
                                             </tr>
                                         </thead>
                                         <c:if test="${requestScope.form == null || requestScope.form.isEmpty()}">
                                             <tr>
-                                                <td colspan="7" style="text-align: center;">Your Product is not exist</td>
+                                                <td colspan="7" style="text-align: center;">Your Warranty Form is not exist</td>
                                             </tr>
                                         </c:if>
+
+                                        <c:set var="productUnderWarranty" value="false"/>
+
                                         <c:forEach var="w" items="${form}">
+                                            
                                             <tr>
                                                 <td>${w.formId}</td>
                                                 <td>${w.product.productId}</td>
@@ -161,6 +166,8 @@
                                                         <c:otherwise>No</c:otherwise>
                                                     </c:choose>
                                                 </td>
+                                                
+
                                             </tr>
                                         </c:forEach>
                                     </table>
@@ -176,9 +183,29 @@
                                             </c:forEach>
                                         </ul>
                                     </div>
-                                     <a href="searchinformation">Back</a>
+
+
+                                    <c:choose>
+                                        <c:when test="${requestScope.output eq 'Yêu cầu bảo hành'}">
+                                            <button type="submit">
+                                                <a href="warrantyrequest?productid=${product.productId}">
+                                                    Yêu cầu Bảo hành miễn phí 
+                                                </a>
+                                            </button>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span style="color: red;">${requestScope.output}</span>
+                                              <button type="submit">
+                                                <a href="warrantyrequest?productid=${product.productId}">
+                                                    Yêu cầu Bảo hành có phí 
+                                                </a>
+                                            </button>
+                                        </c:otherwise>
+                                    </c:choose>
+                                            <br>
+                                    <a href="searchinformation">Back</a>
                                 </div>
-                                           
+
                             </div>
                         </div>
                     </div>
