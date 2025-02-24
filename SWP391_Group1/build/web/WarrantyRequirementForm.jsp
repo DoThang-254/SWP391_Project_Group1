@@ -56,30 +56,44 @@
                                     Register Warranty 
 
                                 </header>
-                                <h2>Warranty Requirement Form</h2>
+                                <div class="form-container">
+                                    <h2>Warranty Requirement Form</h2>
+                                    <form action="warrantyrequest" method="post">
+                                        <div class="form-group">
+                                            <label for="productId">Product ID:</label>
+                                            <input type="text" id="productId" name="productId" value="${requestScope.productid}" readonly>
+                                        </div>
 
-                                ${requestScope.errorMessage}
-                                ${requestScope.successMessage}
+                                        <div class="form-group">
+                                            <label for="productName">Product Name:</label>
+                                            <input type="text" id="productName" name="productName" value="${requestScope.product.productName}" readonly>
+                                        </div>
 
-                                <form action="warrantyrequest" method="post">
-                                    <label for="productId">Product ID:</label>
-                                    <input type="text" id="productId" name="productId" value="${requestScope.productid}" readonly><br>
-                                    <label for="productId">Product Name:</label>
+                                        <div class="form-group">
+                                            <label for="productBrand">Brand :</label>
+                                            <input type="text" id="productBrand" name="productBrand" value="${requestScope.product.brand}" readonly>
+                                        </div>
 
-                                    <input type="text" id="productName" name="productName" value="${requestScope.product.productName}" readonly><br>
-                                    <label for="productId">Brand :</label>
+                                        <input type="hidden" id="status" name="status" value="Pending">
+                                        <input type="hidden" id="ispay" name="ispay" value="${requestScope.ispay}">
 
-                                    <input type="text" id="productBrand" name="productBrand" value="${requestScope.product.brand}" readonly><br>
-                                    <input type="hidden" id="status" name="status" value="Pending"><br>
+                                        <div class="form-group">
+                                            <label for="description">Description:</label>
+                                            <textarea id="description" name="description"></textarea>
+                                        </div>
 
+                                        <div class="form-group text-danger">
+                                            ${requestScope.errorMessage}
+                                            ${requestScope.successMessage}
+                                        </div>
 
-                                    <label for="description">Description:</label>
-                                    <textarea id="description" name="description"></textarea><br>
+                                        <div class="button-group">
+                                            <button type="submit">Submit</button>
+                                            <a href="searchinformation">Back</a>
+                                        </div>
+                                    </form>
+                                </div>
 
-                                    <button type="submit">Submit</button>
-                                    <a href="searchinformation">Back</a>
-
-                                </form>
 
 
 
@@ -108,71 +122,68 @@
 </html>
 
 <style>
-    /* Căn giữa form */
-    form {
+    .form-container {
         max-width: 500px;
-        margin: 20px auto;
-        padding: 20px;
+        margin: auto;
         background: #fff;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
         border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
-    /* Style tiêu đề */
-    h2 {
+    .form-container h2 {
         text-align: center;
-        color: #333;
+        margin-bottom: 20px;
         font-weight: bold;
     }
 
-    /* Căn chỉnh các input và label */
-    label {
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-weight: bold;
         display: block;
-        margin: 10px 0 5px;
-        font-weight: bold;
+        margin-bottom: 5px;
     }
 
-    input[type="text"], textarea {
+    .form-group input,
+    .form-group textarea {
         width: 100%;
         padding: 8px;
-        margin-bottom: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
-        font-size: 14px;
     }
 
-    /* Vô hiệu hóa input readonly */
-    input[readonly] {
-        background: #f5f5f5;
-        color: #777;
+    .form-group textarea {
+        resize: vertical;
     }
 
-    /* Nút Submit */
-    button[type="submit"] {
-        width: 100%;
-        padding: 10px;
-        background: red;
-        color: white;
-        font-size: 16px;
+    .button-group {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .button-group button {
+        padding: 10px 15px;
         border: none;
         border-radius: 5px;
+        background-color: red;
+        color: white;
+        font-size: 16px;
         cursor: pointer;
-        transition: background 0.3s;
+        transition: 0.3s;
     }
 
-    button[type="submit"]:hover {
-        background: #0056b3;
+    .button-group button:hover {
+        background-color: #0056b3;
     }
 
-    /* Style cho thông báo */
-    .errorMessage {
-        color: red;
-        text-align: center;
+    .button-group a {
+        margin-left: 10px;
+        text-decoration: none;
+        color: #007bff;
     }
 
-    .successMessage {
-        color: green;
-        text-align: center;
-    }
 
 </style>

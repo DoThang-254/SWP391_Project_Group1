@@ -18,11 +18,12 @@ public class WarrantyRequirement {
     private Customer customer;
     private Staff staff;
     private Product product;
+    private String isPay;
 
     public WarrantyRequirement() {
     }
 
-    public WarrantyRequirement(int requirementId, String status, String description, Date registerDate, Customer customer, Staff staff, Product product) {
+    public WarrantyRequirement(int requirementId, String status, String description, Date registerDate, Customer customer, Staff staff, Product product , String isPay) {
         this.requirementId = requirementId;
         this.status = status;
         this.description = description;
@@ -30,6 +31,7 @@ public class WarrantyRequirement {
         this.customer = customer;
         this.staff = staff;
         this.product = product;
+        this.isPay = isPay;
     }
 
     
@@ -89,5 +91,15 @@ public class WarrantyRequirement {
     public void setProduct(Product product) {
         this.product = product;
     }
+
+    public String isIsPay() {
+        return isPay;
+    }
+
+    public void setIsPay(String isPay) {
+        this.isPay = isPay;
+    }
+    
+    
 }
 

@@ -34,7 +34,7 @@ public class WarrantyRequirementDAO extends DBContext {
     }
 
     public void insertWarrantyRequirement(WarrantyRequirement request) {
-        String sql = "INSERT INTO WarrantyRequirement (ProductId, CustomerId, Status,Description ,RegisterDate) VALUES (?, ?, ?, ? , ?)";
+        String sql = "INSERT INTO WarrantyRequirement (ProductId, CustomerId, Status,Description ,RegisterDate , Ispay) VALUES (?, ?, ?, ? , ? , ?)";
 
         try {
             p = connection.prepareStatement(sql);
@@ -43,6 +43,7 @@ public class WarrantyRequirementDAO extends DBContext {
             p.setString(3, request.getStatus());
             p.setString(4, request.getDescription());
             p.setDate(5, new java.sql.Date(request.getRegisterDate().getTime()));
+            p.setString(6, request.isIsPay());
 
             p.executeUpdate();
         } catch (SQLException e) {

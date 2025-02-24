@@ -64,6 +64,7 @@ CREATE TABLE WarrantyRequirement (
     Description NVARCHAR(255),
 	ImageUrl VARCHAR(500), -- URL ảnh 
     RegisterDate DATE DEFAULT GETDATE() NOT NULL,
+	IsPay varchar(3) , -- 'Yes' nếu có phí, 'No' nếu miễn phí
     FOREIGN KEY (ProductId) REFERENCES Product(ProductId),
     FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
     FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)

@@ -148,7 +148,6 @@
                                             </tr>
                                         </c:if>
 
-                                        <c:set var="productUnderWarranty" value="false"/>
 
                                         <c:forEach var="w" items="${form}">
                                             
@@ -188,7 +187,7 @@
                                     <c:choose>
                                         <c:when test="${requestScope.output eq 'Yêu cầu bảo hành'}">
                                             <button type="submit">
-                                                <a href="warrantyrequest?productid=${product.productId}">
+                                                <a href="warrantyrequest?productid=${requestScope.productid}&ispay=No">
                                                     Yêu cầu Bảo hành miễn phí 
                                                 </a>
                                             </button>
@@ -196,7 +195,7 @@
                                         <c:otherwise>
                                             <span style="color: red;">${requestScope.output}</span>
                                               <button type="submit">
-                                                <a href="warrantyrequest?productid=${product.productId}">
+                                                <a href="warrantyrequest?productid=${requestScope.productid}&ispay=Yes">
                                                     Yêu cầu Bảo hành có phí 
                                                 </a>
                                             </button>

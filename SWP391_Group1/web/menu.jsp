@@ -64,7 +64,7 @@
                         </li>
                         <li>
                             <a href="warrantyinformation">
-                                <i class="fa fa-gavel"></i> <span>Warranty Inforamtion</span>
+                                <i class="fa fa-gavel"></i> <span>Warranty Information</span>
                             </a>
                         </li>
 

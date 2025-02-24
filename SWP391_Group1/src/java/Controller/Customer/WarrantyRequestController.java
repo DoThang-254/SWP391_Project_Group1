@@ -67,8 +67,10 @@ public class WarrantyRequestController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String productId = request.getParameter("productid");
+        String isPay = request.getParameter("ispay");
         Product product = pd.GetProductById(productId);
         request.setAttribute("product", product);
+        request.setAttribute("ispay", isPay);
         request.setAttribute("productid", productId);
         request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
     }
@@ -89,10 +91,11 @@ public class WarrantyRequestController extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
-        
+
         String productId = request.getParameter("productId");
         String status = request.getParameter("status");
         String description = request.getParameter("description");
+        String isPay = request.getParameter("ispay");
         Product product = pd.GetProductById(productId);
 
         if (product == null) {
@@ -100,8 +103,6 @@ public class WarrantyRequestController extends HttpServlet {
             request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
             return;
         }
-
-      
 
         // Kiểm tra nếu đã có yêu cầu bảo hành đang chờ xử lý
         boolean hasPendingRequest = wrd.hasPendingRequest(productId);
@@ -122,13 +123,12 @@ public class WarrantyRequestController extends HttpServlet {
         requestWarranty.setStatus(status);
         requestWarranty.setDescription(description);
         requestWarranty.setRegisterDate(new Date());
-
+        requestWarranty.setIsPay(isPay);
         wrd.insertWarrantyRequirement(requestWarranty);
 
         request.setAttribute("successMessage", "Yêu cầu bảo hành đã được gửi thành công!");
         request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
     }
-    
 
     /**
      * Returns a short description of the servlet.
