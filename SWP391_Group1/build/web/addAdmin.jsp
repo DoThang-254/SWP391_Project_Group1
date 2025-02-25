@@ -1,14 +1,18 @@
-<%-- Document   : addTechnician Created on : Feb 6, 2025, 10:04:18 PM Author : khang --%>
+<%-- 
+    Document   : addAdmin
+    Created on : Feb 25, 2025, 6:17:55 PM
+    Author     : khang
+--%>
+
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Add Technician</title>
+    <title>Add Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <!-- Bootstrap CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
@@ -33,7 +37,7 @@
     </style>
 </head>
 <body class="skin-black">
-    
+
     <!-- Header -->
     <header class="header">
         <a href="index.html" class="logo">ASUS</a>
@@ -51,16 +55,16 @@
             <section class="sidebar">
                 <div class="user-panel">
                     <div class="pull-left image">
-                        <img src="img/26115.jpg" class="img-circle" alt="User Image" />
+                        <img src="img/admin-avatar.jpg" class="img-circle" alt="User Image" />
                     </div>
                     <div class="pull-left info">
-                        <p>Hello, Jane</p>
+                        <p>Hello, Admin</p>
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 </div>
                 <ul class="sidebar-menu">
                     <li><a href="index.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-                    <li><a href="technicianlist"><i class="fa fa-users"></i> <span>Technicians</span></a></li>
+                    <li><a href="adminlist"><i class="fa fa-user"></i> <span>Admins</span></a></li>
                 </ul>
             </section>
         </aside>
@@ -68,13 +72,13 @@
         <aside class="right-side">
             <section class="content">
                 <div class="container">
-                    <h2>Add Technician</h2>
-                    
+                    <h2>Add Admin</h2>
+
                     <c:if test="${not empty error}">
                         <div class="alert alert-danger">${error}</div>
                     </c:if>
 
-                    <form action="technicianlist" method="post">
+                    <form action="adminlist" method="post">
                         <input type="hidden" name="action" value="add" />
 
                         <div class="form-group">
@@ -132,12 +136,11 @@
 
                         <div class="form-group">
                             <label>Role:</label>
-                            <input type="text" class="form-control" value="Technician" readonly />
-                            <input type="hidden" name="roleId" value="1" />
+                            <input type="text" class="form-control" value="Admin" readonly />
+                            <input type="hidden" name="roleId" value="3" />
                         </div>
 
-
-                        <button type="submit" class="btn btn-success btn-custom">Add Technician</button>
+                        <button type="submit" class="btn btn-success btn-custom">Add Admin</button>
                     </form>
                 </div>
             </section>

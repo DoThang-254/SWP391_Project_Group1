@@ -54,7 +54,7 @@ public class TechnicianDAO extends DBContext {
 
     // Get technician by StaffId
     public Staff getTechnicianById(String staffId) {
-        String query = "SELECT * FROM Staff WHERE StaffId = ? AND RoleId = 2";
+        String query = "SELECT * FROM Staff WHERE StaffId = ? AND RoleId = 1";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, staffId);
             ResultSet rs = ps.executeQuery();
@@ -109,13 +109,7 @@ public class TechnicianDAO extends DBContext {
         return null;
     }
 
-    public static void main(String[] args) {
-        TechnicianDAO d = new TechnicianDAO();
-        List<Staff> list = d.getTechniciansByRole(2);
-        for (Staff s : list) {
-            System.out.println(s.getStaffId());
-        }
-    }
+ 
 
     // Update a technician
     public void updateTechnician(Staff Staff) {
@@ -164,7 +158,7 @@ public class TechnicianDAO extends DBContext {
   
     String cleanedName = name.trim().replaceAll("\\s+", "%");
 
-    String query = "SELECT * FROM Staff WHERE RoleId = 2 AND (FirstName LIKE ? OR LastName LIKE ? OR Username LIKE ?)";
+    String query = "SELECT * FROM Staff WHERE RoleId = 1 AND (FirstName LIKE ? OR LastName LIKE ? OR Username LIKE ?)";
 
     try (PreparedStatement ps = connection.prepareStatement(query)) {
         String searchPattern = "%" + cleanedName + "%";
@@ -199,7 +193,7 @@ public class TechnicianDAO extends DBContext {
 // Lọc theo ID
     public List<Staff> searchTechnicianById(String staffId) {
         List<Staff> technicians = new ArrayList<>();
-        String query = "SELECT * FROM Staff WHERE RoleId = 2 AND StaffId = ?";
+        String query = "SELECT * FROM Staff WHERE RoleId = 1 AND StaffId = ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, staffId);
             ResultSet rs = ps.executeQuery();
@@ -225,7 +219,7 @@ public class TechnicianDAO extends DBContext {
 
     // Get total number of technicians
     public int getTotalTechnicians() {
-        String query = "SELECT COUNT(*) FROM Staff WHERE RoleId = 2";
+        String query = "SELECT COUNT(*) FROM Staff WHERE RoleId = 1";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -242,7 +236,7 @@ public class TechnicianDAO extends DBContext {
         List<Staff> technicians = new ArrayList<>();
         int start = (page - 1) * recordsPerPage;
 
-        String query = "SELECT * FROM Staff WHERE RoleId = 2 ORDER BY StaffId OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String query = "SELECT * FROM Staff WHERE RoleId = 1 ORDER BY StaffId OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, start);

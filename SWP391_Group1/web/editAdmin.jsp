@@ -1,14 +1,18 @@
-<%-- Document   : addTechnician Created on : Feb 6, 2025, 10:04:18 PM Author : khang --%>
+<%-- 
+    Document   : editAdmin
+    Created on : Feb 25, 2025, 6:16:47 PM
+    Author     : khang
+--%>
+
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Add Technician</title>
+    <title>Edit Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <!-- Bootstrap CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
@@ -33,7 +37,7 @@
     </style>
 </head>
 <body class="skin-black">
-    
+
     <!-- Header -->
     <header class="header">
         <a href="index.html" class="logo">ASUS</a>
@@ -51,16 +55,16 @@
             <section class="sidebar">
                 <div class="user-panel">
                     <div class="pull-left image">
-                        <img src="img/26115.jpg" class="img-circle" alt="User Image" />
+                        <img src="img/admin-avatar.jpg" class="img-circle" alt="User Image" />
                     </div>
                     <div class="pull-left info">
-                        <p>Hello, Jane</p>
+                        <p>Hello, Admin</p>
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 </div>
                 <ul class="sidebar-menu">
                     <li><a href="index.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-                    <li><a href="technicianlist"><i class="fa fa-users"></i> <span>Technicians</span></a></li>
+                    <li><a href="adminlist"><i class="fa fa-user"></i> <span>Admins</span></a></li>
                 </ul>
             </section>
         </aside>
@@ -68,76 +72,65 @@
         <aside class="right-side">
             <section class="content">
                 <div class="container">
-                    <h2>Add Technician</h2>
-                    
-                    <c:if test="${not empty error}">
-                        <div class="alert alert-danger">${error}</div>
-                    </c:if>
+                    <h2>Edit Admin</h2>
 
-                    <form action="technicianlist" method="post">
-                        <input type="hidden" name="action" value="add" />
-
-                        <div class="form-group">
-                            <label>Staff ID:</label>
-                            <input type="text" name="staffId" class="form-control" required />
-                        </div>
+                    <form action="adminlist" method="post">
+                        <input type="hidden" name="action" value="update" />
+                        <input type="hidden" name="staffId" value="${admin.staffId}" />
 
                         <div class="form-group">
                             <label>Username:</label>
-                            <input type="text" name="username" class="form-control" required />
+                            <input type="text" name="username" class="form-control" value="${admin.username}" required />
                         </div>
 
                         <div class="form-group">
                             <label>First Name:</label>
-                            <input type="text" name="firstName" class="form-control" required />
+                            <input type="text" name="firstName" class="form-control" value="${admin.firstName}" required />
                         </div>
 
                         <div class="form-group">
                             <label>Last Name:</label>
-                            <input type="text" name="lastName" class="form-control" required />
+                            <input type="text" name="lastName" class="form-control" value="${admin.lastName}" required />
                         </div>
 
                         <div class="form-group">
                             <label>Email:</label>
-                            <input type="email" name="email" class="form-control" required />
+                            <input type="email" name="email" class="form-control" value="${admin.email}" required />
                         </div>
 
                         <div class="form-group">
                             <label>Phone:</label>
-                            <input type="text" name="phone" class="form-control" required />
+                            <input type="text" name="phone" class="form-control" value="${admin.phone}" required />
                         </div>
 
                         <div class="form-group">
                             <label>Gender:</label>
                             <select name="gender" class="form-control" required>
-                                <option value="">Select Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
+                                <option value="Male" ${admin.gender == 'Male' ? 'selected' : ''}>Male</option>
+                                <option value="Female" ${admin.gender == 'Female' ? 'selected' : ''}>Female</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label>Birth Date:</label>
-                            <input type="date" name="birthDate" class="form-control" required />
+                            <input type="date" name="birthDate" class="form-control" value="${admin.birthDate}" required />
                         </div>
 
                         <div class="form-group">
                             <label>Status:</label>
                             <select name="status" class="form-control" required>
-                                <option value="">Select Status</option>
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
+                                <option value="Active" ${admin.status == 'Active' ? 'selected' : ''}>Active</option>
+                                <option value="Inactive" ${admin.status == 'Inactive' ? 'selected' : ''}>Inactive</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label>Role:</label>
-                            <input type="text" class="form-control" value="Technician" readonly />
-                            <input type="hidden" name="roleId" value="1" />
+                            <input type="text" class="form-control" value="Admin" readonly />
+                            <input type="hidden" name="roleId" value="${admin.roleId}" />
                         </div>
 
-
-                        <button type="submit" class="btn btn-success btn-custom">Add Technician</button>
+                        <button type="submit" class="btn btn-primary btn-custom">Update Admin</button>
                     </form>
                 </div>
             </section>

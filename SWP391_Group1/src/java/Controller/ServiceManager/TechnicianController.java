@@ -83,7 +83,7 @@ public class TechnicianController extends HttpServlet {
     String gender = request.getParameter("gender");
     String birthDateStr = request.getParameter("birthDate");
     String status = request.getParameter("status");
-    int roleId = 2;
+    int roleId = 1;
 
     String staffIdRegex = "^S\\d{3}$";
     if (!staffId.matches(staffIdRegex)) {

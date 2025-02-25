@@ -133,7 +133,7 @@
                         <div class="form-group">
                             <label>Role:</label>
                             <input type="text" class="form-control" value="Technician" readonly />
-                            <input type="hidden" name="roleId" value="2" />
+                            <input type="hidden" name="roleId" value="1" />
                         </div>
 
 
