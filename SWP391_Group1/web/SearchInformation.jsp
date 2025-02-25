@@ -175,7 +175,9 @@
                                                 <td>${c.productName}</td>
                                                 <td>${c.price}</td>
                                                 <td>${c.brand}</td>
-                                                <td>${c.warrantyStatus}</td>
+                                                <td class="${c.warrantyStatus == 'Còn bảo hành' ? 'warranty-active' : 'warranty-expired'}">
+                                                    ${c.warrantyStatus}
+                                                </td>
 
                                                 <td> 
                                                     <a href="warrantyformdetail?productid=${c.productId}" class="btn btn-info btn-sm" title="View Details">
@@ -268,6 +270,20 @@
         color: #fff;
         background-color: red;
         border-color: #007bff;
+    }
+
+    /* Nếu còn bảo hành, nền xanh lá */
+    .warranty-active {
+        background-color: #28a745; /* Xanh lá */
+        color: white;
+        font-weight: bold;
+    }
+
+    /* Nếu hết hạn bảo hành, nền đỏ */
+    .warranty-expired {
+        background-color: #dc3545; /* Đỏ */
+        color: white;
+        font-weight: bold;
     }
 
 </style>
