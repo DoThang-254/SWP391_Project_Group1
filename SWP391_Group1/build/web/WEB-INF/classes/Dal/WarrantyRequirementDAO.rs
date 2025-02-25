@@ -1,2 +1,1 @@
-Dal.NewClass
 dao.WarrantyRequirementDAO

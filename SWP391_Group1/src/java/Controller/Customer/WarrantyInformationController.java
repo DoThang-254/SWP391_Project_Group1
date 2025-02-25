@@ -17,7 +17,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -73,6 +75,7 @@ public class WarrantyInformationController extends HttpServlet {
 
     }
     CustomerDao cd = new CustomerDao();
+    WarrantyFormDao wfd = new WarrantyFormDao();
 
     protected void searchWarrantyInformation(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -102,7 +105,16 @@ public class WarrantyInformationController extends HttpServlet {
         }
         String priceRange = request.getParameter("filterPriceRange");
         List<Product> list = cd.SearchingProductByProductId(index, c.getCustomerId(), searchBox, newProduct, sort, order, priceRange, amount);
-//        List<WarrantyForm> list = cd.SearchingProductByProductId(index, c.getCustomerId(), searchBox, newProduct, sort, order, priceRange, amount);
+
+        for (Product p : list) {
+            WarrantyForm activeWarranty = wfd.getActiveWarrantyFormByProduct(p.getProductId());
+
+            if (activeWarranty != null) {
+                p.setWarrantyStatus("Còn bảo hành");
+            } else {
+                p.setWarrantyStatus("Hết hạn bảo hành");
+            }
+        }
 
         request.setAttribute("endpage", endPage);
         request.setAttribute("listA", list);

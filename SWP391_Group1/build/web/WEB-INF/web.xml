@@ -122,7 +122,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>TechnicianController</servlet-name>
-        <servlet-class>Controller.TechnicianController</servlet-class>
+        <servlet-class>Controller.ServiceManager.TechnicianController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TechnicianController</servlet-name>

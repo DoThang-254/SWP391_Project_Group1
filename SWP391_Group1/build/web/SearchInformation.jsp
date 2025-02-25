@@ -152,11 +152,14 @@
                                                     <a href="searchinformation?sort=Brand&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
                                                     <a href="searchinformation?sort=Brand&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
-                                      
+
+                                                <th>Status
+
+                                                </th> 
                                                 <th>View Details
 
                                                 </th>
-                                                
+
                                             </tr>
                                         </thead>
                                         <c:if test="${requestScope.listA == null || requestScope.listA.isEmpty()}">
@@ -165,21 +168,21 @@
                                             </tr>
                                         </c:if>
                                         <c:forEach var="c" items="${requestScope.listA}">
-                                           
+
 
                                             <tr>
                                                 <td>${c.productId}</td>
                                                 <td>${c.productName}</td>
                                                 <td>${c.price}</td>
                                                 <td>${c.brand}</td>
-                                                
-                                                
+                                                <td>${c.warrantyStatus}</td>
+
                                                 <td> 
-                                            <a href="warrantyformdetail?productid=${c.productId}" class="btn btn-info btn-sm" title="View Details">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
-                                            </td>
-                                            
+                                                    <a href="warrantyformdetail?productid=${c.productId}" class="btn btn-info btn-sm" title="View Details">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                </td>
+
                                             </tr>
                                         </c:forEach>
                                     </table>
