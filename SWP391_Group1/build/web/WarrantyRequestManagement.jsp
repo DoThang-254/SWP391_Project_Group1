@@ -160,7 +160,7 @@
                                         </thead>
                                         <c:if test="${requestScope.list == null || requestScope.list.isEmpty()}">
                                             <tr>
-                                                <td colspan="7" style="text-align: center;">Your Product is not exist</td>
+                                                <td colspan="7" style="text-align: center;">Warranty Form is not exist</td>
                                             </tr>
                                         </c:if>
                                         <script>
@@ -179,11 +179,16 @@
                                                 <td>${r.product.productId}</td>
 
                                                 <td>
-                                                    <c:if test="${empty r.staff.staffId}">
-                                                        <a href="assignTechnician?requirementId=${r.requirementId}" class="btn btn-primary btn-sm" title="Chọn Technician">
-                                                            <i class="fa fa-user"></i> Chọn nhân viên
-                                                        </a>
-                                                    </c:if> 
+                                                    <c:choose>
+                                                        <c:when test="${empty r.staff.staffId}">
+                                                            <a href="assigntechnician?requirementid=${r.requirementId}" class="btn btn-primary btn-sm" title="Chọn Technician">
+                                                                <i class="fa fa-user"></i> Chọn nhân viên
+                                                            </a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${r.staff.staffId}
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </td>
 
                                                 <td>
@@ -199,14 +204,13 @@
 
                                                 <td>${r.description}</td>
 
-
                                                 <td> 
-                                                    <a href="warrantyformdetail?productid=${c.productId}" class="btn btn-info btn-sm" title="View Details">
+                                                    <a href="warrantyformdetail?productid=${r.product.productId}" class="btn btn-info btn-sm" title="View Details">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
                                                 </td>
-
                                             </tr>
+
                                         </c:forEach>
                                     </table>
 
