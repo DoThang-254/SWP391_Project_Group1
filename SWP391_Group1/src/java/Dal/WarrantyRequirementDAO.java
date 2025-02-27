@@ -1,8 +1,12 @@
 package dao;
 
 import Dal.DBContext;
+import Model.Product;
+import Model.Staff;
 import Model.WarrantyRequirement;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WarrantyRequirementDAO extends DBContext {
 
@@ -49,5 +53,59 @@ public class WarrantyRequirementDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public List<WarrantyRequirement> GetAllRequest() {
+        List<WarrantyRequirement> list = new ArrayList<>();
+        String sql = "SELECT * FROM WarrantyRequirement WHERE Status = 'Pending'";
+
+        try {
+            p = connection.prepareStatement(sql);
+
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+                WarrantyRequirement wr = new WarrantyRequirement();
+                wr.setRequirementId(rs.getInt(1));
+                Product p = new Product(); 
+                p.setProductId(rs.getString(2));
+                wr.setProduct(p);
+                Staff s = new Staff();
+                s.setStaffId(rs.getString(4));
+                wr.setStatus(rs.getString(5));
+                wr.setDescription(rs.getString(6));
+                list.add(wr);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public void UpdateStatusRequest() {
+        List<WarrantyRequirement> list = new ArrayList<>();
+        String sql = "SELECT * FROM WarrantyRequirement WHERE Status = 'Pending'";
+
+        try {
+            p = connection.prepareStatement(sql);
+
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+                WarrantyRequirement wr = new WarrantyRequirement();
+                wr.setRequirementId(rs.getInt(1));
+                Product p = new Product(); 
+                p.setProductId(rs.getString(2));
+                wr.setProduct(p);
+                Staff s = new Staff();
+                s.setStaffId(rs.getString(4));
+                wr.setStatus(rs.getString(5));
+                wr.setDescription(rs.getString(6));
+                list.add(wr);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

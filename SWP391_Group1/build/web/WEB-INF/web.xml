@@ -57,6 +57,22 @@
         <servlet-name>BlogController</servlet-name>
         <servlet-class>Controller.common.BlogController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RequestManagementController</servlet-name>
+        <servlet-class>Controller.ServiceManager.RequestManagementController</servlet-class>
+    </servlet>
+     <servlet-mapping>
+        <servlet-name>RequestManagementController</servlet-name>
+        <url-pattern>/requestmanagement</url-pattern>
+    </servlet-mapping>
+     <servlet>
+        <servlet-name>TechnicianController</servlet-name>
+        <servlet-class>Controller.ServiceManager.TechnicianController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TechnicianController</servlet-name>
+        <url-pattern>/technicianlist</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -101,6 +117,7 @@
         <servlet-name>BlogController</servlet-name>
         <url-pattern>/blog</url-pattern>
     </servlet-mapping>
+   
     <welcome-file-list>
         <welcome-file>home</welcome-file>
     </welcome-file-list>
@@ -120,12 +137,5 @@
         <servlet-name>UserDetail</servlet-name>
         <url-pattern>/admin-management/userdetail</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>TechnicianController</servlet-name>
-        <servlet-class>Controller.ServiceManager.TechnicianController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TechnicianController</servlet-name>
-        <url-pattern>/technicianlist</url-pattern>
-    </servlet-mapping>
+   
 </web-app>
