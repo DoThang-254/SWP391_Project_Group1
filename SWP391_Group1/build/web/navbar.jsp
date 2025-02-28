@@ -149,6 +149,7 @@
 
                             </li>
                         </ul>
+                                
                     </div>
                 </c:if>
 
@@ -162,6 +163,7 @@
                     </div>
                 </c:if>
             </nav>
-        </header>    </body>
+        </header>    
+    </body>
 </html>
 

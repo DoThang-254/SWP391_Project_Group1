@@ -57,7 +57,7 @@ public class WarrantyRequirementDAO extends DBContext {
 
     public List<WarrantyRequirement> GetAllRequest() {
         List<WarrantyRequirement> list = new ArrayList<>();
-        String sql = "SELECT * FROM WarrantyRequirement WHERE Status = 'Pending'";
+        String sql = "SELECT * FROM WarrantyRequirement ";
 
         try {
             p = connection.prepareStatement(sql);
@@ -120,4 +120,33 @@ public class WarrantyRequirementDAO extends DBContext {
             e.printStackTrace();
         }
     }
+
+    public List<WarrantyRequirement> GetAllRequestByStaffId(String staffId) {
+        List<WarrantyRequirement> list = new ArrayList<>();
+        String sql = "SELECT * FROM WarrantyRequirement WHERE StaffId = ? ";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, staffId);
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+                WarrantyRequirement wr = new WarrantyRequirement();
+                wr.setRequirementId(rs.getInt(1));
+                Product p = new Product();
+                p.setProductId(rs.getString(2));
+                wr.setProduct(p);
+                Staff s = new Staff();
+                s.setStaffId(rs.getString(4));
+                wr.setStaff(s);
+                wr.setStatus(rs.getString(5));
+                wr.setDescription(rs.getString(6));
+                list.add(wr);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }

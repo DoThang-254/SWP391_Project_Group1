@@ -55,8 +55,7 @@
                         <div class="col-xs-12">
                             <div class="panel">
                                 <header class="panel-heading">
-                                    Search Warranty Information
-
+                                    List Of Technician
                                 </header>
                                 <div class="filter-section">
                                     <form action="searchinformation" method="get" class="row">

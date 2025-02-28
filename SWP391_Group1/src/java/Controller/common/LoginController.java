@@ -52,9 +52,9 @@ public class LoginController extends HttpServlet {
                 if (s != null) {
                     request.getSession().setAttribute("Staff", s);
                     switch (s.getRole().getRoleId()) {
-                        case 1 -> response.sendRedirect("Admin.jsp");
-                        case 2 -> response.sendRedirect("Technician.jsp");
-                        case 3 -> response.sendRedirect("ServiceManager.jsp");
+                        case 3 -> response.sendRedirect("Admin.jsp");
+                        case 1 -> response.sendRedirect("Technician.jsp");
+                        case 2 -> response.sendRedirect("ServiceManager.jsp");
                         case 4 -> response.sendRedirect("Cashier.jsp");
                         default -> response.sendRedirect("Login.jsp");
                     }
@@ -92,9 +92,9 @@ public class LoginController extends HttpServlet {
                 if (s != null) {
                     request.getSession().setAttribute("Staff", s);
                     switch (s.getRole().getRoleId()) {
-                        case 1 -> response.sendRedirect("Admin.jsp");
-                        case 2 -> response.sendRedirect("Technician.jsp");
-                        case 3 -> response.sendRedirect("ServiceManager.jsp");
+                        case 3 -> response.sendRedirect("Admin.jsp");
+                        case 1 -> response.sendRedirect("Technician.jsp");
+                        case 2 -> response.sendRedirect("ServiceManager.jsp");
                         case 4 -> response.sendRedirect("Cashier.jsp");
                         default -> response.sendRedirect("Login.jsp");
                     }

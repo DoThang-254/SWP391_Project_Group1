@@ -65,6 +65,10 @@
         <servlet-name>AssignTechnicianController</servlet-name>
         <servlet-class>Controller.ServiceManager.AssignTechnicianController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TaskController</servlet-name>
+        <servlet-class>Controller.Technician.TaskController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RequestManagementController</servlet-name>
         <url-pattern>/requestmanagement</url-pattern>
@@ -124,6 +128,10 @@
     <servlet-mapping>
         <servlet-name>AssignTechnicianController</servlet-name>
         <url-pattern>/assigntechnician</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TaskController</servlet-name>
+        <url-pattern>/task</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>home</welcome-file>
