@@ -4,8 +4,11 @@
  */
 package Controller.Technician;
 
+import Dal.InvoiceDao;
+import Dal.WarrantyProcessDao;
 import Model.Customer;
 import Model.Staff;
+import Model.WarrantyProcessing;
 import Model.WarrantyRequirement;
 import dao.WarrantyRequirementDAO;
 import java.io.IOException;
@@ -62,8 +65,10 @@ public class TaskController extends HttpServlet {
             throws ServletException, IOException {
         Staff s = (Staff) request.getSession().getAttribute("Staff");
 
-        WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
-        List<WarrantyRequirement> list = wrd.GetAllRequestByStaffId(s.getStaffId());
+//        WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
+//        List<WarrantyRequirement> list = wrd.GetAllRequestByStaffId(s.getStaffId());
+        WarrantyProcessDao wpd = new WarrantyProcessDao();
+        List<WarrantyProcessing> list = wpd.getAllWarrantyProcess(s.getStaffId());
         request.setAttribute("list", list);
         request.getRequestDispatcher("Task.jsp").forward(request, response);
     }
@@ -79,7 +84,17 @@ public class TaskController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String status = request.getParameter("status");
+        int processId = Integer.parseInt( request.getParameter("processingId"));
+        int requirementId = Integer.parseInt(request.getParameter("requirementId"));
+        if(status.equals("Completed")){
+            WarrantyProcessDao wpd = new WarrantyProcessDao();
+            wpd.updateStatusWarrantyProcess(processId, status);
+            InvoiceDao ivd = new InvoiceDao();
+            ivd.createInvoie(requirementId);
+        }
+        
+        response.sendRedirect("task");
     }
 
     /**

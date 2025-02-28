@@ -102,10 +102,10 @@ public class WarrantyRequirementDAO extends DBContext {
         }
     }
 
-    public void UpdateStaffRequest(String staffId, int requirementId) {
+    public void UpdateStaffRequest(String staffId, int requirementId, String status) {
         String sql = "UPDATE [dbo].[WarrantyRequirement]\n"
                 + "   SET \n"
-                + "		StaffId = ? \n"
+                + "		StaffId = ? , [Status] = ?\n"
                 + "      \n"
                 + " WHERE RequirementId = ? ";
 
@@ -113,7 +113,9 @@ public class WarrantyRequirementDAO extends DBContext {
             p = connection.prepareStatement(sql);
 
             p.setString(1, staffId);
-            p.setInt(2, requirementId);
+            p.setString(2, status);
+            p.setInt(3, requirementId);
+
             p.executeUpdate();
 
         } catch (SQLException e) {

@@ -79,25 +79,44 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Product Id</th>
+                                                <th>Status</th>
                                                 <th>Product Name</th>
                                                 <th>Status</th>
+                                                <th>View Invoice</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach var="r" items="${requestScope.list}">
+                                            <c:forEach var="pr" items="${requestScope.list}">
 
 
                                                 <tr>
-                                                    <td>${r.requirementId}</td>
-                                                    <td>${r.product.productId}</td>
-                                                    <td>${r.product.productName}</td>
-                                                    <td>${r.product.brand}</td>
+                                                    <td>${pr.requirement.requirementId}</td>
+                                                    <td>
+                                                        <script>
+                                                            function confirmUpdate(form) {
+                                                                let confirmAction = confirm("Bạn có chắc muốn cập nhật trạng thái này không?");
+                                                                if (confirmAction) {
+                                                                    form.submit();
+                                                                }
+                                                            }
+                                                        </script>
+                                                        <form action="task" method="post">
+                                                            <input type="hidden" name="processingId" value="${pr.processingId}">
+                                                            <input type="hidden" name="requirementId" value="${pr.requirement.requirementId}">
+                                                            <select name="status" class="form-control" onchange="confirmUpdate(this.form)">
+                                                                <option value="In Repair" ${pr.status == 'In Repair' ? 'selected' : ''}>In Repair</option>
+                                                                <option value="Completed" ${pr.status == 'Completed' ? 'selected' : ''}>Completed</option>
+                                                                <option value="Under Inspection" ${pr.status == 'Under Inspection' ? 'selected' : ''}>Under Inspection</option>
+                                                            </select>
+                                                        </form>
+                                                    </td>
+                                                    <td>${pr.requirement.requirementId}</td>
+                                                    <td>${pr.requirement.requirementId}</td>
 
 
                                                     <td> 
-                                                        <a href="warrantyformdetail?productid=" class="btn btn-info btn-sm" title="View Details">
+                                                        <a href="invoice?requirementId=${pr.requirement.requirementId}" class="btn btn-info btn-sm" title="View Details">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
                                                     </td>
@@ -311,18 +330,18 @@
 
         <!-- Director for demo purposes -->
         <script type="text/javascript">
-            $('input').on('ifChecked', function (event) {
-                // var element = $(this).parent().find('input:checkbox:first');
-                // element.parent().parent().parent().addClass('highlight');
-                $(this).parents('li').addClass("task-done");
-                console.log('ok');
-            });
-            $('input').on('ifUnchecked', function (event) {
-                // var element = $(this).parent().find('input:checkbox:first');
-                // element.parent().parent().parent().removeClass('highlight');
-                $(this).parents('li').removeClass("task-done");
-                console.log('not');
-            });
+                                                                $('input').on('ifChecked', function (event) {
+                                                                    // var element = $(this).parent().find('input:checkbox:first');
+                                                                    // element.parent().parent().parent().addClass('highlight');
+                                                                    $(this).parents('li').addClass("task-done");
+                                                                    console.log('ok');
+                                                                });
+                                                                $('input').on('ifUnchecked', function (event) {
+                                                                    // var element = $(this).parent().find('input:checkbox:first');
+                                                                    // element.parent().parent().parent().removeClass('highlight');
+                                                                    $(this).parents('li').removeClass("task-done");
+                                                                    console.log('not');
+                                                                });
 
         </script>
         <script>

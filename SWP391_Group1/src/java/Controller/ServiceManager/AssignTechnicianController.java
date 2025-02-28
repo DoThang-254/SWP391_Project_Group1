@@ -5,6 +5,7 @@
 package Controller.ServiceManager;
 
 import Dal.TechnicianDAO;
+import Dal.WarrantyProcessDao;
 import Model.Staff;
 import Model.WarrantyRequirement;
 import dao.WarrantyRequirementDAO;
@@ -85,7 +86,13 @@ public class AssignTechnicianController extends HttpServlet {
 
         WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
         int reqId = Integer.parseInt(requirementId);
-        wrd.UpdateStaffRequest(staffId, reqId);        
+        wrd.UpdateStaffRequest(staffId, reqId , "Approved");
+        
+        WarrantyProcessDao wpd = new WarrantyProcessDao();
+        
+        
+        wpd.insertWarrantyProcess(reqId, staffId);
+        
         response.sendRedirect("requestmanagement");
     }
 
