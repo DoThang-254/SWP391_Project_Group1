@@ -76,6 +76,7 @@ CREATE TABLE Invoice (
     Price bigint NULL,
     Status VARCHAR(50) DEFAULT 'Unpaid', -- Unpaid / Paid
     Note NVARCHAR(MAX),
+	IsConfirmed Bit ,
     FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId)
 );
 
@@ -117,7 +118,7 @@ CREATE TABLE WarrantyProcessing (
     ProcessingId INT IDENTITY(1,1) PRIMARY KEY,
     RequirementId INT NOT NULL,
     StaffId VARCHAR(255) NOT NULL,
-    Status VARCHAR(255) DEFAULT 'In Repair' CHECK (Status IN ('In Repair', 'Completed', 'Under Inspection')),
+    Status VARCHAR(255) DEFAULT 'Under Inspection' CHECK (Status IN ('In Repair', 'Completed', 'Under Inspection')),
     Note VARCHAR(255),
     ReturnDate DATE,
     FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId),
@@ -219,6 +220,5 @@ VALUES
 ('P001', '2022-07-25', '2023-07-25', 'Canceled', 'PQR741', 'Phone', 0),
 ('P001', '2024-08-30', '2025-08-30', 'Active', 'STU258', 'Email', 1),
 ('P001', '2023-09-10', '2024-09-10', 'Active', 'VWX369', 'SMS', 1);
-ALTER TABLE Invoice
-ALTER COLUMN;
+
 

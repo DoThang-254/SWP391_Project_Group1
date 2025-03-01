@@ -85,15 +85,19 @@ public class TaskController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String status = request.getParameter("status");
-        int processId = Integer.parseInt( request.getParameter("processingId"));
+        int processId = Integer.parseInt(request.getParameter("processingId"));
         int requirementId = Integer.parseInt(request.getParameter("requirementId"));
-        if(status.equals("Completed")){
-            WarrantyProcessDao wpd = new WarrantyProcessDao();
-            wpd.updateStatusWarrantyProcess(processId, status);
+        WarrantyProcessDao wpd = new WarrantyProcessDao();
+        wpd.updateStatusWarrantyProcess(processId, status);
+        if (status.equals("In Repair")) {
+
             InvoiceDao ivd = new InvoiceDao();
             ivd.createInvoie(requirementId);
         }
-        
+        if(status.equals("Completed")){
+            // tạo phiếu bảo hành mới
+        }
+
         response.sendRedirect("task");
     }
 

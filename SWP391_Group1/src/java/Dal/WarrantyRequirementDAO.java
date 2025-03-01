@@ -1,6 +1,7 @@
 package dao;
 
 import Dal.DBContext;
+import Model.Customer;
 import Model.Product;
 import Model.Staff;
 import Model.WarrantyRequirement;
@@ -73,8 +74,13 @@ public class WarrantyRequirementDAO extends DBContext {
                 Staff s = new Staff();
                 s.setStaffId(rs.getString(4));
                 wr.setStaff(s);
+                Customer c = new Customer();
+                c.setCustomerId(rs.getInt(3));
+                wr.setCustomer(c);
                 wr.setStatus(rs.getString(5));
                 wr.setDescription(rs.getString(6));
+                wr.setRegisterDate(rs.getDate(8));
+                wr.setIsPay(rs.getString(9));
                 list.add(wr);
             }
         } catch (SQLException e) {

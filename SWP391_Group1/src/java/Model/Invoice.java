@@ -15,7 +15,7 @@ public class Invoice {
     private String status;
     private String note;
     private WarrantyRequirement requirement;
-
+    private boolean confirmed ;
     public Invoice() {
     }
 
@@ -65,6 +65,14 @@ public class Invoice {
 
     public void setRequirement(WarrantyRequirement requirement) {
         this.requirement = requirement;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
     }
     
    

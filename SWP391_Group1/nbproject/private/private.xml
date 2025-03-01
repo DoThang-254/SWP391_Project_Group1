@@ -6,9 +6,11 @@
             <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/web/Invoice.jsp</file>
             <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/web/Task.jsp</file>
             <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Dal/InvoiceDao.java</file>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/Technician/InvoiceController.java</file>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/Technician/TaskController.java</file>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Dal/WarrantyProcessDao.java</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Model/Invoice.java</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/web/Payment.jsp</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/Customer/Payment.java</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/web/WarrantyRequestManagement.jsp</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/web/WEB-INF/web.xml</file>
         </group>
     </open-files>
 </project-private>

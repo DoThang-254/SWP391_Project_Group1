@@ -143,7 +143,12 @@
                                                     <a href="searchinformation?sort=productname&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
                                                     <a href="searchinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
+                                                <th>Customer
 
+                                                </th> 
+                                                <th>Register Date
+
+                                                </th> 
 
                                                 <th>Staff
 
@@ -155,7 +160,9 @@
                                                 <th>Description
 
                                                 </th>
+                                                <th>Is Pay
 
+                                                </th> 
                                             </tr>
                                         </thead>
                                         <c:if test="${requestScope.list == null || requestScope.list.isEmpty()}">
@@ -177,7 +184,8 @@
                                             <tr>
                                                 <td>${r.requirementId}</td>
                                                 <td>${r.product.productId}</td>
-
+                                                <td>${r.customer.firstName} ${r.customer.lastName}</td>
+                                                <td>${r.registerDate}</td>
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${empty r.staff.staffId}">
@@ -205,7 +213,7 @@
                                                 <td>${r.description}</td>
 
                                                 <td> 
-                                                    <a href="warrantyformdetail?productid=${r.product.productId}" class="btn btn-info btn-sm" title="View Details">
+                                                    <a href="?requirementid=${r.requirementId}" class="btn btn-info btn-sm" title="View Details">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
                                                 </td>

@@ -81,6 +81,14 @@
         <servlet-name>InvoiceController</servlet-name>
         <servlet-class>Controller.Technician.InvoiceController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Payment</servlet-name>
+        <servlet-class>Controller.Customer.Payment</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SendConfirmController</servlet-name>
+        <servlet-class>Controller.common.SendConfirmController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RequestManagementController</servlet-name>
         <url-pattern>/requestmanagement</url-pattern>
@@ -156,6 +164,14 @@
     <servlet-mapping>
         <servlet-name>InvoiceController</servlet-name>
         <url-pattern>/invoice</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Payment</servlet-name>
+        <url-pattern>/payment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendConfirmController</servlet-name>
+        <url-pattern>/sendconfirm</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>home</welcome-file>

@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,11 +15,36 @@
     </head>
     <body>
         <h2>Thanh toán qua VNPay</h2>
-        <form action="vnpay" method="post">
-            <label>Số tiền (VNĐ):</label>
-            <input type="number" name="amount" required>
-            <button type="submit">Thanh toán</button>
-        </form>
+        <c:forEach var="i" items="${requestScope.list}">
+            <c:choose>
+                <c:when test="${!i.confirmed}">
+                    <!-- Chỉ hiển thị form xác nhận email nếu chưa xác nhận -->
+                    <form action="sendconfirm" method="post">
+                        <p>Mã hóa đơn: ${i.invoiceId}</p>
+                        <p>Số tiền phải trả: ${i.price} VNĐ</p>
+
+                        <label>Email nhận xác nhận:</label>
+                        <input type="email" name="email" required>
+                        <input type="hidden" name="invoiceId" value="${i.invoiceId}">
+                        ${requestScope.msg}
+                        <br>
+                        <button type="submit">Xác nhận qua Email</button>
+                    </form>
+                </c:when>
+
+                <c:otherwise>
+                    <!-- Chỉ hiển thị nút thanh toán nếu đã xác nhận -->
+                    <form action="vnpay" method="post">
+                        <p>Mã hóa đơn: ${i.invoiceId}</p>
+                        <p>Số tiền phải trả: ${i.price} VNĐ</p>
+                        <input type="hidden" name="amount" value="${i.price}">
+                        <button type="submit">Thanh toán</button>
+                    </form>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+
+
         <hr>
         <a href="transactionHistory.jsp">Xem lịch sử giao dịch</a>    </body>
 </html>

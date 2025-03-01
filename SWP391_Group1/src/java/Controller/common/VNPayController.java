@@ -62,7 +62,7 @@ public class VNPayController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        response.sendRedirect("Payment.jsp");
+        response.sendRedirect("payment");
     } 
 
     private static final String VNP_TMN_CODE = "CHBZRIMK";  // Mã Website của bạn

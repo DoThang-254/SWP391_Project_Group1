@@ -9,6 +9,8 @@ import Model.WarrantyRequirement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -18,6 +20,34 @@ public class InvoiceDao extends DBContext {
 
     private PreparedStatement p;
     private ResultSet rs;
+
+    public List<Invoice> getInvoiceByCustomerId(int customerId) {
+        List<Invoice> list = new ArrayList<>();
+        String sql = "select i.* from Product p join WarrantyRequirement wr on p.ProductId = wr.ProductId\n"
+                + "join Invoice i on i.RequirementId = wr.RequirementId\n"
+                + "where p.CustomerId = ? ";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, customerId);
+            rs = p.executeQuery();
+            while (rs.next()) {
+                Invoice i = new Invoice();
+                i.setInvoiceId(rs.getInt(1));
+                WarrantyRequirement wr = new WarrantyRequirement();
+                wr.setRequirementId(rs.getInt(2));
+                i.setRequirement(wr);
+                i.setPrice(rs.getLong(3));
+                i.setStatus(rs.getString(4));
+                i.setNote(rs.getString(5));
+                i.setConfirmed(rs.getBoolean(6));
+                list.add(i);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     public void createInvoie(int requirementId) {
         String sql = "INSERT INTO [dbo].[Invoice]\n"
@@ -52,6 +82,7 @@ public class InvoiceDao extends DBContext {
                 i.setPrice(rs.getLong(3));
                 i.setStatus(rs.getString(4));
                 i.setNote(rs.getString(5));
+                
                 return i;
             }
         } catch (SQLException e) {
@@ -60,7 +91,7 @@ public class InvoiceDao extends DBContext {
         return null;
     }
 
-    public void updateInvoie(long price , String note , int invoiceId) {
+    public void updateInvoie(long price, String note, int invoiceId) {
         String sql = "UPDATE [dbo].[Invoice]\n"
                 + "   SET [Price] = ?\n"
                 + "      \n"
@@ -76,5 +107,35 @@ public class InvoiceDao extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean updateIsConfirmInvoice(int invoiceId) {
+        try {
+
+            String sql = "UPDATE Invoice SET IsConfirmed = 1 WHERE InvoiceId = ?";
+            p = connection.prepareStatement(sql);
+            p.setInt(1, invoiceId);
+            return p.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+        }
+        return false;
+    }
+
+    public boolean checkIsConfirm(int invoiceId) {
+        String sql = " select IsConfirmed from Invoice where invoiceId = ?";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, invoiceId);
+            rs = p.executeQuery();
+            if (rs.next()) {
+               
+                return rs.getBoolean(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
