@@ -5,6 +5,7 @@
 package Controller.common;
 
 import Dal.InvoiceDao;
+import Model.Customer;
 import Model.Invoice;
 import java.util.Properties;
 import javax.mail.*;
@@ -35,6 +36,9 @@ public class SendConfirmController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String customerIdRaw = request.getParameter("customerId");
+
+        int customerId = Integer.parseInt(customerIdRaw);
         String invoiceIdRaw = request.getParameter("invoiceId");
         if (invoiceIdRaw == null) {
             response.sendRedirect("home");
@@ -45,8 +49,8 @@ public class SendConfirmController extends HttpServlet {
 
         InvoiceDao ivd = new InvoiceDao();
         ivd.updateIsConfirmInvoice(invoiceId);
-        
-        List<Invoice> invoices = ivd.getInvoiceByCustomerId(1);
+
+        List<Invoice> invoices = ivd.getInvoiceByCustomerId(customerId);
 
         for (Invoice invoice : invoices) {
             boolean isConfirmed = ivd.checkIsConfirm(invoice.getInvoiceId());
@@ -55,7 +59,7 @@ public class SendConfirmController extends HttpServlet {
         }
 
         request.setAttribute("list", invoices);
-        response.sendRedirect("payment");
+        response.sendRedirect("payment?customerId=" + customerId);
     }
 
     /**
@@ -69,9 +73,13 @@ public class SendConfirmController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String customerIdRaw = request.getParameter("customerId");
+
+        int customerId = Integer.parseInt(customerIdRaw);
+
         String userEmail = request.getParameter("email"); // Lấy email người dùng nhập
         String invoiceId = request.getParameter("invoiceId"); // Lấy ID hóa đơn
-        String confirmLink = "http://localhost:9999/SWP391_Group1/sendconfirm?invoiceId=" + invoiceId; // Link xác nhận
+        String confirmLink = "http://localhost:9999/SWP391_Group1/sendconfirm?invoiceId=" + invoiceId + "&customerId=" + customerId;
 
         // Cấu hình SMTP server (Gmail)
         final String senderEmail = "thangditto2231977@gmail.com";  // Thay bằng email của bạn

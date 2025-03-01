@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package Controller.common;
 
+import Model.Customer;
 import Validation.VNPayUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,34 +26,37 @@ import java.util.Map;
  * @author thang
  */
 public class VNPayController extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet VNPayController</title>");  
+            out.println("<title>Servlet VNPayController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet VNPayController at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet VNPayController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -61,9 +64,9 @@ public class VNPayController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.sendRedirect("payment");
-    } 
+    }
 
     private static final String VNP_TMN_CODE = "CHBZRIMK";  // Mã Website của bạn
     private static final String VNP_HASH_SECRET = "FOFVFJKSXHFE5VYCT4MVE0415T8PLJFK"; // Secret Key
@@ -76,7 +79,13 @@ public class VNPayController extends HttpServlet {
 
         long amount = Long.parseLong(request.getParameter("amount")) * 100; // VNPAY tính theo đơn vị VND x100
         String orderId = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-
+        String customerIdRaw = request.getParameter("customerId");
+        if (customerIdRaw == null) {
+            response.sendRedirect("home");
+            return;
+        }
+        int customerId = Integer.parseInt(customerIdRaw);
+        int invoiceId = Integer.parseInt(request.getParameter("invoiceId"));
         // Tạo request params
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", "2.1.0");
@@ -85,7 +94,7 @@ public class VNPayController extends HttpServlet {
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_TxnRef", orderId);
-        vnp_Params.put("vnp_OrderInfo", "Nap tien vao tai khoan");
+        vnp_Params.put("vnp_OrderInfo", "Invoice:" + invoiceId + "-Customer:" + customerId);
         vnp_Params.put("vnp_OrderType", "topup");
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_ReturnUrl", RETURN_URL);
@@ -121,8 +130,9 @@ public class VNPayController extends HttpServlet {
         response.sendRedirect(paymentUrl);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

@@ -4,6 +4,8 @@
  */
 package Controller.common;
 
+import Dal.InvoiceDao;
+import Dal.TransactionDao;
 import Validation.VNPayUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -38,12 +40,30 @@ public class VNPayReturnController extends HttpServlet {
 
         if (generatedHash.equals(vnp_SecureHash)) {
             String vnp_ResponseCode = params.get("vnp_ResponseCode");
+            // Lấy thông tin từ vnp_OrderInfo
+            String orderInfo = params.get("vnp_OrderInfo");
+            int customerId = 0, invoiceId = 0;
+            if (orderInfo != null) {
+                String[] parts = orderInfo.split("-");
+                if (parts.length == 2) {
+                    invoiceId = Integer.parseInt(parts[0].replace("Invoice:", "").trim());
+                    customerId = Integer.parseInt(parts[1].replace("Customer:", "").trim());
+                }
+            }
+
+            long amount = Long.parseLong(params.get("vnp_Amount")) / 100; // Chia 100 để lấy giá trị thực
+
             if ("00".equals(vnp_ResponseCode)) {
                 // Thanh toán thành công
                 request.setAttribute("message", "Giao dịch thành công!");
                 request.setAttribute("orderId", params.get("vnp_TxnRef"));
-                request.setAttribute("amount", Long.parseLong(params.get("vnp_Amount")) / 100);
+                request.setAttribute("amount", amount);
                 request.setAttribute("bankCode", params.get("vnp_BankCode"));
+
+                TransactionDao td = new TransactionDao();
+                td.saveTransaction(customerId, invoiceId, amount, "VNPay", "Success");
+                InvoiceDao ivd = new InvoiceDao();
+                ivd.updateStatusInvoie(invoiceId);
             } else {
                 // Giao dịch thất bại
                 request.setAttribute("message", "Giao dịch thất bại! Mã lỗi: " + vnp_ResponseCode);

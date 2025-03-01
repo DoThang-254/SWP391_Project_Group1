@@ -25,6 +25,8 @@
 
                         <label>Email nhận xác nhận:</label>
                         <input type="email" name="email" required>
+                        <input type="hidden" name="customerId" value="${i.requirement.customer.customerId}">
+
                         <input type="hidden" name="invoiceId" value="${i.invoiceId}">
                         ${requestScope.msg}
                         <br>
@@ -38,6 +40,8 @@
                         <p>Mã hóa đơn: ${i.invoiceId}</p>
                         <p>Số tiền phải trả: ${i.price} VNĐ</p>
                         <input type="hidden" name="amount" value="${i.price}">
+                        <input type="hidden" name="invoiceId" value="${i.invoiceId}">
+                        <input type="hidden" name="customerId" value="${i.requirement.customer.customerId}">
                         <button type="submit">Thanh toán</button>
                     </form>
                 </c:otherwise>

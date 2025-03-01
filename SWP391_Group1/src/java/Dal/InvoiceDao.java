@@ -4,6 +4,7 @@
  */
 package Dal;
 
+import Model.Customer;
 import Model.Invoice;
 import Model.WarrantyRequirement;
 import java.sql.PreparedStatement;
@@ -23,9 +24,9 @@ public class InvoiceDao extends DBContext {
 
     public List<Invoice> getInvoiceByCustomerId(int customerId) {
         List<Invoice> list = new ArrayList<>();
-        String sql = "select i.* from Product p join WarrantyRequirement wr on p.ProductId = wr.ProductId\n"
+        String sql = "select i.* , p.CustomerId from Product p join WarrantyRequirement wr on p.ProductId = wr.ProductId\n"
                 + "join Invoice i on i.RequirementId = wr.RequirementId\n"
-                + "where p.CustomerId = ? ";
+                + "where p.CustomerId = ? and i.Status = 'unpaid'";
 
         try {
             p = connection.prepareStatement(sql);
@@ -36,6 +37,9 @@ public class InvoiceDao extends DBContext {
                 i.setInvoiceId(rs.getInt(1));
                 WarrantyRequirement wr = new WarrantyRequirement();
                 wr.setRequirementId(rs.getInt(2));
+                Customer c = new Customer();
+                c.setCustomerId(rs.getInt(7));
+                wr.setCustomer(c);
                 i.setRequirement(wr);
                 i.setPrice(rs.getLong(3));
                 i.setStatus(rs.getString(4));
@@ -82,7 +86,7 @@ public class InvoiceDao extends DBContext {
                 i.setPrice(rs.getLong(3));
                 i.setStatus(rs.getString(4));
                 i.setNote(rs.getString(5));
-                
+
                 return i;
             }
         } catch (SQLException e) {
@@ -103,6 +107,25 @@ public class InvoiceDao extends DBContext {
             p.setLong(1, price);
             p.setString(2, note);
             p.setInt(3, invoiceId);
+            p.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateStatusInvoie(int invoiceId) {
+        String sql = "UPDATE [dbo].[Invoice]\n"
+                + "   SET \n"
+                + "    \n"
+                + "      [Status] = 'Paid'\n"
+                + "      \n"
+                + "     \n"
+                + " WHERE InvoiceId = ? ";
+
+        try {
+            p = connection.prepareStatement(sql);
+
+            p.setInt(1, invoiceId);
             p.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -130,7 +153,7 @@ public class InvoiceDao extends DBContext {
             p.setInt(1, invoiceId);
             rs = p.executeQuery();
             if (rs.next()) {
-               
+
                 return rs.getBoolean(1);
             }
         } catch (SQLException e) {

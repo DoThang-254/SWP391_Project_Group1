@@ -154,6 +154,18 @@ CREATE TABLE Blog (
     StaffId VARCHAR(255),
     FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
 );
+CREATE TABLE [Transaction] (
+    TransactionId INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerId INT NOT NULL,
+    InvoiceId INT NOT NULL,
+    Amount bigint NOT NULL,
+    PaymentMethod VARCHAR(50) NOT NULL, -- VNPay, Momo, Bank Transfer, etc.
+    PaymentStatus VARCHAR(50) NOT NULL, -- Success, Pending, Failed
+    TransactionDate DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
+    FOREIGN KEY (InvoiceId) REFERENCES Invoice(InvoiceId)
+);
+
 -- Chèn dữ liệu vào bảng Role
 INSERT INTO Role (RoleName) VALUES
 ('Technician'),
