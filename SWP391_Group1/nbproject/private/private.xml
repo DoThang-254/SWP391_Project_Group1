@@ -3,12 +3,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Dal/InvoiceDao.java</file>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/common/VNPayReturnController.java</file>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/web/Payment.jsp</file>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/common/VNPayController.java</file>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/Customer/Payment.java</file>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Dal/TransactionDao.java</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/web/vendor/slick/slick-theme.less</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/web/addAdmin.jsp</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/web/ServiceManager.jsp</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/src/java/Dal/TechnicianDAO.java</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/Admin/AdminController.java</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/Admin/UserDetail.java</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/web/editTechnician.jsp</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/web/WEB-INF/web.xml</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/Admin/AdminManagement.java</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/src/java/Dal/GoogleAccountDao.java</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/web/addTechnician.jsp</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/web/Admin.jsp</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/src/java/Dal/AdminDAO.java</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/web/editAdmin.jsp</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/ServiceManager/TechnicianController.java</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/src/java/Dal/DBContext.java</file>
+            <file>file:/D:/FPT/Kì%205/SWP391_Project_Group1/SWP391_Group1/src/java/Validation/ResetService.java</file>
         </group>
     </open-files>
 </project-private>

@@ -1,11 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Model;
 
 /**
- *
+ * Component Model Class
  * @author thang
  */
 public class Component {
@@ -85,15 +81,15 @@ public class Component {
         return staff;
     }
 
-    public void setStaffId(Staff staff) {
+    public void setStaff(Staff staff) {
         this.staff = staff;
     }
 
-    public Invoice getInvoiceId() {
+    public Invoice getInvoice() {
         return invoice;
     }
 
-    public void setInvoiceId(Invoice invoice) {
+    public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
     }
 }

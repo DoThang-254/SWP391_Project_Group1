@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <ul class="sidebar-menu">
-                    <li><a href="index.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+                    <li><a href="componentlist"><i class="fa fa-dashboard"></i> <span>Component</span></a></li>
                     <li><a href="adminlist"><i class="fa fa-user"></i> <span>Admins</span></a></li>
                 </ul>
             </section>
