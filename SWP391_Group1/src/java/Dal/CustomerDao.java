@@ -240,7 +240,7 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         String sql = "SELECT count(*)\n"
                 + "FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId \n"
                 + "join WarrantyForm wf on wf.ProductId = p.ProductId\n"
-                + "WHERE c.CustomerId = ? and p.ProductId = ? and wf.Verified = 1";
+                + "WHERE c.CustomerId = ? and p.ProductId = ? and wf.Verified = 1 order by StartDate desc";
 
         try {
             p = connection.prepareStatement(sql);

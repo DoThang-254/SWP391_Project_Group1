@@ -75,5 +75,8 @@ public class Invoice {
         this.confirmed = confirmed;
     }
     
-   
+   public Invoice(int invoiceId) {
+    this.invoiceId = invoiceId;
+}
+
 }

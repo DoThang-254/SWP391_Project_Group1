@@ -9,6 +9,7 @@ import Dal.WarrantyFormDao;
 import Dal.WarrantyProcessDao;
 import Model.Customer;
 import Model.Staff;
+import Model.WarrantyForm;
 import Model.WarrantyProcessing;
 import Model.WarrantyRequirement;
 import dao.WarrantyRequirementDAO;
@@ -73,6 +74,7 @@ public class TaskController extends HttpServlet {
         request.setAttribute("list", list);
         request.getRequestDispatcher("Task.jsp").forward(request, response);
     }
+    WarrantyFormDao wfd = new WarrantyFormDao();
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -93,19 +95,25 @@ public class TaskController extends HttpServlet {
         wpd.updateStatusWarrantyProcess(processId, status);
         //check xem ispay của requirement 1 trong process 1 có phải là yes ko nếu yes thì tạo hóa đơn
         boolean checkIsPay = wpd.checkIsPayinRequirement(requirementId, processId);
-        if (status.equals("In Repair")) {
-
+        if (status.equals("In Repair") && checkIsPay) {
+          //gửi thông báo cho khách có đồng ý ko
         }
-        if (status.equals("Completed") && checkIsPay) {
+        else if(status.equals("In Repair") && !checkIsPay){
+            //f
+        }
+        
+        else if (status.equals("Completed") && checkIsPay) {
 
             InvoiceDao ivd = new InvoiceDao();
             ivd.createInvoie(requirementId);
             // tạo phiếu bảo hành mới
-            WarrantyFormDao wfd = new WarrantyFormDao();
             wfd.createWarrantyForm(productId);
         } else if (status.equals("Completed") && !checkIsPay) {
             // update phiếu bảo hành 
-            
+            //tim phiếu bảo hành sản phẩm có productid là P002 
+            // lấy formid vừa tìm từ trên để update where formid đó
+            WarrantyForm updateForm = wfd.getWarrantyFormByProductId(productId);
+            wfd.updateStartDate(updateForm);
         }
 
         response.sendRedirect("task");

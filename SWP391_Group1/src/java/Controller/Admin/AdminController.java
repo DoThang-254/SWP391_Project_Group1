@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package Controller.Admin;
 
 import Dal.AdminDAO;
@@ -18,11 +17,12 @@ import java.util.List;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+
 /**
  *
  * @author khang
  */
-@WebServlet(name="AdminController", urlPatterns={"/adminlist"})
+@WebServlet(name = "AdminController", urlPatterns = {"/adminlist"})
 public class AdminController extends HttpServlet {
 
     private AdminDAO adminDAO;
@@ -61,9 +61,9 @@ public class AdminController extends HttpServlet {
 
             List<Staff> admins;
             if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-                admins = adminDAO.getListOfUser(searchQuery, 3);
+                admins = adminDAO.getListOfUser(searchQuery, 3);  // Search for admins based on the query
             } else {
-                admins = adminDAO.getAdminsByPage(page, recordsPerPage);
+                admins = adminDAO.getAdminsByPage(page, recordsPerPage);  // Fetch all admins with pagination
             }
 
             request.setAttribute("admins", admins);

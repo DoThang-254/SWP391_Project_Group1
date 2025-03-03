@@ -168,4 +168,8 @@ public class Staff {
     public void setRole(Role role) {
         this.role = role;
     }
+    public Staff(String staffId) {
+    this.staffId = staffId;
+}
+
 }
