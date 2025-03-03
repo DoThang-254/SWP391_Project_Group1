@@ -15,20 +15,21 @@ import java.util.List;
 
 /**
  * Controller class for managing Components
+ *
  * @author thang
  */
-@WebServlet(name="ComponentController", urlPatterns={"/componentlist"})
+@WebServlet(name = "ComponentController", urlPatterns = {"/componentlist"})
 public class ComponentController extends HttpServlet {
-    
+
     private ComponentDAO componentDAO;
-    
+
     public void init() {
         componentDAO = new ComponentDAO();
     }
-    
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        
+
         if ("edit".equals(action)) {
             int componentId = Integer.parseInt(request.getParameter("componentId"));
             Component component = componentDAO.getComponentById(componentId);
@@ -40,32 +41,50 @@ public class ComponentController extends HttpServlet {
             componentDAO.deleteComponent(componentId);
             response.sendRedirect("componentlist");
         } else {
-            List<Component> components = componentDAO.getAllComponents();
+            String searchQuery = request.getParameter("search");
+            List<Component> components;
+
+            if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+                components = componentDAO.searchComponents(searchQuery);  
+            } else {
+                components = componentDAO.getAllComponents();  
+            }
+
             request.setAttribute("components", components);
+            request.setAttribute("search", searchQuery);  
             RequestDispatcher dispatcher = request.getRequestDispatcher("Component.jsp");
             dispatcher.forward(request, response);
+
         }
     }
-    
- protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String componentName = request.getParameter("componentName");
-    String brand = request.getParameter("brand");
-    String status = request.getParameter("status");
-    long price = Long.parseLong(request.getParameter("price"));
-    int amount = Integer.parseInt(request.getParameter("amount"));
-    String staffId = request.getParameter("staffId");
-    int invoiceId = request.getParameter("invoiceId") != null && !request.getParameter("invoiceId").isEmpty()
-                    ? Integer.parseInt(request.getParameter("invoiceId")) : 0;
 
-    Staff staff = new Staff(staffId);
-    Invoice invoice = invoiceId > 0 ? new Invoice(invoiceId) : null;
-    
-    Component component = new Component(0, componentName, brand, status, price, amount, staff, invoice);
-    
-    boolean added = componentDAO.addComponent(component);
-    System.out.println("Component Added: " + added);
-    
-    response.sendRedirect("componentlist");
-}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int componentId = request.getParameter("componentId") != null && !request.getParameter("componentId").isEmpty()
+                ? Integer.parseInt(request.getParameter("componentId")) : 0;
 
+        String componentName = request.getParameter("componentName");
+        String brand = request.getParameter("brand");
+        String status = request.getParameter("status");
+        long price = Long.parseLong(request.getParameter("price"));
+        int amount = Integer.parseInt(request.getParameter("amount"));
+        String staffId = request.getParameter("staffId");
+        int invoiceId = request.getParameter("invoiceId") != null && !request.getParameter("invoiceId").isEmpty()
+                ? Integer.parseInt(request.getParameter("invoiceId")) : 0;
+
+        Staff staff = new Staff(staffId);
+        Invoice invoice = invoiceId > 0 ? new Invoice(invoiceId) : null;
+
+        Component component = new Component(componentId, componentName, brand, status, price, amount, staff, invoice);
+
+        boolean success;
+        if (componentId > 0) {
+            success = componentDAO.updateComponent(component);
+            System.out.println("Component Updated: " + success);
+        } else {
+            success = componentDAO.addComponent(component);
+            System.out.println("Component Added: " + success);
+        }
+
+        response.sendRedirect("componentlist");
+    }
 }

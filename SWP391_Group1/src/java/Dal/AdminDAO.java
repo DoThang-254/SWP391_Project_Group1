@@ -20,69 +20,82 @@ import java.sql.SQLException;
 public class AdminDAO extends DBContext {
 
     public List<Staff> getListOfUser(String searchKeyword, Integer roleId) {
-        List<Staff> list = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT \n"
-                + "    s.StaffId, \n"
-                + "    s.Username, \n"
-                + "    s.FirstName, \n"
-                + "    s.LastName, \n"
-                + "    s.Email, \n"
-                + "    s.Phone, \n"
-                + "    s.Gender, \n"
-                + "    s.BirthDate, \n"
-                + "    s.Status, \n"
-                + "    s.RoleId, \n"
-                + "    r.RoleName  \n"
-                + "FROM [Staff] s  \n"
-                + "JOIN [Role] r ON s.RoleId = r.RoleId \n"
-                + "WHERE 1 = 1");
-        if (searchKeyword != null && !searchKeyword.isEmpty()) {
-            sql.append(" AND (\n" +
-"    REPLACE(s.Username, ' ', ' ') LIKE REPLACE(?, ' ', '') \n" +
-"    OR REPLACE(s.Email, ' ', ' ') LIKE REPLACE(?, ' ', '') \n" +
-"    OR REPLACE(s.LastName, ' ', '') = ?\n" +
-");");
-        }
+    List<Staff> list = new ArrayList<>();
+    StringBuilder sql = new StringBuilder("SELECT "
+            + "s.StaffId, "
+            + "s.Username, "
+            + "s.FirstName, "
+            + "s.LastName, "
+            + "s.Email, "
+            + "s.Phone, "
+            + "s.Gender, "
+            + "s.BirthDate, "
+            + "s.Status, "
+            + "s.RoleId, "
+            + "r.RoleName "
+            + "FROM [Staff] s "
+            + "JOIN [Role] r ON s.RoleId = r.RoleId "
+            + "WHERE 1 = 1");
 
-        if (roleId != null) {
-            sql.append(" AND s.RoleId = ?");
-        }
-
-        try (PreparedStatement p = connection.prepareStatement(sql.toString())) {
-            int paramIndex = 1;
-
-            if (searchKeyword != null && !searchKeyword.isEmpty()) {
-                String searchPattern = "%" + searchKeyword + "%";
-                p.setString(paramIndex++, searchPattern);
-                p.setString(paramIndex++, searchPattern);
-                p.setString(paramIndex++, searchPattern);
-            }
-
-            if (roleId != null) {
-                p.setInt(paramIndex++, roleId);
-            }
-
-            ResultSet rs = p.executeQuery();
-            while (rs.next()) {
-                String StaffId = rs.getString(1);
-                String Username = rs.getString(2);
-                String FirstName = rs.getString(3);
-                String LastName = rs.getString(4);
-                String Email = rs.getString(5);
-                String Phone = rs.getString(6);
-                String Gender = rs.getString(7);
-                Date BirthDate = rs.getDate(8);
-                String Status = rs.getString(9);
-                int RoleId = rs.getInt(10);
-                String RoleName = rs.getString(11);
-                Role role = new Role(RoleId, RoleName);
-                list.add(new Staff(StaffId, Username, Phone, FirstName, LastName, Email, Phone, Gender, BirthDate, Status, 0, role));
-            }
-        } catch (Exception e) {
-            e.printStackTrace(); // Xử lý ngoại lệ (in ra lỗi hoặc ghi log)
-        }
-        return list;
+    // If searchKeyword is provided, filter based on search
+    if (searchKeyword != null && !searchKeyword.isEmpty()) {
+        // Remove spaces and allow for partial matching
+        searchKeyword = searchKeyword.trim().replaceAll("\\s+", "");
+        sql.append(" AND (REPLACE(s.Username, ' ', '') LIKE ? "
+                + "OR REPLACE(s.FirstName, ' ', '') LIKE ? "
+                + "OR REPLACE(s.LastName, ' ', '') LIKE ? "
+                + "OR REPLACE(s.Email, ' ', '') LIKE ?)");
     }
+
+    // Add role filter if specified
+    if (roleId != null) {
+        sql.append(" AND s.RoleId = ?");
+    }
+
+    try (PreparedStatement p = connection.prepareStatement(sql.toString())) {
+        int paramIndex = 1;
+
+        // If there is a search query, set the search pattern for all fields
+        if (searchKeyword != null && !searchKeyword.isEmpty()) {
+            String searchPattern = "%" + searchKeyword + "%";  // Use wildcard for partial matching
+            p.setString(paramIndex++, searchPattern);
+            p.setString(paramIndex++, searchPattern);
+            p.setString(paramIndex++, searchPattern);
+            p.setString(paramIndex++, searchPattern);
+        }
+
+        // Set the roleId if present
+        if (roleId != null) {
+            p.setInt(paramIndex++, roleId);
+        }
+
+        // Execute the query and map results to Staff objects
+        ResultSet rs = p.executeQuery();
+        while (rs.next()) {
+            String StaffId = rs.getString(1);
+            String Username = rs.getString(2);
+            String FirstName = rs.getString(3);
+            String LastName = rs.getString(4);
+            String Email = rs.getString(5);
+            String Phone = rs.getString(6);
+            String Gender = rs.getString(7);
+            Date BirthDate = rs.getDate(8);
+            String Status = rs.getString(9);
+            int RoleId = rs.getInt(10);
+            String RoleName = rs.getString(11);
+
+            Role role = new Role(RoleId, RoleName);
+            list.add(new Staff(StaffId, Username, Phone, FirstName, LastName, Email, Phone, Gender, BirthDate, Status, 0, role));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();  // Handle exceptions (logging or printing)
+    }
+
+    return list;
+}
+
+
+
 
     public List<Staff> getListByPage(List<Staff> list, int start, int end) {
         List<Staff> arr = new ArrayList<>();
@@ -346,4 +359,55 @@ public class AdminDAO extends DBContext {
 //        }
         dao.deactiveStaves("6", "InActive");
     }
+    
+    public List<Staff> searchStaffByName(String name) {
+    List<Staff> staffList = new ArrayList<>();
+    
+    // If the name is null or empty, return an empty list
+    if (name == null || name.trim().isEmpty()) {
+        return staffList;
+    }
+    
+    // Clean the name by removing spaces between the characters
+    String cleanedName = name.trim().replaceAll("\\s+", "");
+
+    // SQL query to search for staff by first name, last name, or username
+    String query = "SELECT s.StaffId, s.Username, s.FirstName, s.LastName, s.Email, s.Phone, s.Gender, s.BirthDate, s.Status, s.RoleId, r.RoleName " +
+                   "FROM Staff s " +
+                   "JOIN Role r ON s.RoleId = r.RoleId " +
+                   "WHERE (REPLACE(s.FirstName, ' ', '') LIKE ? OR REPLACE(s.LastName, ' ', '') LIKE ? OR REPLACE(s.Username, ' ', '') LIKE ?)";
+
+    try (PreparedStatement ps = connection.prepareStatement(query)) {
+        String searchPattern = "%" + cleanedName + "%";
+        ps.setString(1, searchPattern);
+        ps.setString(2, searchPattern);
+        ps.setString(3, searchPattern);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String StaffId = rs.getString(1);
+                String Username = rs.getString(2);
+                String FirstName = rs.getString(3);
+                String LastName = rs.getString(4);
+                String Email = rs.getString(5);
+                String Phone = rs.getString(6);
+                String Gender = rs.getString(7);
+                Date BirthDate = rs.getDate(8);
+                String Status = rs.getString(9);
+                int RoleId = rs.getInt(10);
+                String RoleName = rs.getString(11);
+                Role role = new Role(RoleId, RoleName);
+
+                staffList.add(new Staff(StaffId, Username, Phone, FirstName, LastName, Email, Phone, Gender, BirthDate, Status, 0, role));
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return staffList;
 }
+
+    
+}
+
