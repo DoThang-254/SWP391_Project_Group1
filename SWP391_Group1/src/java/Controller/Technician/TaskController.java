@@ -5,6 +5,7 @@
 package Controller.Technician;
 
 import Dal.InvoiceDao;
+import Dal.WarrantyFormDao;
 import Dal.WarrantyProcessDao;
 import Model.Customer;
 import Model.Staff;
@@ -87,15 +88,24 @@ public class TaskController extends HttpServlet {
         String status = request.getParameter("status");
         int processId = Integer.parseInt(request.getParameter("processingId"));
         int requirementId = Integer.parseInt(request.getParameter("requirementId"));
+        String productId = request.getParameter("productId");
         WarrantyProcessDao wpd = new WarrantyProcessDao();
         wpd.updateStatusWarrantyProcess(processId, status);
+        //check xem ispay của requirement 1 trong process 1 có phải là yes ko nếu yes thì tạo hóa đơn
+        boolean checkIsPay = wpd.checkIsPayinRequirement(requirementId, processId);
         if (status.equals("In Repair")) {
+
+        }
+        if (status.equals("Completed") && checkIsPay) {
 
             InvoiceDao ivd = new InvoiceDao();
             ivd.createInvoie(requirementId);
-        }
-        if(status.equals("Completed")){
             // tạo phiếu bảo hành mới
+            WarrantyFormDao wfd = new WarrantyFormDao();
+            wfd.createWarrantyForm(productId);
+        } else if (status.equals("Completed") && !checkIsPay) {
+            // update phiếu bảo hành 
+            
         }
 
         response.sendRedirect("task");

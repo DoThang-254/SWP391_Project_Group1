@@ -1,4 +1,25 @@
 ﻿--create database LaptopWarranty
+USE [master]
+GO
+
+/*******************************************************************************
+   Drop database if it exists
+********************************************************************************/
+IF EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N' LaptopWarranty')
+BEGIN
+	ALTER DATABASE  LaptopWarranty SET OFFLINE WITH ROLLBACK IMMEDIATE;
+	ALTER DATABASE  LaptopWarranty SET ONLINE;
+	DROP DATABASE  LaptopWarranty;
+END
+
+GO
+
+CREATE DATABASE  LaptopWarranty
+GO
+
+USE  LaptopWarranty
+GO
+
 CREATE TABLE Role (
     RoleId INT IDENTITY(1,1) PRIMARY KEY,
     RoleName VARCHAR(255) NOT NULL
@@ -47,7 +68,7 @@ CREATE TABLE WarrantyForm (
     FormId INT IDENTITY(1,1) PRIMARY KEY,
     ProductId VARCHAR(255) NOT NULL,
     StartDate DATE NOT NULL,
-    EndDate DATE NOT NULL,
+    EndDate DATE NULL,
     Status VARCHAR(50) DEFAULT 'Active', -- Active / Completed / Canceled
     VerificationCode VARCHAR(255),
     VerificationMethod VARCHAR(255),

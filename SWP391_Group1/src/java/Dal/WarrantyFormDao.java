@@ -47,4 +47,20 @@ public class WarrantyFormDao extends DBContext {
         return warrantyForm;
     }
 
+    public void createWarrantyForm(String productId) {
+        String sql = "INSERT INTO [dbo].[WarrantyForm]\n"
+                + "           ([ProductId]\n"
+                + "           ,[StartDate]\n"
+                + "           ,[Verified])\n"
+                + "     VALUES\n"
+                + "           (?, GETDATE(),0)";
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, productId);
+            p.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
 }

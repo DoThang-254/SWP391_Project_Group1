@@ -4,6 +4,8 @@
  */
 package Dal;
 
+import Model.Invoice;
+import Model.Product;
 import Model.Staff;
 import Model.WarrantyProcessing;
 import Model.WarrantyRequirement;
@@ -40,7 +42,9 @@ public class WarrantyProcessDao extends DBContext {
 
     public List<WarrantyProcessing> getAllWarrantyProcess(String staffId) {
         List<WarrantyProcessing> list = new ArrayList<>();
-        String sql = "select * from WarrantyProcessing where StaffId = ?";
+        String sql = "  select wp.* , wr.RequirementId , p.ProductId from WarrantyProcessing wp join WarrantyRequirement wr \n"
+                + "  on  wr.RequirementId = wp.RequirementId join  Product p on p.ProductId = wr.ProductId\n"
+                + "  where wp.StaffId = ?";
 
         try {
             p = connection.prepareStatement(sql);
@@ -51,6 +55,9 @@ public class WarrantyProcessDao extends DBContext {
                 wp.setProcessingId(rs.getInt(1));
                 WarrantyRequirement wr = new WarrantyRequirement();
                 wr.setRequirementId(rs.getInt(2));
+                Product p = new Product();
+                p.setProductId(rs.getString(8));
+                wr.setProduct(p);
                 wp.setRequirement(wr);
                 Staff s = new Staff();
                 s.setStaffId(rs.getString(3));
@@ -79,5 +86,24 @@ public class WarrantyProcessDao extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean checkIsPayinRequirement(int requirementId, int processId) {
+        String sql = "select count(*) from WarrantyRequirement wr join WarrantyProcessing wp\n"
+                + "on wr.RequirementId = wp.RequirementId\n"
+                + "where wr.IsPay = 'yes' and wr.RequirementId = ? and wp.ProcessingId = ? ";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, requirementId);
+            p.setInt(2, processId);
+            rs = p.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

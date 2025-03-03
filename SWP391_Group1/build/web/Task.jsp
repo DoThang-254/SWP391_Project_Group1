@@ -104,6 +104,8 @@
                                                         <form action="task" method="post">
                                                             <input type="hidden" name="processingId" value="${pr.processingId}">
                                                             <input type="hidden" name="requirementId" value="${pr.requirement.requirementId}">
+                                                            <input type="text" name="productId" value="${pr.requirement.product.productId}">
+
                                                             <select name="status" class="form-control" onchange="confirmUpdate(this.form)">
                                                                 <option value="In Repair" ${pr.status == 'In Repair' ? 'selected' : ''}>In Repair</option>
                                                                 <option value="Completed" ${pr.status == 'Completed' ? 'selected' : ''}>Completed</option>
