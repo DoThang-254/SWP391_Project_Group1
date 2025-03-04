@@ -2,16 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Controller.Technician;
+package Controller.Customer;
 
-import Dal.InvoiceDao;
-import Dal.WarrantyFormDao;
 import Dal.WarrantyProcessDao;
 import Model.Customer;
-import Model.Staff;
-import Model.WarrantyForm;
 import Model.WarrantyProcessing;
-import Model.WarrantyRequirement;
 import dao.WarrantyRequirementDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,7 +20,7 @@ import java.util.List;
  *
  * @author thang
  */
-public class TaskController extends HttpServlet {
+public class CustomerProcess extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,10 +39,10 @@ public class TaskController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet TaskController</title>");
+            out.println("<title>Servlet CustomerProcess</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet TaskController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CustomerProcess at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -65,17 +60,15 @@ public class TaskController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Staff s = (Staff) request.getSession().getAttribute("Staff");
+        Customer c = (Customer) request.getSession().getAttribute("Customer");
 
-//        WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
-//        List<WarrantyRequirement> list = wrd.GetAllRequestByStaffId(s.getStaffId());
         WarrantyProcessDao wpd = new WarrantyProcessDao();
-        List<WarrantyProcessing> list = wpd.getAllWarrantyProcess(s.getStaffId());
+        List<WarrantyProcessing> list = wpd.processListByCustomerId(c.getCustomerId());
         request.setAttribute("list", list);
-        request.getRequestDispatcher("Task.jsp").forward(request, response);
+        request.getRequestDispatcher("CustomerProcess.jsp").forward(request, response);
     }
-    WarrantyFormDao wfd = new WarrantyFormDao();
-
+    WarrantyProcessDao wpd = new WarrantyProcessDao();
+    WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -87,35 +80,19 @@ public class TaskController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String status = request.getParameter("status");
+        String action = request.getParameter("customerAction");
+        System.out.println("action = " + action);
         int processId = Integer.parseInt(request.getParameter("processingId"));
         int requirementId = Integer.parseInt(request.getParameter("requirementId"));
-        String productId = request.getParameter("productId");
-        WarrantyProcessDao wpd = new WarrantyProcessDao();
-        wpd.updateStatusWarrantyProcess(processId, status);
-        //check xem ispay của requirement 1 trong process 1 có phải là yes ko nếu yes thì tạo hóa đơn
-        boolean checkIsPay = wpd.checkIsPayinRequirement(requirementId, processId);
-        if (status.equals("In Repair") && checkIsPay) {
-            //gửi thông báo cho khách có đồng ý ko
-            wpd.updateIsAcceptWarrantyProcess(processId, 0);
 
-        } else if (status.equals("In Repair") && !checkIsPay) {
-            //f
-        } else if (status.equals("Completed") && checkIsPay) {
-
-            InvoiceDao ivd = new InvoiceDao();
-            ivd.createInvoie(requirementId);
-            // tạo phiếu bảo hành mới
-            wfd.createWarrantyForm(productId);
-        } else if (status.equals("Completed") && !checkIsPay) {
-            // update phiếu bảo hành 
-            //tim phiếu bảo hành sản phẩm có productid là P002 
-            // lấy formid vừa tìm từ trên để update where formid đó
-            WarrantyForm updateForm = wfd.getWarrantyFormByProductId(productId);
-            wfd.updateStartDate(updateForm);
+        if (action.equalsIgnoreCase("accept")) {
+            wpd.updateIsAcceptWarrantyProcess(processId, 1);
         }
-
-        response.sendRedirect("task");
+        if (action.equals("reject")) {
+            wpd.updateIsAcceptWarrantyProcess(processId, 0);
+            wrd.UpdateStatusRequest("Rejected", requirementId);
+        }
+        response.sendRedirect("customerprocess");
     }
 
     /**

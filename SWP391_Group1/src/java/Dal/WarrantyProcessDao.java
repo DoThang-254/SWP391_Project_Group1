@@ -56,7 +56,7 @@ public class WarrantyProcessDao extends DBContext {
                 WarrantyRequirement wr = new WarrantyRequirement();
                 wr.setRequirementId(rs.getInt(2));
                 Product p = new Product();
-                p.setProductId(rs.getString(8));
+                p.setProductId(rs.getString(9));
                 wr.setProduct(p);
                 wp.setRequirement(wr);
                 Staff s = new Staff();
@@ -86,6 +86,51 @@ public class WarrantyProcessDao extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateIsAcceptWarrantyProcess(int processId, int isAccept) {
+        String sql = "UPDATE [dbo].[WarrantyProcessing]\n"
+                + "   SET \n"
+                + "      [IsAccept] = ?\n"
+                + " WHERE ProcessingId = ?";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, isAccept);
+            p.setInt(2, processId);
+            p.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<WarrantyProcessing> processListByCustomerId(int customerId) {
+        List<WarrantyProcessing> list = new ArrayList<>();
+        String sql = "select * from WarrantyProcessing wp join WarrantyRequirement wr \n"
+                + "on wp.RequirementId = wr.RequirementId \n"
+                + "where wr.CustomerId = ? and wp.IsAccept = 0";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, customerId);
+            rs = p.executeQuery();
+            while (rs.next()) {
+                WarrantyProcessing wp = new WarrantyProcessing();
+                wp.setProcessingId(rs.getInt(1));
+                WarrantyRequirement wr = new WarrantyRequirement();
+                wr.setRequirementId(rs.getInt(2));
+                wp.setRequirement(wr);
+                Staff s = new Staff();
+                s.setStaffId(rs.getString(3));
+                s.setStatus(rs.getString(4));
+                wp.setNote(rs.getString(5));
+                wp.setReturnDate(rs.getDate(6));
+                wp.setIsAccept(rs.getBoolean(7));
+                list.add(wp);
+            }
+        } catch (Exception e) {
+        }
+        return list;
     }
 
     public boolean checkIsPayinRequirement(int requirementId, int processId) {

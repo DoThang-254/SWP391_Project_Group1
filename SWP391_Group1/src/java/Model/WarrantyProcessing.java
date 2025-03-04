@@ -17,6 +17,7 @@ public class WarrantyProcessing {
     private String note;
     private Date returnDate;
     private Staff staff;
+    private boolean isAccept;
 
     public WarrantyProcessing() {
     }
@@ -78,6 +79,15 @@ public class WarrantyProcessing {
         this.staff = staff;
     }
 
+    public boolean isIsAccept() {
+        return isAccept;
+    }
+
+    public void setIsAccept(boolean isAccept) {
+        this.isAccept = isAccept;
+    }
+
+    
     
 }
 

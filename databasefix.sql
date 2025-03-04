@@ -142,6 +142,7 @@ CREATE TABLE WarrantyProcessing (
     Status VARCHAR(255) DEFAULT 'Under Inspection' CHECK (Status IN ('In Repair', 'Completed', 'Under Inspection')),
     Note VARCHAR(255),
     ReturnDate DATE,
+	IsAccept Bit Null, 
     FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId),
     FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
 );
