@@ -42,6 +42,7 @@
                         <input type="hidden" name="amount" value="${i.price}">
                         <input type="hidden" name="invoiceId" value="${i.invoiceId}">
                         <input type="hidden" name="customerId" value="${i.requirement.customer.customerId}">
+                        <input type="hidden" name="productId" value="${i.requirement.product.productId}">
                         <button type="submit">Thanh toán</button>
                     </form>
                 </c:otherwise>

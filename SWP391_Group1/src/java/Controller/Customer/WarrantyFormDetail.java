@@ -88,7 +88,7 @@ public class WarrantyFormDetail extends HttpServlet {
             endPage++;
         }
 
-        List<WarrantyForm> wf = cd.ProductDetail(index, c.getCustomerId(), productId, 5);
+        List<WarrantyForm> wf = cd.ProductDetail(index, c.getCustomerId(), productId, amount);
         WarrantyForm warrantyForm = wfd.getActiveWarrantyFormByProduct(productId);
 
         if (warrantyForm == null || warrantyForm.getEndDate().before(new Date())) {

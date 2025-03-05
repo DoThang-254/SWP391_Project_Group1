@@ -95,18 +95,15 @@ public class TaskController extends HttpServlet {
         wpd.updateStatusWarrantyProcess(processId, status);
         //check xem ispay của requirement 1 trong process 1 có phải là yes ko nếu yes thì tạo hóa đơn
         boolean checkIsPay = wpd.checkIsPayinRequirement(requirementId, processId);
-        if (status.equals("In Repair") && checkIsPay) {
+        if (status.equals("Start Repair") && checkIsPay) {
             //gửi thông báo cho khách có đồng ý ko
-            wpd.updateIsAcceptWarrantyProcess(processId, 0);
+            wpd.updateIsAcceptWarrantyProcess(processId, "Waiting Response");
 
-        } else if (status.equals("In Repair") && !checkIsPay) {
-            //f
         } else if (status.equals("Completed") && checkIsPay) {
 
             InvoiceDao ivd = new InvoiceDao();
             ivd.createInvoie(requirementId);
-            // tạo phiếu bảo hành mới
-            wfd.createWarrantyForm(productId);
+            
         } else if (status.equals("Completed") && !checkIsPay) {
             // update phiếu bảo hành 
             //tim phiếu bảo hành sản phẩm có productid là P002 

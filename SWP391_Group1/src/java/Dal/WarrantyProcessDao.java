@@ -42,7 +42,7 @@ public class WarrantyProcessDao extends DBContext {
 
     public List<WarrantyProcessing> getAllWarrantyProcess(String staffId) {
         List<WarrantyProcessing> list = new ArrayList<>();
-        String sql = "  select wp.* , wr.RequirementId , p.ProductId from WarrantyProcessing wp join WarrantyRequirement wr \n"
+        String sql = "select wp.* , wr.RequirementId , p.ProductId from WarrantyProcessing wp join WarrantyRequirement wr \n"
                 + "  on  wr.RequirementId = wp.RequirementId join  Product p on p.ProductId = wr.ProductId\n"
                 + "  where wp.StaffId = ?";
 
@@ -63,6 +63,7 @@ public class WarrantyProcessDao extends DBContext {
                 s.setStaffId(rs.getString(3));
                 wp.setStaff(s);
                 wp.setStatus(rs.getString(4));
+                wp.setIsAccept(rs.getString(7));
                 list.add(wp);
             }
         } catch (SQLException e) {
@@ -88,7 +89,7 @@ public class WarrantyProcessDao extends DBContext {
         }
     }
 
-    public void updateIsAcceptWarrantyProcess(int processId, int isAccept) {
+    public void updateIsAcceptWarrantyProcess(int processId, String isAccept) {
         String sql = "UPDATE [dbo].[WarrantyProcessing]\n"
                 + "   SET \n"
                 + "      [IsAccept] = ?\n"
@@ -96,7 +97,7 @@ public class WarrantyProcessDao extends DBContext {
 
         try {
             p = connection.prepareStatement(sql);
-            p.setInt(1, isAccept);
+            p.setString(1, isAccept);
             p.setInt(2, processId);
             p.executeUpdate();
         } catch (SQLException e) {
@@ -108,7 +109,7 @@ public class WarrantyProcessDao extends DBContext {
         List<WarrantyProcessing> list = new ArrayList<>();
         String sql = "select * from WarrantyProcessing wp join WarrantyRequirement wr \n"
                 + "on wp.RequirementId = wr.RequirementId \n"
-                + "where wr.CustomerId = ? and wp.IsAccept = 0";
+                + "where wr.CustomerId = ? and wp.IsAccept = 'Waiting Response'";
 
         try {
             p = connection.prepareStatement(sql);
@@ -125,7 +126,7 @@ public class WarrantyProcessDao extends DBContext {
                 s.setStatus(rs.getString(4));
                 wp.setNote(rs.getString(5));
                 wp.setReturnDate(rs.getDate(6));
-                wp.setIsAccept(rs.getBoolean(7));
+                wp.setIsAccept(rs.getString(7));
                 list.add(wp);
             }
         } catch (Exception e) {

@@ -6,6 +6,7 @@ package Dal;
 
 import Model.Customer;
 import Model.Invoice;
+import Model.Product;
 import Model.WarrantyRequirement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +25,7 @@ public class InvoiceDao extends DBContext {
 
     public List<Invoice> getInvoiceByCustomerId(int customerId) {
         List<Invoice> list = new ArrayList<>();
-        String sql = "select i.* , p.CustomerId from Product p join WarrantyRequirement wr on p.ProductId = wr.ProductId\n"
+        String sql = "select i.* , p.CustomerId , p.ProductId from Product p join WarrantyRequirement wr on p.ProductId = wr.ProductId\n"
                 + "join Invoice i on i.RequirementId = wr.RequirementId\n"
                 + "where p.CustomerId = ? and i.Status = 'unpaid'";
 
@@ -37,6 +38,9 @@ public class InvoiceDao extends DBContext {
                 i.setInvoiceId(rs.getInt(1));
                 WarrantyRequirement wr = new WarrantyRequirement();
                 wr.setRequirementId(rs.getInt(2));
+                Product p = new Product();
+                p.setProductId(rs.getString(8));
+                wr.setProduct(p);
                 Customer c = new Customer();
                 c.setCustomerId(rs.getInt(7));
                 wr.setCustomer(c);

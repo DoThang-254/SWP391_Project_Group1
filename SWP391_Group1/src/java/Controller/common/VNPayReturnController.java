@@ -6,6 +6,7 @@ package Controller.common;
 
 import Dal.InvoiceDao;
 import Dal.TransactionDao;
+import Dal.WarrantyFormDao;
 import Validation.VNPayUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,11 +44,13 @@ public class VNPayReturnController extends HttpServlet {
             // Lấy thông tin từ vnp_OrderInfo
             String orderInfo = params.get("vnp_OrderInfo");
             int customerId = 0, invoiceId = 0;
+            String productId = null;
             if (orderInfo != null) {
                 String[] parts = orderInfo.split("-");
-                if (parts.length == 2) {
+                if (parts.length == 3) {
                     invoiceId = Integer.parseInt(parts[0].replace("Invoice:", "").trim());
                     customerId = Integer.parseInt(parts[1].replace("Customer:", "").trim());
+                    productId = parts[2].replace("Product:", "").trim();
                 }
             }
 
@@ -64,6 +67,8 @@ public class VNPayReturnController extends HttpServlet {
                 td.saveTransaction(customerId, invoiceId, amount, "VNPay", "Success");
                 InvoiceDao ivd = new InvoiceDao();
                 ivd.updateStatusInvoie(invoiceId);
+                WarrantyFormDao wfd = new WarrantyFormDao();
+                wfd.createWarrantyForm(productId);
             } else {
                 // Giao dịch thất bại
                 request.setAttribute("message", "Giao dịch thất bại! Mã lỗi: " + vnp_ResponseCode);

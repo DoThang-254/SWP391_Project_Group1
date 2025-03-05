@@ -70,8 +70,6 @@ CREATE TABLE WarrantyForm (
     StartDate DATE NOT NULL,
     EndDate DATE NULL,
     Status VARCHAR(50) DEFAULT 'Active', -- Active / Completed / Canceled
-    VerificationCode VARCHAR(255),
-    VerificationMethod VARCHAR(255),
     Verified BIT DEFAULT 0, -- '1' nếu đã xác nhận, '0' nếu chưa
     FOREIGN KEY (ProductId) REFERENCES Product(ProductId)
 );
@@ -139,10 +137,10 @@ CREATE TABLE WarrantyProcessing (
     ProcessingId INT IDENTITY(1,1) PRIMARY KEY,
     RequirementId INT NOT NULL,
     StaffId VARCHAR(255) NOT NULL,
-    Status VARCHAR(255) DEFAULT 'Under Inspection' CHECK (Status IN ('In Repair', 'Completed', 'Under Inspection')),
+    Status VARCHAR(255) DEFAULT 'Under Inspection' CHECK (Status IN ('In Repair', 'Completed', 'Under Inspection' , 'Start Repair')),
     Note VARCHAR(255),
     ReturnDate DATE,
-	IsAccept Bit Null, 
+	IsAccept VARCHAR(255) Null,
     FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId),
     FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
 );
@@ -242,17 +240,17 @@ INSERT INTO Blog (Title, Description, Content, ImageUrl, StaffId) VALUES
 (N'Tại Sao Laptop Không Nhận USB', N'Hướng dẫn sửa lỗi laptop không nhận USB', N'Nội dung chi tiết...', 'images/blog10.jpg', 'S010'),
 (N'Cách Vệ Sinh Laptop Đúng Cách', N'Hướng dẫn vệ sinh laptop giúp kéo dài tuổi thọ', N'Nội dung chi tiết...', 'images/blog11.jpg', 'S001'),
 (N'Cập Nhật Driver Cho Laptop', N'Tại sao cần cập nhật driver và cách thực hiện', N'Nội dung chi tiết...', 'images/blog12.jpg', 'S001');
-INSERT INTO WarrantyForm (ProductId, StartDate, EndDate, Status, VerificationCode, VerificationMethod, Verified)
+INSERT INTO WarrantyForm (ProductId, StartDate, EndDate, Status, Verified)
 VALUES 
-('P001', '2023-01-01', '2024-01-01', 'Completed', 'ABC123', 'Email', 1),
-('P001', '2024-01-02', '2025-01-02', 'Active', 'DEF456', 'SMS', 1),
-('P001', '2024-02-01', '2025-02-01', 'Active', 'GHI789', 'Phone', 1),
-('P001', '2023-03-05', '2024-03-05', 'Completed', NULL, NULL, 0),
-('P001', '2024-04-10', '2025-04-10', 'Active', 'JKL852', 'Email', 1),
-('P001', '2023-05-15', '2024-05-15', 'Active', 'MNO963', 'SMS', 1),
-('P001', '2023-06-20', '2024-06-20', 'Active', NULL, NULL, 0),
-('P001', '2022-07-25', '2023-07-25', 'Canceled', 'PQR741', 'Phone', 0),
-('P001', '2024-08-30', '2025-08-30', 'Active', 'STU258', 'Email', 1),
-('P001', '2023-09-10', '2024-09-10', 'Active', 'VWX369', 'SMS', 1);
+('P001', '2023-01-01', '2024-01-01', 'Completed', 1),
+('P001', '2024-01-02', '2025-01-02', 'Active', 1),
+('P001', '2024-02-01', '2025-02-01', 'Active', 1),
+('P001', '2023-03-05', '2024-03-05', 'Completed', 0),
+('P001', '2024-04-10', '2025-04-10', 'Active', 1),
+('P001', '2023-05-15', '2024-05-15', 'Active', 1),
+('P001', '2023-06-20', '2024-06-20', 'Active', 0),
+('P001', '2022-07-25', '2023-07-25', 'Canceled', 0),
+('P001', '2024-08-30', '2025-08-30', 'Active', 1),
+('P001', '2023-09-10', '2024-09-10', 'Active', 1);
 
 

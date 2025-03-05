@@ -81,15 +81,14 @@ public class CustomerProcess extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("customerAction");
-        System.out.println("action = " + action);
         int processId = Integer.parseInt(request.getParameter("processingId"));
         int requirementId = Integer.parseInt(request.getParameter("requirementId"));
 
         if (action.equalsIgnoreCase("accept")) {
-            wpd.updateIsAcceptWarrantyProcess(processId, 1);
+            wpd.updateIsAcceptWarrantyProcess(processId, "accept");
         }
         if (action.equals("reject")) {
-            wpd.updateIsAcceptWarrantyProcess(processId, 0);
+            wpd.updateIsAcceptWarrantyProcess(processId, "rejected");
             wrd.UpdateStatusRequest("Rejected", requirementId);
         }
         response.sendRedirect("customerprocess");

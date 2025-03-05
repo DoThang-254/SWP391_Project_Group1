@@ -80,9 +80,9 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>Status</th>
-                                                <th>Product Name</th>
-                                                <th>Status</th>
+                                                <th>Is Accept</th>
                                                 <th>View Invoice</th>
+                                                <th>View Warranty Form</th>
 
                                             </tr>
                                         </thead>
@@ -107,15 +107,26 @@
                                                             <input type="text" name="productId" value="${pr.requirement.product.productId}">
 
                                                             <select name="status" class="form-control" onchange="confirmUpdate(this.form)">
+                                                                <option value="Under Inspection" ${pr.status == 'Under Inspection' ? 'selected' : ''}>Under Inspection</option>
+                                                                <option value="Start Repair" ${pr.status == 'Start Repair' ? 'selected' : ''}>Start Repair</option>
                                                                 <option value="In Repair" ${pr.status == 'In Repair' ? 'selected' : ''}>In Repair</option>
                                                                 <option value="Completed" ${pr.status == 'Completed' ? 'selected' : ''}>Completed</option>
-                                                                <option value="Under Inspection" ${pr.status == 'Under Inspection' ? 'selected' : ''}>Under Inspection</option>
                                                             </select>
                                                         </form>
                                                     </td>
-                                                    <td>${pr.requirement.requirementId}</td>
-                                                    <td>${pr.requirement.requirementId}</td>
 
+
+                                                    <td>
+                                                        <c:if test="${pr.isAccept != null}"> ${pr.isAccept}</c:if>
+                                                        <c:if test="${pr.isAccept == null}"> Không cần phản hồi</c:if>
+
+                                                        </td>
+
+
+                                                        <td> 
+                                                            <a href="invoice?requirementId=${pr.requirement.requirementId}" class="btn btn-info btn-sm" title="View Details">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
 
                                                     <td> 
                                                         <a href="invoice?requirementId=${pr.requirement.requirementId}" class="btn btn-info btn-sm" title="View Details">

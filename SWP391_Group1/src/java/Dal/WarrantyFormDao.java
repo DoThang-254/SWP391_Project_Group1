@@ -51,9 +51,10 @@ public class WarrantyFormDao extends DBContext {
         String sql = "INSERT INTO [dbo].[WarrantyForm]\n"
                 + "           ([ProductId]\n"
                 + "           ,[StartDate]\n"
+                + "           ,[EndDate]\n"
                 + "           ,[Verified])\n"
                 + "     VALUES\n"
-                + "           (?, GETDATE(),0)";
+                + "           (?, GETDATE(), DATEADD(YEAR, 1, GETDATE()), 1)";
         try {
             p = connection.prepareStatement(sql);
             p.setString(1, productId);
@@ -63,10 +64,25 @@ public class WarrantyFormDao extends DBContext {
         }
     }
 
+    public void updateVerified(int formId) {
+        String query = "UPDATE [dbo].[WarrantyForm]\n"
+                + "   SET \n"
+                + "      [Verified] = 1\n"
+                + " WHERE FormId = ? ";
+        try {
+
+            p = connection.prepareStatement(query);
+            p.setInt(1, formId);
+            p.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public WarrantyForm getWarrantyFormByProductId(String productId) {
         WarrantyForm warrantyForm = null;
         String sql = "select * from WarrantyForm wf join Product p on p.ProductId = wf.ProductId\n"
-                + "where p.ProductId = ? order by StartDate desc";
+                + "where p.ProductId = ? order by EndDate desc";
 
         try {
             p = connection.prepareStatement(sql);

@@ -240,7 +240,7 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         String sql = "SELECT count(*)\n"
                 + "FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId \n"
                 + "join WarrantyForm wf on wf.ProductId = p.ProductId\n"
-                + "WHERE c.CustomerId = ? and p.ProductId = ? and wf.Verified = 1 order by StartDate desc";
+                + "WHERE c.CustomerId = ? and p.ProductId = ?";
 
         try {
             p = connection.prepareStatement(sql);
@@ -263,8 +263,8 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         String sql = "SELECT wf.* , p.ProductName , p.Brand , p.Price , p.CustomerId\n"
                 + "FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId \n"
                 + "join WarrantyForm wf on wf.ProductId = p.ProductId\n"
-                + "WHERE c.CustomerId = ? and p.ProductId = ? and wf.Verified = 1\n"
-                + "order by p.ProductId \n"
+                + "WHERE c.CustomerId = ? and p.ProductId = ? \n"
+                + "order by EndDate desc\n"
                 + "offset ? rows fetch next ? rows only";
 
         try {
