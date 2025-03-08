@@ -104,11 +104,11 @@
                                             <label for="filterPriceRange">Price Range</label>
                                             <select name="filterPriceRange" id="filterPriceRange" class="form-control">
                                                 <option value="" ${empty requestScope.priceRange ? 'selected' : ''}>Tất cả giá</option>
-                                                <option value="0-5000" ${requestScope.priceRange == '0-5000' ? 'selected' : ''}>Dưới 5.000</option>
-                                                <option value="5000-10000" ${requestScope.priceRange == '5000-10000' ? 'selected' : ''}>5.000 - 10.000</option>
-                                                <option value="10000-15000" ${requestScope.priceRange == '10000-15000' ? 'selected' : ''}>10.000 - 15.000</option>
-                                                <option value="15000-20000" ${requestScope.priceRange == '15000-20000' ? 'selected' : ''}>15.000 - 20.000</option>
-                                                <option value="20000+" ${requestScope.priceRange == '20000+' ? 'selected' : ''}>Trên 20.000</option>
+                                                <option value="0-5000" ${requestScope.priceRange == '0-5000000' ? 'selected' : ''}>Dưới 5.000.000</option>
+                                                <option value="5000-10000" ${requestScope.priceRange == '5000000-10000000' ? 'selected' : ''}>5.000.000 - 10.000.000</option>
+                                                <option value="10000-15000" ${requestScope.priceRange == '10000000-15000000' ? 'selected' : ''}>10.000.000 - 15.000.000</option>
+                                                <option value="15000-20000" ${requestScope.priceRange == '15000000-20000000' ? 'selected' : ''}>15.000.000 - 20.000.000</option>
+                                                <option value="20000+" ${requestScope.priceRange == '20000000+' ? 'selected' : ''}>Trên 20.000.000</option>
                                             </select>
 
                                         </div>
@@ -136,8 +136,9 @@
                                                 <th>Start Date</th>
                                                 <th>End Date</th>
                                                 <th>Status</th>
-
                                                 <th>Verified</th>
+                                                <th>Fault Type</th>
+                                                <th>Img</th>
 
                                             </tr>
                                         </thead>
@@ -156,11 +157,18 @@
                                                 <td>${w.startDate}</td>
                                                 <td>${w.endDate}</td>
                                                 <td>${w.status}</td>
-
-                                              
-
-
-
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${w.verified}">
+                                                            <span style="color: green; font-weight: bold;">Đã xác nhận</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span style="color: red; font-weight: bold;">Đã từ chối</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td>${w.faultType}</td>
+                                                <td>${w.imgUrl}</td>
                                             </tr>
                                         </c:forEach>
                                     </table>
@@ -178,23 +186,7 @@
                                     </div>
 
 
-                                    <c:choose>
-                                        <c:when test="${requestScope.output eq 'Yêu cầu bảo hành'}">
-                                            <button type="submit">
-                                                <a href="warrantyrequest?productid=${requestScope.productid}&ispay=No">
-                                                    Yêu cầu Bảo hành miễn phí 
-                                                </a>
-                                            </button>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span style="color: red;">${requestScope.output}</span>
-                                            <button type="submit">
-                                                <a href="warrantyrequest?productid=${requestScope.productid}&ispay=Yes">
-                                                    Yêu cầu Bảo hành có phí 
-                                                </a>
-                                            </button>
-                                        </c:otherwise>
-                                    </c:choose>
+
                                     <br>
                                     <a href="searchinformation">Back</a>
                                 </div>
@@ -222,6 +214,58 @@
 </html>
 
 <style>
+    /* Căn giữa nội dung trong ô */
+    .center-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Style chung cho nút */
+    button {
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.3s;
+        margin-top: 5px; /* Tạo khoảng cách giữa nút và nội dung */
+    }
+
+    /* Định dạng thẻ <a> bên trong nút */
+    button a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        display: block;
+    }
+
+    /* Nút bảo hành miễn phí */
+    button.free-warranty {
+        background-color: #28a745; /* Màu xanh lá */
+    }
+
+    button.free-warranty:hover {
+        background-color: #218838;
+    }
+
+    /* Nút bảo hành có phí */
+    button.paid-warranty {
+        background-color: #dc3545; /* Màu đỏ */
+    }
+
+    button.paid-warranty:hover {
+        background-color: #c82333;
+    }
+
+    /* Màu đỏ cho thông báo */
+    .warning-text {
+        color: red;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
     /* Style cho biểu tượng filter và sort */
     .fa-sort, .fa-filter {
         margin-left: 5px;

@@ -203,15 +203,40 @@ public class WarrantyRequirementDAO extends DBContext {
         }
     }
 
-    public List<WarrantyRequirement> GetAllRequestByCustomerId(int customerId) {
-        List<WarrantyRequirement> list = new ArrayList<>();
-        String sql = " select wr.* , wf.* , c.Email from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId \n"
-                + "  join Customer c on c.CustomerId = wr.CustomerId\n"
-                + "  where wr.CustomerId = ?";
+    public int GetTotalWarrantyRequest(int customerId) {
+        String sql = " select count(*) from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId \n"
+                + " join Customer c on c.CustomerId = wr.CustomerId\n"
+                + "                  where wr.CustomerId = ?";
 
         try {
             p = connection.prepareStatement(sql);
             p.setInt(1, customerId);
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<WarrantyRequirement> GetAllRequestByCustomerId(int index, int customerId, int amount) {
+        List<WarrantyRequirement> list = new ArrayList<>();
+        String sql = " select wr.* , wf.* , c.Email from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId \n"
+                + " join Customer c on c.CustomerId = wr.CustomerId\n"
+                + " where wr.CustomerId = ?\n"
+                + " order by wr.requirementId desc , wr.registerDate desc\n"
+                + " offset ? rows fetch next ? rows only";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, customerId);
+            p.setInt(2, (index - 1) * amount);
+            p.setInt(3, amount);
+
             rs = p.executeQuery();
 
             while (rs.next()) {
@@ -233,7 +258,10 @@ public class WarrantyRequirementDAO extends DBContext {
                 WarrantyForm form = new WarrantyForm();
                 form.setFormId(rs.getInt(10));
                 form.setVerified(rs.getBoolean(16));
+                form.setFaultType(rs.getString(17));
                 wr.setForm(form);
+                wr.setIsPay(rs.getString(9));
+
                 list.add(wr);
             }
         } catch (SQLException e) {

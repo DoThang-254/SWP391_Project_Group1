@@ -105,28 +105,52 @@ public class WarrantyProcessDao extends DBContext {
         }
     }
 
-    public List<WarrantyProcessing> processListByCustomerId(int customerId) {
-        List<WarrantyProcessing> list = new ArrayList<>();
-        String sql = "select * from WarrantyProcessing wp join WarrantyRequirement wr \n"
+    public int GetTotalWarrantyProcess(int CustomerId) {
+        String sql = "select count(*) from WarrantyProcessing wp join WarrantyRequirement wr\n"
                 + "on wp.RequirementId = wr.RequirementId \n"
                 + "where wr.CustomerId = ?";
 
         try {
             p = connection.prepareStatement(sql);
+            p.setInt(1, CustomerId);
+
+            rs = p.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);  // Lấy giá trị count(*) chính xác
+            }
+        } catch (Exception e) {
+            e.printStackTrace();  // In lỗi ra để dễ debug
+        }
+        return 0;  // Trả về 0 nếu có lỗi
+    }
+
+    public List<WarrantyProcessing> processListByCustomerId(int index, int customerId, int amount) {
+        List<WarrantyProcessing> list = new ArrayList<>();
+        String sql = "select * from WarrantyProcessing wp join WarrantyRequirement wr \n"
+                + "on wp.RequirementId = wr.RequirementId \n"
+                + "where wr.CustomerId = ? order by wr.RegisterDate OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try {
+            p = connection.prepareStatement(sql);
             p.setInt(1, customerId);
+            p.setInt(2, (index - 1) * amount);
+            p.setInt(3, amount);
             rs = p.executeQuery();
             while (rs.next()) {
                 WarrantyProcessing wp = new WarrantyProcessing();
                 wp.setProcessingId(rs.getInt(1));
                 WarrantyRequirement wr = new WarrantyRequirement();
                 wr.setRequirementId(rs.getInt(2));
+                wr.setRegisterDate(rs.getDate(15));
                 wp.setRequirement(wr);
                 Staff s = new Staff();
                 s.setStaffId(rs.getString(3));
-                s.setStatus(rs.getString(4));
+                wp.setStaff(s);
+                wp.setStatus(rs.getString(4));
                 wp.setNote(rs.getString(5));
                 wp.setReturnDate(rs.getDate(6));
                 wp.setIsAccept(rs.getString(7));
+
                 list.add(wp);
             }
         } catch (Exception e) {
@@ -153,7 +177,7 @@ public class WarrantyProcessDao extends DBContext {
         return false;
     }
 
-    public boolean checkFaultTypeInRequirement(String productId ,int requirementId, int processId) {
+    public boolean checkFaultTypeInRequirement(String productId, int requirementId, int processId) {
         String sql = "select count(*) from WarrantyForm wf join WarrantyRequirement wr on wr.FormId = wf.FormId\n"
                 + "join WarrantyProcessing wp on wp.RequirementId = wr.RequirementId\n"
                 + "where wf.ProductId = ? and wr.RequirementId = ? and wf.FaultType = 'user' and wp.ProcessingId = ? ";

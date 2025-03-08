@@ -56,15 +56,34 @@ public class CustomerRequest extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Customer c = (Customer) request.getSession().getAttribute("Customer");
-
-        WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
-        List<WarrantyRequirement> list = wrd.GetAllRequestByCustomerId(c.getCustomerId());
-        request.setAttribute("list", list);
+        String input = request.getParameter("index");
+        String amount = request.getParameter("amount");
         
+        if (input == null) {
+            input = "1";
+        }
+        
+        if (amount == null) {
+            amount = "1";
+        }
+        int x = Integer.parseInt(amount);
+        int index = Integer.parseInt(input);
+        int count = wrd.GetTotalWarrantyRequest(c.getCustomerId());
+        int endPage = count / x;
+        if (endPage % x != 0) {
+            endPage++;
+        }
+        List<WarrantyRequirement> list = wrd.GetAllRequestByCustomerId(index, c.getCustomerId(), x);
+        request.setAttribute("list", list);
+        request.setAttribute("tag", index);
+        request.setAttribute("endpage", endPage);
+        request.setAttribute("amount", x);
         request.getRequestDispatcher("CustomerRequirement.jsp").forward(request, response);
     }
 

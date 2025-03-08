@@ -80,8 +80,14 @@
                         </li>
 
                         <li>
-                            <a href="...">
-                                <i class="fa fa-globe"></i> <span>...</span>
+                            <a href="customerrequest">
+                                <i class="fa fa-globe"></i> <span>History Request</span>
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a href="customerprocess">
+                                <i class="fa fa-globe"></i> <span>View Warranty Process</span>
                             </a>
                         </li>
                     </c:if>
@@ -98,17 +104,18 @@
        <script>
     document.addEventListener("DOMContentLoaded", function () {
         let currentUrl = window.location.pathname;
-        let activeUrl = localStorage.getItem("activeMenu") || currentUrl;
+        let activeUrl = localStorage.getItem("activeMenu") || "home"; // Mặc định Home nếu chưa có lưu
+
         let menuItems = document.querySelectorAll(".sidebar-menu li");
 
         // Xóa tất cả class "active"
         menuItems.forEach(item => item.classList.remove("active"));
 
-        // Duyệt qua từng menu item để kiểm tra và đặt active
-        let isActiveSet = false; // Đảm bảo chỉ có 1 mục được chọn
+        // Đánh dấu menu được chọn
+        let isActiveSet = false; // Đảm bảo chỉ có 1 mục active
         menuItems.forEach(item => {
             let link = item.querySelector("a");
-            if (link && link.getAttribute("href") === activeUrl && !isActiveSet) {
+            if (link && (link.getAttribute("href") === activeUrl || (activeUrl === "home" && link.getAttribute("href") === "home")) && !isActiveSet) {
                 item.classList.add("active");
                 isActiveSet = true; // Đánh dấu đã đặt "active" để tránh trùng lặp
             }
@@ -120,6 +127,7 @@
         });
     });
 </script>
+
 
 
 

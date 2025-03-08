@@ -143,7 +143,7 @@
                                                     <a href="searchinformation?sort=productname&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
                                                     <a href="searchinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
-                             
+
                                                 <th>Register Date
 
                                                 </th> 
@@ -172,14 +172,7 @@
                                                 <td colspan="7" style="text-align: center;">Warranty Form is not exist</td>
                                             </tr>
                                         </c:if>
-                                        <script>
-                                            function confirmUpdate(form) {
-                                                let confirmAction = confirm("Bạn có chắc muốn cập nhật trạng thái này không?");
-                                                if (confirmAction) {
-                                                    form.submit();
-                                                }
-                                            }
-                                        </script>
+
                                         <c:forEach var="r" items="${requestScope.list}">
 
 
@@ -200,14 +193,21 @@
 
                                                 <td>${r.isPay}</td>
 
-                                                <td>${r.form.faultType}</td>
+                                                <c:if test="${r.form.faultType == null}">
+                                                    <td>N/A</td>
+
+                                                </c:if>
+                                                <c:if test="${r.form.faultType != null}">
+                                                    <td>${r.form.faultType}</td>
+
+                                                </c:if>
 
                                                 <td class="${r.form.verified ? 'verified-yes' : 'verified-no'}">
                                                     <c:choose>
                                                         <c:when test="${r.form.verified}">Đã xác nhận</c:when>
                                                         <c:when test="${r.status eq 'Rejected'}">Đã Từ chối</c:when>
-
-                                                        <c:otherwise><form action="verifyform" method="post">
+                                                        <c:otherwise>
+                                                            <form action="verifyform" method="post">
                                                                 <input type="hidden" name="email" value="${r.customer.email}">
                                                                 <input type="hidden" name="formId" value="${r.form.formId}">
                                                                 <input type="hidden" name="customerId" value="${r.customer.customerId}">
@@ -217,13 +217,19 @@
 
                                                                 ${requestScope.msg}
                                                                 <br>
-                                                                <button type="submit" name="action" value="confirm">Xác nhận qua Email</button>
-                                                                <button type="submit" name="action" value="reject">Từ chối</button>
+                                                                <button type="submit" name="action" value="confirm" 
+                                                                        onclick="return confirm('Bạn có chắc chắn muốn xác nhận yêu cầu này?');">
+                                                                    Xác nhận qua Email
+                                                                </button>
+                                                                <button type="submit" name="action" value="reject" 
+                                                                        onclick="return confirm('Bạn có chắc chắn muốn từ chối yêu cầu này?');">
+                                                                    Từ chối
+                                                                </button>
                                                             </form>
-
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
+
 
 
                                             </tr>
@@ -237,7 +243,7 @@
                                             <c:forEach begin="1" end="${requestScope.endpage}" var="i">
                                                 <li>
                                                     <a class="${tag == i ? 'active' : ''}"
-                                                       href="searchinformation?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}&amount=${requestScope.amount}">${i}</a>
+                                                       href="customerrequest?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}&amount=${requestScope.amount}">${i}</a>
                                                 </li>
                                             </c:forEach>
                                         </ul>

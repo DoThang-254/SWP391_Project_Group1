@@ -60,15 +60,37 @@ public class CustomerProcess extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String amountRaw = request.getParameter("amount");
+        if (amountRaw == null || amountRaw.trim().isEmpty()) {
+            amountRaw = "10";
+        }
+
+        int amount = Integer.parseInt(amountRaw);
         Customer c = (Customer) request.getSession().getAttribute("Customer");
+        String input = request.getParameter("index");
+        if (input == null || input.isBlank()) {
+            input = "1";
+        }
+        int index = Integer.parseInt(input);
 
         WarrantyProcessDao wpd = new WarrantyProcessDao();
-        List<WarrantyProcessing> list = wpd.processListByCustomerId(c.getCustomerId());
+        List<WarrantyProcessing> list = wpd.processListByCustomerId(index, c.getCustomerId(), amount);
+
+        int count = wpd.GetTotalWarrantyProcess(c.getCustomerId());
+        int endPage = count / amount;
+        if (count % amount != 0) {
+            endPage++;
+        }
         request.setAttribute("list", list);
+        request.setAttribute("tag", index);
+        request.setAttribute("endpage", endPage);
+        request.setAttribute("amount", amount);
+
         request.getRequestDispatcher("CustomerProcess.jsp").forward(request, response);
     }
     WarrantyProcessDao wpd = new WarrantyProcessDao();
     WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -80,7 +102,7 @@ public class CustomerProcess extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      
+
     }
 
     /**

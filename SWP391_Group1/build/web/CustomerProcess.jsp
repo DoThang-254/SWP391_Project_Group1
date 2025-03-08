@@ -80,8 +80,12 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>Status</th>
+                                                <th>Staff Warranty</th>
                                                 <th>Product Name</th>
-                                                <th>Status</th>
+
+                                                <th>Note</th>
+                                                <th>Return Date</th>
+                                                <th>View Warranty Form</th>
                                                 <th></th>
 
                                             </tr>
@@ -93,16 +97,19 @@
                                                 <tr>
                                                     <td>${pr.requirement.requirementId}</td>
                                                     <td>
-
-
-                                            
-
-                               
-
+                                                        ${pr.status}
                                                     </td>
-
-
-
+                                                    <td>
+                                                        ${pr.staff.staffId}
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        ${pr.note}
+                                                    </td>
+                                                    <td>
+                                                        ${pr.returnDate}
+                                                    </td>
 
                                                     <td> 
                                                         <a href="invoice?requirementId=${pr.requirement.requirementId}" class="btn btn-info btn-sm" title="View Details">
@@ -116,13 +123,16 @@
                                         </tbody>
                                     </table>
                                     <br>
-                                    <ul class="pagination pagination-sm no-margin pull-right">
-                                        <li><a href="#">&laquo;</a></li>
-                                        <li><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#">&raquo;</a></li>
-                                    </ul>
+                                    <div class="table-foot">
+                                        <ul class="pagination pagination-sm no-margin pull-right">
+                                            <c:forEach begin="1" end="${requestScope.endpage}" var="i">
+                                                <li>
+                                                    <a class="${tag == i ? 'active' : ''}"
+                                                       href="customerprocess?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}&amount=${requestScope.amount}">${i}</a>
+                                                </li>
+                                            </c:forEach>
+                                        </ul>
+                                    </div>
                                 </div>
                             </section>
 
@@ -281,9 +291,7 @@
                     </div>
                     <!-- row end -->
                 </section><!-- /.content -->
-                <div class="footer-main">
-                    Copyright &copy Director, 2014
-                </div>
+
             </aside><!-- /.right-side -->
 
         </div><!-- ./wrapper -->
@@ -319,18 +327,18 @@
 
         <!-- Director for demo purposes -->
         <script type="text/javascript">
-                                                            $('input').on('ifChecked', function (event) {
-                                                                // var element = $(this).parent().find('input:checkbox:first');
-                                                                // element.parent().parent().parent().addClass('highlight');
-                                                                $(this).parents('li').addClass("task-done");
-                                                                console.log('ok');
-                                                            });
-                                                            $('input').on('ifUnchecked', function (event) {
-                                                                // var element = $(this).parent().find('input:checkbox:first');
-                                                                // element.parent().parent().parent().removeClass('highlight');
-                                                                $(this).parents('li').removeClass("task-done");
-                                                                console.log('not');
-                                                            });
+            $('input').on('ifChecked', function (event) {
+                // var element = $(this).parent().find('input:checkbox:first');
+                // element.parent().parent().parent().addClass('highlight');
+                $(this).parents('li').addClass("task-done");
+                console.log('ok');
+            });
+            $('input').on('ifUnchecked', function (event) {
+                // var element = $(this).parent().find('input:checkbox:first');
+                // element.parent().parent().parent().removeClass('highlight');
+                $(this).parents('li').removeClass("task-done");
+                console.log('not');
+            });
 
         </script>
         <script>

@@ -99,17 +99,8 @@ public class WarrantyFormDetail extends HttpServlet {
         }
 
         List<WarrantyForm> wf = cd.ProductDetail(index, customerId, productId, amount);
-        WarrantyForm warrantyForm = wfd.getActiveWarrantyFormByProduct(productId);
 
-        if (warrantyForm == null || warrantyForm.getEndDate().before(new Date())) {
-            request.setAttribute("output", "Sản phẩm đã hết hạn bảo hành.");
-            request.setAttribute("form", wf);
-            request.setAttribute("tag", index);
-            request.setAttribute("endpage", endPage);
-            request.setAttribute("productid", productId);
-            request.getRequestDispatcher("WarrantyForm.jsp").forward(request, response);
-            return;
-        }
+      
         Customer customer = cd.GetCustomer(customerId); // Truy vấn Customer từ ID
         if (customer != null) {
             request.setAttribute("customerUsername", customer.getUsername()); // Đặt username vào requestScope
@@ -117,8 +108,6 @@ public class WarrantyFormDetail extends HttpServlet {
         }
 
         request.setAttribute("form", wf);
-        request.setAttribute("output", "Yêu cầu bảo hành");
-
         request.setAttribute("tag", index);
         request.setAttribute("endpage", endPage);
         request.setAttribute("productid", productId);
