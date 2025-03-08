@@ -66,8 +66,18 @@ public class WarrantyFormDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Customer c = (Customer) request.getSession().getAttribute("Customer");
+        String customerIdParam = request.getParameter("customerId");
+        if (customerIdParam == null || customerIdParam.isEmpty()) {
+            // Nếu không có customerId, thử lấy từ session
+            Customer c = (Customer) request.getSession().getAttribute("Customer");
+            if (c == null) {
+                response.sendRedirect("login"); // Yêu cầu đăng nhập nếu không có session
+                return;
+            }
+            customerIdParam = String.valueOf(c.getCustomerId());
+        }
 
+        int customerId = Integer.parseInt(customerIdParam);
         String input = request.getParameter("index");
         String amount_raw = request.getParameter("amount");
         String productId = request.getParameter("productid");
@@ -81,14 +91,14 @@ public class WarrantyFormDetail extends HttpServlet {
         }
         int index = Integer.parseInt(input);
         int amount = Integer.parseInt(amount_raw);
-        int count = cd.GetTotalProductDetail(c.getCustomerId(), productId);
+        int count = cd.GetTotalProductDetail(customerId, productId);
 
         int endPage = count / amount;
         if (count % amount != 0) {
             endPage++;
         }
 
-        List<WarrantyForm> wf = cd.ProductDetail(index, c.getCustomerId(), productId, amount);
+        List<WarrantyForm> wf = cd.ProductDetail(index, customerId, productId, amount);
         WarrantyForm warrantyForm = wfd.getActiveWarrantyFormByProduct(productId);
 
         if (warrantyForm == null || warrantyForm.getEndDate().before(new Date())) {
@@ -100,6 +110,12 @@ public class WarrantyFormDetail extends HttpServlet {
             request.getRequestDispatcher("WarrantyForm.jsp").forward(request, response);
             return;
         }
+        Customer customer = cd.GetCustomer(customerId); // Truy vấn Customer từ ID
+        if (customer != null) {
+            request.setAttribute("customerUsername", customer.getUsername()); // Đặt username vào requestScope
+            
+        }
+
         request.setAttribute("form", wf);
         request.setAttribute("output", "Yêu cầu bảo hành");
 

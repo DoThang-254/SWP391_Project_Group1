@@ -95,30 +95,9 @@
                                                     <td>
 
 
-                                                        <form action="customerprocess" method="post">
-                                                            <input type="hidden" name="processingId" value="${pr.processingId}">
-                                                            <input type="hidden" name="requirementId" value="${pr.requirement.requirementId}">
-                                                            <input type="hidden" name="productId" value="${pr.requirement.product.productId}">
-                                                            <input type="hidden" id="customerActionInput" name="customerAction" value=""> 
+                                            
 
-                                                            <button type="button" class="btn btn-success" onclick="confirmAction(event, this.form, 'accept')">Đồng ý</button>
-                                                            <button type="button" class="btn btn-danger" onclick="confirmAction(event, this.form, 'reject')">Từ chối</button>
-                                                        </form>
-
-                                                        <script>
-                                                            function confirmAction(event, form, actionType) {
-                                                                event.preventDefault();
-                                                                let message = actionType === 'accept' ? "Bạn có chắc chắn muốn Đồng ý không?" : "Bạn có chắc chắn muốn Từ chối không?";
-
-                                                                if (confirm(message)) {
-                                                                    document.getElementById("customerActionInput").value = actionType; // Gán giá trị trước khi submit
-                                                                    console.log("DEBUG: Setting customerAction = " + actionType);
-                                                                    form.submit();
-                                                                } else {
-                                                                    console.log("DEBUG: User canceled action.");
-                                                                }
-                                                            }
-                                                        </script>
+                               
 
                                                     </td>
 

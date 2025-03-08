@@ -11,24 +11,25 @@ import java.util.Date;
  * @author thang
  */
 public class WarrantyForm {
+
     private int formId;
     private Date startDate;
     private Date endDate;
     private String status;
-    private String verificationCode;
-    private String verificationMethod;
     private boolean verified;
+    private String faultType;
+    private String imgUrl;
     private Product product;
+    private boolean rejected; // Thêm thuộc tính này
+
     public WarrantyForm() {
     }
 
-    public WarrantyForm(int formId, Date startDate, Date endDate, String status, String verificationCode, String verificationMethod, boolean verified, Product product) {
+    public WarrantyForm(int formId, Date startDate, Date endDate, String status, boolean verified, Product product) {
         this.formId = formId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
-        this.verificationCode = verificationCode;
-        this.verificationMethod = verificationMethod;
         this.verified = verified;
         this.product = product;
     }
@@ -65,22 +66,6 @@ public class WarrantyForm {
         this.status = status;
     }
 
-    public String getVerificationCode() {
-        return verificationCode;
-    }
-
-    public void setVerificationCode(String verificationCode) {
-        this.verificationCode = verificationCode;
-    }
-
-    public String getVerificationMethod() {
-        return verificationMethod;
-    }
-
-    public void setVerificationMethod(String verificationMethod) {
-        this.verificationMethod = verificationMethod;
-    }
-
     public boolean isVerified() {
         return verified;
     }
@@ -96,5 +81,30 @@ public class WarrantyForm {
     public void setProduct(Product product) {
         this.product = product;
     }
+
+    public String getFaultType() {
+        return faultType;
+    }
+
+    public void setFaultType(String faultType) {
+        this.faultType = faultType;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public boolean isRejected() {
+        return rejected;
+    }
+
+    public void setRejected(boolean rejected) {
+        this.rejected = rejected;
+    }
+
     
 }

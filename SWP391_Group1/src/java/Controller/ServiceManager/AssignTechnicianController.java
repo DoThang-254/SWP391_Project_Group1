@@ -86,12 +86,9 @@ public class AssignTechnicianController extends HttpServlet {
 
         WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
         int reqId = Integer.parseInt(requirementId);
-        wrd.UpdateStaffRequest(staffId, reqId , "Approved");
+        wrd.UpdateStaffRequest(staffId, reqId , "Đợi lấy hàng");
         
-        WarrantyProcessDao wpd = new WarrantyProcessDao();
-        
-        
-        wpd.insertWarrantyProcess(reqId, staffId);
+
         
         response.sendRedirect("requestmanagement");
     }

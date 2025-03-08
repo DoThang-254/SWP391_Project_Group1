@@ -29,7 +29,6 @@ public class LoginController extends HttpServlet {
         String error = request.getParameter("error");
 
         if (error != null) {
-//            request.getRequestDispatcher("login.jsp").forward(request, response);
             response.sendRedirect("login");
 
             return;

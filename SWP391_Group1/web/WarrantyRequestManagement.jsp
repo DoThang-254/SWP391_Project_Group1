@@ -204,6 +204,7 @@
                                                         <input type="hidden" name="requirementId" value="${r.requirementId}">
                                                         <select name="status" class="form-control" onchange="confirmUpdate(this.form)">
                                                             <option value="Pending" ${r.status == 'Pending' ? 'selected' : ''}>Pending</option>
+                                                            <option value="Pending" ${r.status == 'Đợi lấy hàng' ? 'selected' : ''}>Đợi lấy hàng</option>
                                                             <option value="Approved" ${r.status == 'Approved' ? 'selected' : ''}>Approved</option>
                                                             <option value="Rejected" ${r.status == 'Rejected' ? 'selected' : ''}>Rejected</option>
                                                         </select>

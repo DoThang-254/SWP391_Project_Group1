@@ -54,8 +54,7 @@ public class SendConfirmController extends HttpServlet {
 
         for (Invoice invoice : invoices) {
             boolean isConfirmed = ivd.checkIsConfirm(invoice.getInvoiceId());
-            invoice.setConfirmed(isConfirmed); // Thêm thuộc tính vào model Invoice (hoặc dùng Map để lưu)
-            System.out.println(isConfirmed);
+            invoice.setConfirmed(isConfirmed); 
         }
 
         request.setAttribute("list", invoices);

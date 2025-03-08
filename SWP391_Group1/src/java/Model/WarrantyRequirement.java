@@ -19,7 +19,7 @@ public class WarrantyRequirement {
     private Staff staff;
     private Product product;
     private String isPay;
-
+    private WarrantyForm form ; 
     public WarrantyRequirement() {
     }
 
@@ -92,12 +92,20 @@ public class WarrantyRequirement {
         this.product = product;
     }
 
-    public String isIsPay() {
+    public String getIsPay() {
         return isPay;
     }
 
     public void setIsPay(String isPay) {
         this.isPay = isPay;
+    }
+
+    public WarrantyForm getForm() {
+        return form;
+    }
+
+    public void setForm(WarrantyForm form) {
+        this.form = form;
     }
     
     

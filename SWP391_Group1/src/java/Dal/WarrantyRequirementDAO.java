@@ -4,6 +4,7 @@ import Dal.DBContext;
 import Model.Customer;
 import Model.Product;
 import Model.Staff;
+import Model.WarrantyForm;
 import Model.WarrantyRequirement;
 import java.sql.*;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class WarrantyRequirementDAO extends DBContext {
             p.setString(3, request.getStatus());
             p.setString(4, request.getDescription());
             p.setDate(5, new java.sql.Date(request.getRegisterDate().getTime()));
-            p.setString(6, request.isIsPay());
+            p.setString(6, request.getIsPay());
 
             p.executeUpdate();
         } catch (SQLException e) {
@@ -87,6 +88,60 @@ public class WarrantyRequirementDAO extends DBContext {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public List<WarrantyRequirement> GetAllRequestByStaffId(String staffId) {
+        List<WarrantyRequirement> list = new ArrayList<>();
+        String sql = "SELECT * FROM WarrantyRequirement where StaffId = ? ";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, staffId);
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+                WarrantyRequirement wr = new WarrantyRequirement();
+                wr.setRequirementId(rs.getInt(1));
+                Product p = new Product();
+                p.setProductId(rs.getString(2));
+                wr.setProduct(p);
+                Staff s = new Staff();
+                s.setStaffId(rs.getString(4));
+                wr.setStaff(s);
+                Customer c = new Customer();
+                c.setCustomerId(rs.getInt(3));
+                wr.setCustomer(c);
+                wr.setStatus(rs.getString(5));
+                wr.setDescription(rs.getString(6));
+                wr.setRegisterDate(rs.getDate(8));
+                wr.setIsPay(rs.getString(9));
+                WarrantyForm form = new WarrantyForm();
+                form.setFormId(rs.getInt(10));
+                wr.setForm(form);
+                list.add(wr);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public void UpdateFormId(int formId, int requirementId) {
+        String sql = "UPDATE [dbo].[WarrantyRequirement]\n"
+                + "   SET \n"
+                + "      [FormId] = ?\n"
+                + " WHERE RequirementId = ?  ";
+
+        try {
+            p = connection.prepareStatement(sql);
+
+            p.setInt(1, formId);
+            p.setInt(2, requirementId);
+            p.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void UpdateStatusRequest(String status, int requirementId) {
@@ -129,13 +184,15 @@ public class WarrantyRequirementDAO extends DBContext {
         }
     }
 
-    public List<WarrantyRequirement> GetAllRequestByStaffId(String staffId) {
+    public List<WarrantyRequirement> GetAllRequestByCustomerId(int customerId) {
         List<WarrantyRequirement> list = new ArrayList<>();
-        String sql = "SELECT * FROM WarrantyRequirement WHERE StaffId = ? ";
+        String sql = " select wr.* , wf.* , c.Email from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId \n"
+                + "  join Customer c on c.CustomerId = wr.CustomerId\n"
+                + "  where wr.CustomerId = ?";
 
         try {
             p = connection.prepareStatement(sql);
-            p.setString(1, staffId);
+            p.setInt(1, customerId);
             rs = p.executeQuery();
 
             while (rs.next()) {
@@ -149,6 +206,15 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setStaff(s);
                 wr.setStatus(rs.getString(5));
                 wr.setDescription(rs.getString(6));
+                Customer cust = new Customer();
+                cust.setCustomerId(rs.getInt(3));
+                cust.setEmail(rs.getString(19));
+                wr.setCustomer(cust);
+                wr.setRegisterDate(rs.getDate(8));
+                WarrantyForm form = new WarrantyForm();
+                form.setFormId(rs.getInt(10));
+                form.setVerified(rs.getBoolean(16));
+                wr.setForm(form);
                 list.add(wr);
             }
         } catch (SQLException e) {
@@ -156,5 +222,4 @@ public class WarrantyRequirementDAO extends DBContext {
         }
         return list;
     }
-
 }

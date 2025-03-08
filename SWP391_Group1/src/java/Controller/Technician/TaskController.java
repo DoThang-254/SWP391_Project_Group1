@@ -95,21 +95,22 @@ public class TaskController extends HttpServlet {
         wpd.updateStatusWarrantyProcess(processId, status);
         //check xem ispay của requirement 1 trong process 1 có phải là yes ko nếu yes thì tạo hóa đơn
         boolean checkIsPay = wpd.checkIsPayinRequirement(requirementId, processId);
-        if (status.equals("Start Repair") && checkIsPay) {
-            //gửi thông báo cho khách có đồng ý ko
-            wpd.updateIsAcceptWarrantyProcess(processId, "Waiting Response");
-
-        } else if (status.equals("Completed") && checkIsPay) {
+        boolean checkFaultType = wpd.checkFaultTypeInRequirement(productId, requirementId, processId);
+//        if (status.equals("Start Repair")) {
+//            //gửi thông báo cho khách có đồng ý ko
+//            wpd.updateIsAcceptWarrantyProcess(processId, "Waiting Response");
+//
+//        } else 
+        if ((status.equals("Completed") && checkIsPay)
+                || (status.equals("Completed") && !checkIsPay && checkFaultType)) {
 
             InvoiceDao ivd = new InvoiceDao();
             ivd.createInvoie(requirementId);
-            
-        } else if (status.equals("Completed") && !checkIsPay) {
-            // update phiếu bảo hành 
-            //tim phiếu bảo hành sản phẩm có productid là P002 
-            // lấy formid vừa tìm từ trên để update where formid đó
-            WarrantyForm updateForm = wfd.getWarrantyFormByProductId(productId);
-            wfd.updateStartDate(updateForm);
+            WarrantyForm updateForm = wfd.getWarrantyFormByRequirementId(productId, requirementId);
+            wfd.updateStatus(updateForm);
+        } else if (status.equals("Completed") && !checkIsPay && !checkFaultType) {
+            WarrantyForm updateForm = wfd.getWarrantyFormByRequirementId(productId, requirementId);
+            wfd.updateStatus(updateForm);
         }
 
         response.sendRedirect("task");

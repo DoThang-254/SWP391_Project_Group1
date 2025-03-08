@@ -62,6 +62,7 @@ public class WarrantyRequestController extends HttpServlet {
      */
     private WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
     private ProductDao pd = new ProductDao();
+    private WarrantyFormDao wfd = new WarrantyFormDao();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -106,7 +107,8 @@ public class WarrantyRequestController extends HttpServlet {
 
         // Kiểm tra nếu đã có yêu cầu bảo hành đang chờ xử lý
         boolean hasPendingRequest = wrd.hasPendingRequest(productId);
-        if (hasPendingRequest) {
+
+        if (hasPendingRequest || wfd.hasInactive(productId)) {
             request.setAttribute("errorMessage", "Bạn đã gửi yêu cầu bảo hành cho sản phẩm này.");
             request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
             return;

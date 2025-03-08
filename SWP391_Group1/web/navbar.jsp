@@ -11,7 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        
+
     </head>
     <body>
         <header class="header">
@@ -25,7 +25,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <c:if test="${sessionScope.Customer != null}">
+                <c:if test="${sessionScope.Customer != null or not empty param.customerId}">
                     <div class="navbar-right">
                         <ul class="nav navbar-nav">
                             <li class="dropdown messages-menu">
@@ -109,7 +109,20 @@
 
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-user"></i>
-                                    <span>${sessionScope.Customer.username}<i class="caret"></i></span>
+                                    <c:choose>
+                                        <c:when test="${sessionScope.Customer != null}">
+                                            <span>${sessionScope.Customer.username}<i class="caret"></i></span>
+
+                                        </c:when>
+                                        <c:when test="${not empty requestScope.customerUsername}">
+                                            <span>${requestScope.customerUsername}<i class="caret"></i></span>
+
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span>Guest<i class="caret"></i></span>
+
+                                        </c:otherwise>
+                                    </c:choose>
                                 </a>
                                 <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
                                     <li class="dropdown-header text-center">Account</li>
@@ -149,11 +162,11 @@
 
                             </li>
                         </ul>
-                                
+
                     </div>
                 </c:if>
 
-                <c:if test="${sessionScope.Customer == null}">
+                <c:if test="${sessionScope.Customer == null && empty param.customerId}">
                     <div class="navbar-right">
                         <ul class="nav navbar-nav">
                             <li>

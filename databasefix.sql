@@ -59,7 +59,7 @@ CREATE TABLE Product (
     ProductId VARCHAR(255) PRIMARY KEY,
     ProductName NVARCHAR(255) NOT NULL,
     Brand VARCHAR(255),
-    Price bigint,
+    Price BIGINT,
     CustomerId INT,
     FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId)
 );
@@ -69,8 +69,10 @@ CREATE TABLE WarrantyForm (
     ProductId VARCHAR(255) NOT NULL,
     StartDate DATE NOT NULL,
     EndDate DATE NULL,
-    Status VARCHAR(50) DEFAULT 'Active', -- Active / Completed / Canceled
-    Verified BIT DEFAULT 0, -- '1' nếu đã xác nhận, '0' nếu chưa
+    Status VARCHAR(50) DEFAULT 'Active', 
+    Verified BIT DEFAULT 0, -- '1' nếu đã xác nhận, '0' nếu chưa 
+    FaultType VARCHAR(50) CHECK (FaultType IN ('Manufacturer', 'User')) NULL,
+    ImageUrl VARCHAR(500), -- URL ảnh
     FOREIGN KEY (ProductId) REFERENCES Product(ProductId)
 );
 
@@ -79,15 +81,18 @@ CREATE TABLE WarrantyRequirement (
     ProductId VARCHAR(255) NOT NULL,
     CustomerId INT NOT NULL,
     StaffId VARCHAR(255) NULL, -- Technician tiếp nhận
-    Status VARCHAR(50) DEFAULT 'Pending', -- Pending / Approved / Rejected
+    Status VARCHAR(50) NULL, -- Pending / Approved / Rejected
     Description NVARCHAR(255),
-	ImageUrl VARCHAR(500), -- URL ảnh 
+    ImageUrl VARCHAR(500), -- URL ảnh
     RegisterDate DATE DEFAULT GETDATE() NOT NULL,
-	IsPay varchar(3) , -- 'Yes' nếu có phí, 'No' nếu miễn phí
+    IsPay VARCHAR(3), -- 'Yes' nếu có phí, 'No' nếu miễn phí
+    FormId INT UNIQUE NULL, -- Mỗi Requirement chỉ có 1 Form duy nhất
     FOREIGN KEY (ProductId) REFERENCES Product(ProductId),
     FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
-    FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
+    FOREIGN KEY (StaffId) REFERENCES Staff(StaffId),
+    FOREIGN KEY (FormId) REFERENCES WarrantyForm(FormId) 
 );
+
 
 CREATE TABLE Invoice (
     InvoiceId INT IDENTITY(1,1) PRIMARY KEY,
@@ -137,7 +142,7 @@ CREATE TABLE WarrantyProcessing (
     ProcessingId INT IDENTITY(1,1) PRIMARY KEY,
     RequirementId INT NOT NULL,
     StaffId VARCHAR(255) NOT NULL,
-    Status VARCHAR(255) DEFAULT 'Under Inspection' CHECK (Status IN ('In Repair', 'Completed', 'Under Inspection' , 'Start Repair')),
+    Status VARCHAR(255) DEFAULT 'Approved' CHECK (Status IN ('In Repair', 'Completed', 'Start Repair')),
     Note VARCHAR(255),
     ReturnDate DATE,
 	IsAccept VARCHAR(255) Null,

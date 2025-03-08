@@ -79,18 +79,17 @@ public class RequestManagementController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            String status = request.getParameter("status");
-            int requirementId = Integer.parseInt(request.getParameter("requirementId"));
-
-            WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
-            wrd.UpdateStatusRequest(status, requirementId);
-            
-            response.sendRedirect("requestmanagement");
-        } catch (NumberFormatException e) {
-            request.setAttribute("error", "Invalid requirement ID.");
-            request.getRequestDispatcher("WarrantyRequestManagement.jsp").forward(request, response);
-        }
+//        try {
+//            String status = request.getParameter("status");
+//            int requirementId = Integer.parseInt(request.getParameter("requirementId"));
+//
+//            wrd.UpdateStatusRequest(status, requirementId);
+//            
+//            response.sendRedirect("requestmanagement");
+//        } catch (NumberFormatException e) {
+//            request.setAttribute("error", "Invalid requirement ID.");
+//            request.getRequestDispatcher("WarrantyRequestManagement.jsp").forward(request, response);
+//        }
     }
 
     /**

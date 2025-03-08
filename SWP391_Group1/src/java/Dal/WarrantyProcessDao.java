@@ -109,7 +109,7 @@ public class WarrantyProcessDao extends DBContext {
         List<WarrantyProcessing> list = new ArrayList<>();
         String sql = "select * from WarrantyProcessing wp join WarrantyRequirement wr \n"
                 + "on wp.RequirementId = wr.RequirementId \n"
-                + "where wr.CustomerId = ? and wp.IsAccept = 'Waiting Response'";
+                + "where wr.CustomerId = ?";
 
         try {
             p = connection.prepareStatement(sql);
@@ -143,6 +143,26 @@ public class WarrantyProcessDao extends DBContext {
             p = connection.prepareStatement(sql);
             p.setInt(1, requirementId);
             p.setInt(2, processId);
+            rs = p.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean checkFaultTypeInRequirement(String productId ,int requirementId, int processId) {
+        String sql = "select count(*) from WarrantyForm wf join WarrantyRequirement wr on wr.FormId = wf.FormId\n"
+                + "join WarrantyProcessing wp on wp.RequirementId = wr.RequirementId\n"
+                + "where wf.ProductId = ? and wr.RequirementId = ? and wf.FaultType = 'user' and wp.ProcessingId = ? ";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, productId);
+            p.setInt(2, requirementId);
+            p.setInt(3, processId);
             rs = p.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1) > 0;

@@ -136,8 +136,7 @@
                                                 <th>Start Date</th>
                                                 <th>End Date</th>
                                                 <th>Status</th>
-                                                <th>Verification Code</th>
-                                                <th>Verification Method</th>
+
                                                 <th>Verified</th>
 
                                             </tr>
@@ -150,22 +149,17 @@
 
 
                                         <c:forEach var="w" items="${form}">
-                                            
+
                                             <tr>
                                                 <td>${w.formId}</td>
                                                 <td>${w.product.productId}</td>
                                                 <td>${w.startDate}</td>
                                                 <td>${w.endDate}</td>
                                                 <td>${w.status}</td>
-                                                <td>${w.verificationCode}</td>
-                                                <td>${w.verificationMethod}</td>
-                                                <td class="${w.verified ? 'verified-yes' : 'verified-no'}">
-                                                    <c:choose>
-                                                        <c:when test="${w.verified}">Yes</c:when>
-                                                        <c:otherwise>No</c:otherwise>
-                                                    </c:choose>
-                                                </td>
-                                                
+
+                                              
+
+
 
                                             </tr>
                                         </c:forEach>
@@ -194,14 +188,14 @@
                                         </c:when>
                                         <c:otherwise>
                                             <span style="color: red;">${requestScope.output}</span>
-                                              <button type="submit">
+                                            <button type="submit">
                                                 <a href="warrantyrequest?productid=${requestScope.productid}&ispay=Yes">
                                                     Yêu cầu Bảo hành có phí 
                                                 </a>
                                             </button>
                                         </c:otherwise>
                                     </c:choose>
-                                            <br>
+                                    <br>
                                     <a href="searchinformation">Back</a>
                                 </div>
 

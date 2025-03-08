@@ -4,6 +4,7 @@
  */
 package Dal;
 
+import Model.Customer;
 import Model.Product;
 import Model.Staff;
 import Model.WarrantyForm;
@@ -30,6 +31,25 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
             System.out.println(wf.getFormId());
         }
 
+    }
+
+    public Customer GetCustomer(int CustomerId) {
+        String sql = "select * from Customer where CustomerId = ?";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, CustomerId);
+
+            rs = p.executeQuery();
+            if (rs.next()) {
+                Customer customer = new Customer();
+                customer.setUsername(rs.getString(2));
+                return customer;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();  // In lỗi ra để dễ debug
+        }
+        return null;  // Trả về 0 nếu có lỗi
     }
 
     public int GetTotalProductByProductId(int CustomerId, String search, Product product) {
@@ -67,6 +87,7 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         }
         return 0;  // Trả về 0 nếu có lỗi
     }
+
     public List<Product> SearchingProductByProductId(int index, int CustomerId, String search, Product product, String sort, String order, String priceRange, int amount) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId WHERE c.CustomerId = ? ";
@@ -235,7 +256,6 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
 //        }
 //        return list;
 //    }
-
     public int GetTotalProductDetail(int customerId, String productId) {
         String sql = "SELECT count(*)\n"
                 + "FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId \n"
@@ -276,11 +296,19 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
             rs = p.executeQuery();
 
             while (rs.next()) {
-
-                list.add(new WarrantyForm(rs.getInt(1), rs.getDate(3), rs.getDate(4),
-                        rs.getString(5), rs.getString(6), rs.getString(7),
-                        rs.getBoolean(8), new Product(rs.getString(2), rs.getString(9),
-                        rs.getString(10))));
+                WarrantyForm wf = new WarrantyForm();
+                wf.setFormId(rs.getInt(1));
+                Product product = new Product();
+                product.setProductId(rs.getString(2));
+                product.setCustomerId(rs.getInt(12));
+                wf.setProduct(product);
+                wf.setStartDate(rs.getDate(3));
+                wf.setEndDate(rs.getDate(4));
+                wf.setStatus(rs.getString(5));
+                wf.setVerified(rs.getBoolean(6));
+                wf.setFaultType(rs.getString(7));
+                wf.setImgUrl(rs.getString(8));
+                list.add(wf);
             }
         } catch (Exception e) {
             e.printStackTrace();
