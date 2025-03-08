@@ -3,11 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/Customer/CustomerRequest.java</file>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Model/WarrantyForm.java</file>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/Customer/VerifyForm.java</file>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/web/CustomerRequirement.jsp</file>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Dal/WarrantyRequirementDAO.java</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/Technician/UpdateForm.java</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/web/TechnicianRequestManagement.jsp</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/Technician/CreateForm.java</file>
         </group>
     </open-files>
 </project-private>

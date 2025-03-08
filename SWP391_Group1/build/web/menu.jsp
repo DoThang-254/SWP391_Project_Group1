@@ -60,19 +60,9 @@
                 </form>
                 <ul class="sidebar-menu">
 
-                    <li class="active">
+                    <li>
                         <a href="home">
                             <i class="fa fa-dashboard"></i> <span>Home page</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="searchinformation">
-                            <i class="fa fa-glass"></i> <span>Searching Information</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="warrantyinformation">
-                            <i class="fa fa-gavel"></i> <span>Warranty Information</span>
                         </a>
                     </li>
 
@@ -81,7 +71,20 @@
                             <i class="fa fa-globe"></i> <span>Blog</span>
                         </a>
                     </li>
+                    <c:if test="${sessionScope.Customer != null}">
+                        <li>
+                            <a href="searchinformation">
+                                <i class="fa fa-dashboard"></i> 
+                                <span>View Detail Products & Warranty Form</span>
+                            </a>
+                        </li>
 
+                        <li>
+                            <a href="...">
+                                <i class="fa fa-globe"></i> <span>...</span>
+                            </a>
+                        </li>
+                    </c:if>
 
 
                 </ul>
@@ -92,5 +95,34 @@
         <!-- Right side column. Contains the navbar and content of the page -->
 
         <!-- /.sidebar -->
+       <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let currentUrl = window.location.pathname;
+        let activeUrl = localStorage.getItem("activeMenu") || currentUrl;
+        let menuItems = document.querySelectorAll(".sidebar-menu li");
+
+        // Xóa tất cả class "active"
+        menuItems.forEach(item => item.classList.remove("active"));
+
+        // Duyệt qua từng menu item để kiểm tra và đặt active
+        let isActiveSet = false; // Đảm bảo chỉ có 1 mục được chọn
+        menuItems.forEach(item => {
+            let link = item.querySelector("a");
+            if (link && link.getAttribute("href") === activeUrl && !isActiveSet) {
+                item.classList.add("active");
+                isActiveSet = true; // Đánh dấu đã đặt "active" để tránh trùng lặp
+            }
+
+            // Gán sự kiện click để lưu vào localStorage
+            link.addEventListener("click", function () {
+                localStorage.setItem("activeMenu", link.getAttribute("href"));
+            });
+        });
+    });
+</script>
+
+
+
+
     </body>
 </html>

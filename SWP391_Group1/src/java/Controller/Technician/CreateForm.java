@@ -67,17 +67,13 @@ public class CreateForm extends HttpServlet {
 
         }
 
-        if (wfd.canCreateWarrantyForm(requireId)) {
-            wfd.createWarrantyForm(productId);
+        wfd.createWarrantyForm(productId);
 
-            WarrantyForm newWf = wfd.getWarrantyFormbyProductId(productId);
-            wrd.UpdateFormId(newWf.getFormId(), requireId);
-            request.setAttribute("form", newWf);
-            request.getRequestDispatcher("CreateForm.jsp").forward(request, response);
-
-        }
-        request.setAttribute("msg" , "requirement has form before");
+        WarrantyForm newWf = wfd.getWarrantyFormbyProductId(productId);
+        wrd.UpdateFormId(newWf.getFormId(), requireId);
+        request.setAttribute("form", newWf);
         request.getRequestDispatcher("CreateForm.jsp").forward(request, response);
+
     }
 
     /**

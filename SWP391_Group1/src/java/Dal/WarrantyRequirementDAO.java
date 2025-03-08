@@ -22,7 +22,26 @@ public class WarrantyRequirementDAO extends DBContext {
     }
 
     public boolean hasPendingRequest(String productId) {
-        String sql = "SELECT COUNT(*) FROM WarrantyRequirement WHERE ProductId = ? AND Status = 'Pending'";
+        String sql = "SELECT COUNT(*) FROM WarrantyRequirement WHERE ProductId = ? AND (Status = 'Pending' or Status = 'Waiting')";
+
+        try {
+            p = connection.prepareStatement(sql);
+
+            p.setString(1, productId);
+            rs = p.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean hasUnPayRequest(String productId) {
+        String sql = "SELECT * FROM WarrantyRequirement wr join Invoice i on i.RequirementId = wr.RequirementId\n"
+                + "WHERE ProductId = ? and i.Status = 'unPaid'";
 
         try {
             p = connection.prepareStatement(sql);

@@ -33,41 +33,66 @@ public class WarrantyFormDao extends DBContext {
     }
     private PreparedStatement p;
 
-    public boolean hasActive(String productId) {
-        String sql = "SELECT TOP 1 FormId FROM WarrantyForm "
-                + "WHERE Status = 'active' and productId = ? "
-                + "ORDER BY FormId DESC";
+//    public boolean hasActive(String productId) {
+//        String sql = "SELECT TOP 1 FormId FROM WarrantyForm "
+//                + "WHERE Status = 'active' and productId = ? "
+//                + "ORDER BY FormId DESC ";
+//
+//        try {
+//            p = connection.prepareStatement(sql);
+//            p.setString(1, productId);
+//            ResultSet rs = p.executeQuery();
+//            return rs.next();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return false; // Lỗi xảy ra hoặc không có dữ liệu
+//    }
+//    public boolean hasInactive(String productId) {
+//        String sql = "SELECT TOP 1 FormId FROM WarrantyForm "
+//                + "WHERE Status = 'inactive' and productId = ? "
+//                + "ORDER BY FormId DESC";
+//
+//        try {
+//            p = connection.prepareStatement(sql);
+//            p.setString(1, productId);
+//            ResultSet rs = p.executeQuery();
+//            return rs.next();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return false; // Lỗi xảy ra hoặc không có dữ liệu
+//    }
+    public WarrantyForm hasActive(String productId) {
+        WarrantyForm warrantyForm = null;
+        String sql = "SELECT TOP 1 * FROM WarrantyForm \n"
+                + "WHERE  productId = ?\n"
+                + "ORDER BY FormId DESC , StartDate desc";
 
         try {
             p = connection.prepareStatement(sql);
+
             p.setString(1, productId);
             ResultSet rs = p.executeQuery();
-            return rs.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false; // Lỗi xảy ra hoặc không có dữ liệu
-    }
 
-    public boolean hasInactive(String productId) {
-        String sql = "SELECT TOP 1 FormId FROM WarrantyForm "
-                + "WHERE Status = 'inactive' and productId = ? "
-                + "ORDER BY FormId DESC";
-
-        try {
-            p = connection.prepareStatement(sql);
-            p.setString(1, productId);
-            ResultSet rs = p.executeQuery();
-            return rs.next();
+            if (rs.next()) {
+                warrantyForm = new WarrantyForm();
+                warrantyForm.setFormId(rs.getInt("FormId"));
+                Product p = new Product();
+                p.setProductId(rs.getString("ProductId"));
+                warrantyForm.setProduct(p);
+                warrantyForm.setStartDate(rs.getDate("StartDate"));
+                warrantyForm.setEndDate(rs.getDate("EndDate"));
+                warrantyForm.setStatus(rs.getString("Status"));
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return false; // Lỗi xảy ra hoặc không có dữ liệu
+        return warrantyForm;
     }
 
     public WarrantyForm getActiveWarrantyFormByProduct(String productId) {
         WarrantyForm warrantyForm = null;
-        String sql = "SELECT * FROM WarrantyForm WHERE ProductId = ? AND EndDate >= GETDATE() ORDER BY EndDate DESC";
+        String sql = "  SELECT * FROM WarrantyForm WHERE ProductId = ? AND EndDate >= GETDATE() and  Status = 'active' ORDER BY EndDate DESC , FormId desc";
 
         try {
             p = connection.prepareStatement(sql);
@@ -230,7 +255,7 @@ public class WarrantyFormDao extends DBContext {
         String sql = "SELECT top 1 wf.* FROM WarrantyRequirement wr join Product p on p.ProductId = wr.ProductId\n"
                 + "                join WarrantyForm wf on wf.ProductId = p.ProductId \n"
                 + "                where p.ProductId = ?\n"
-                + "                order by wf.EndDate desc";
+                + "                order by wf.formId desc";
 
         try {
             p = connection.prepareStatement(sql);

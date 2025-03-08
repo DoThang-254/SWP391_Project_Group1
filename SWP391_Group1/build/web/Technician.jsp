@@ -49,29 +49,7 @@
               <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
               <![endif]-->
 
-        <style type="text/css">
-
-
-            body {
-                position: relative;
-                background: none; /* Xóa ảnh nền trên body để tránh bị ảnh hưởng */
-            }
-
-            body::before {
-                content: "";
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: url('img/asus-rog-symbol-red-background-etzr9sg5apa159nt.jpg') no-repeat center center fixed;
-                background-size: cover;
-                filter: brightness(1.7); /* Giảm độ sáng chỉ cho ảnh nền */
-                z-index: -1; /* Đưa ảnh nền xuống dưới nội dung */
-            }
-
-
-        </style>
+     
     </head>
 
     <body class="skin-black">

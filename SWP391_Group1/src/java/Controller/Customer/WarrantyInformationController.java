@@ -108,7 +108,6 @@ public class WarrantyInformationController extends HttpServlet {
 
         for (Product p : list) {
             WarrantyForm activeWarranty = wfd.getActiveWarrantyFormByProduct(p.getProductId());
-
             if (activeWarranty != null) {
                 p.setWarrantyStatus("Còn bảo hành");
             } else {

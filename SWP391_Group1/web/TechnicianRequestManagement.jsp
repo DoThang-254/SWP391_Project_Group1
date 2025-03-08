@@ -165,7 +165,7 @@
                                                 </th>
                                                 <th>fault type</th>
                                                 <th>
-                                                     Form 
+                                                    Form 
                                                 </th> 
                                             </tr>
                                         </thead>
@@ -207,29 +207,28 @@
                                                 </td>
 
                                                 <td>${r.description}</td>
-                                               
+
 
                                                 <td>${r.isPay}</td>
-                                                
-                                                 <td>${r.form.faultType}</td>
 
-                                                <c:choose>
-                                                    <c:when test="${r.isPay eq 'No'}">
-                                                        <td>
-                                                            <a href="createform?productid=${r.product.productId}&requireId=${r.requirementId}" class="btn btn-info btn-sm" title="View Details">
-                                                                Create new Form
-                                                            </a>
-                                                        </td>
+                                                <td>${r.form.faultType}</td>
 
-                                                    </c:when>
-                                                    <c:when test="${r.isPay eq 'Yes' }">
-                                                        <td> 
-                                                            <a href="createform?productid=${r.product.productId}&requireId=${r.requirementId}" class="btn btn-info btn-sm" title="View Details">
-                                                                Create new Form
+
+                                               
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${r.form.formId != 0}">
+                                                            <a href="updateform?formId=${r.form.formId}" class="btn btn-warning btn-sm" title="Update Form">
+                                                                Update Form
                                                             </a>
-                                                        </td>
-                                                    </c:when>
-                                                </c:choose>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <a href="createform?productid=${r.product.productId}&requireId=${r.requirementId}" class="btn btn-info btn-sm" title="Create New Form">
+                                                                Create New Form
+                                                            </a>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
 
 
                                             </tr>

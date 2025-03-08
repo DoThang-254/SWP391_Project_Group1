@@ -160,6 +160,10 @@
 
                                                 </th>
 
+                                                <th>
+                                                    Create Requirement
+                                                </th>
+
                                             </tr>
                                         </thead>
                                         <c:if test="${requestScope.listA == null || requestScope.listA.isEmpty()}">
@@ -184,6 +188,26 @@
                                                         <i class="fa fa-eye"></i>
                                                     </a>
                                                 </td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${c.warrantyStatus eq 'Còn bảo hành'}">
+                                                            <button class="free-warranty">
+                                                                <a href="warrantyrequest?productid=${c.productId}&ispay=No">
+                                                                    Yêu cầu Bảo hành miễn phí
+                                                                </a>
+                                                            </button>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span style="color: red;">${requestScope.output}</span>
+                                                            <button class="paid-warranty">
+                                                                <a href="warrantyrequest?productid=${c.productId}&ispay=Yes">
+                                                                    Yêu cầu Bảo hành có phí
+                                                                </a>
+                                                            </button>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+
 
                                             </tr>
                                         </c:forEach>
@@ -227,6 +251,55 @@
 </html>
 
 <style>
+    /* Style chung cho nút */
+    button {
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+    /* Định dạng thẻ <a> bên trong nút */
+    button a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+    }
+
+    /* Nút bảo hành miễn phí */
+    button.free-warranty {
+        background-color: #28a745; /* Màu xanh lá */
+    }
+
+    button.free-warranty:hover {
+        background-color: #218838;
+    }
+
+    /* Nút bảo hành có phí */
+    button.paid-warranty {
+        background-color: #dc3545; /* Màu đỏ */
+    }
+
+    button.paid-warranty:hover {
+        background-color: #c82333;
+    }
+
+    /* Nếu còn bảo hành, nền xanh lá */
+    .warranty-active {
+        background-color: #28a745; /* Xanh lá */
+        color: black !important;
+        font-weight: bold;
+    }
+
+    /* Nếu hết hạn bảo hành, nền đỏ */
+    .warranty-expired {
+        background-color: #dc3545; /* Đỏ */
+        color: black !important;
+        font-weight: bold;
+    }
+
     /* Style cho biểu tượng filter và sort */
     .fa-sort, .fa-filter {
         margin-left: 5px;

@@ -107,8 +107,9 @@ public class WarrantyRequestController extends HttpServlet {
 
         // Kiểm tra nếu đã có yêu cầu bảo hành đang chờ xử lý
         boolean hasPendingRequest = wrd.hasPendingRequest(productId);
-
-        if (hasPendingRequest || wfd.hasInactive(productId)) {
+        WarrantyForm hasActive = wfd.hasActive(productId);
+        boolean hasUnPay = wrd.hasUnPayRequest(productId);
+        if (hasPendingRequest || !hasActive.getStatus().equals("active") || hasUnPay) {
             request.setAttribute("errorMessage", "Bạn đã gửi yêu cầu bảo hành cho sản phẩm này.");
             request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
             return;
