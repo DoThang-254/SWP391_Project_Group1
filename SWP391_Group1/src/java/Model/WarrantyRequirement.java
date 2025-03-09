@@ -11,6 +11,7 @@ import java.util.Date;
  * @author thang
  */
 public class WarrantyRequirement {
+
     private int requirementId;
     private String status;
     private String description;
@@ -19,11 +20,13 @@ public class WarrantyRequirement {
     private Staff staff;
     private Product product;
     private String isPay;
-    private WarrantyForm form ; 
+    private WarrantyForm form;
+    private String category; 
+
     public WarrantyRequirement() {
     }
 
-    public WarrantyRequirement(int requirementId, String status, String description, Date registerDate, Customer customer, Staff staff, Product product , String isPay) {
+    public WarrantyRequirement(int requirementId, String status, String description, Date registerDate, Customer customer, Staff staff, Product product, String isPay) {
         this.requirementId = requirementId;
         this.status = status;
         this.description = description;
@@ -33,8 +36,6 @@ public class WarrantyRequirement {
         this.product = product;
         this.isPay = isPay;
     }
-
-    
 
     public int getRequirementId() {
         return requirementId;
@@ -83,7 +84,7 @@ public class WarrantyRequirement {
     public void setStaff(Staff staff) {
         this.staff = staff;
     }
-    
+
     public Product getProduct() {
         return product;
     }
@@ -108,6 +109,11 @@ public class WarrantyRequirement {
         this.form = form;
     }
     
-    
-}
+     public String getCategory() {
+        return category;
+    }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+}

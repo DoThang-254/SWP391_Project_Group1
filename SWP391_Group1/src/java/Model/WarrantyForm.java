@@ -16,16 +16,16 @@ public class WarrantyForm {
     private Date startDate;
     private Date endDate;
     private String status;
-    private boolean verified;
+    private String verified;
     private String faultType;
     private String imgUrl;
     private Product product;
-    private boolean rejected; // Thêm thuộc tính này
+    private String technicianVerify; 
 
     public WarrantyForm() {
     }
 
-    public WarrantyForm(int formId, Date startDate, Date endDate, String status, boolean verified, Product product) {
+    public WarrantyForm(int formId, Date startDate, Date endDate, String status, String verified, Product product) {
         this.formId = formId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -66,11 +66,11 @@ public class WarrantyForm {
         this.status = status;
     }
 
-    public boolean isVerified() {
+    public String getVerified() {
         return verified;
     }
 
-    public void setVerified(boolean verified) {
+    public void setVerified(String verified) {
         this.verified = verified;
     }
 
@@ -98,13 +98,15 @@ public class WarrantyForm {
         this.imgUrl = imgUrl;
     }
 
-    public boolean isRejected() {
-        return rejected;
+    public String getTechnicianVerify() {
+        return technicianVerify;
     }
 
-    public void setRejected(boolean rejected) {
-        this.rejected = rejected;
+    public void setTechnicianVerify(String technicianVerify) {
+        this.technicianVerify = technicianVerify;
     }
+
+  
 
     
 }

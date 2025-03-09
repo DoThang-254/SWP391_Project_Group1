@@ -305,7 +305,7 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
                 wf.setStartDate(rs.getDate(3));
                 wf.setEndDate(rs.getDate(4));
                 wf.setStatus(rs.getString(5));
-                wf.setVerified(rs.getBoolean(6));
+                wf.setVerified(rs.getString(6));
                 wf.setFaultType(rs.getString(7));
                 wf.setImgUrl(rs.getString(8));
                 list.add(wf);

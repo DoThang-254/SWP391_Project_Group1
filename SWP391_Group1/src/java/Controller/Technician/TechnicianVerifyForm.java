@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Controller.Customer;
+package Controller.Technician;
 
 import Dal.WarrantyFormDao;
 import Dal.WarrantyProcessDao;
@@ -27,7 +27,7 @@ import javax.mail.internet.MimeMessage;
  *
  * @author thang
  */
-public class VerifyForm extends HttpServlet {
+public class TechnicianVerifyForm extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,10 +46,10 @@ public class VerifyForm extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet VerifyForm</title>");
+            out.println("<title>Servlet TechnicianVerifyForm</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet VerifyForm at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet TechnicianVerifyForm at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,10 +64,6 @@ public class VerifyForm extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    WarrantyProcessDao wpd = new WarrantyProcessDao();
-    WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
-    WarrantyFormDao wfd = new WarrantyFormDao();
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -76,25 +72,23 @@ public class VerifyForm extends HttpServlet {
 //        String productId = request.getParameter("productid");
         int requirementId = Integer.parseInt(request.getParameter("requirementid"));
         String staffId = request.getParameter("staffid");
-        wfd.updateVerify(formId);
-        if (wfd.isVerified(formId) && wfd.isTechVerified(formId)) {
-            if (!wpd.isWarrantyProcessExists(requirementId)) { // Nếu chưa tồn tại, mới insert
-                wpd.insertWarrantyProcess(requirementId, staffId);
-                wrd.UpdateStatusRequest("Approved", requirementId);
-            } else {
-                System.out.println("Yêu cầu này đã được xử lý!");
-            }
+        wfd.updateTechVerify(formId);
+        if (wfd.isVerified(formId) && wfd.isTechVerified(formId)) { // phải check cả 2 đồng ý mới đc thêm process
+
+            
+            wrd.UpdateStatusRequest("Approved", requirementId);
         } else if (!wfd.isVerified(formId) && !wfd.isTechVerified(formId)) {
             wrd.UpdateStatusRequest("Rejected", requirementId);
 
-        } else if (!wfd.isVerified(formId) && wfd.isTechVerified(formId)) {
-            // Một trong hai chưa đồng ý -> Chờ xử lý (Pending)
-            wrd.UpdateStatusRequest("Rejected", requirementId);
-        } else if (wfd.isVerified(formId) && !wfd.isTechVerified(formId)) {
+        } else if(!wfd.isVerified(formId) && wfd.isTechVerified(formId)){
             // Một trong hai chưa đồng ý -> Chờ xử lý (Pending)
             wrd.UpdateStatusRequest("Rejected", requirementId);
         }
-        response.sendRedirect("customerrequest");
+         else if(wfd.isVerified(formId) && !wfd.isTechVerified(formId)){
+            // Một trong hai chưa đồng ý -> Chờ xử lý (Pending)
+            wrd.UpdateStatusRequest("Rejected", requirementId);
+        }
+        response.sendRedirect("technicianrequest");
     }
 
     /**
@@ -105,6 +99,10 @@ public class VerifyForm extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    WarrantyProcessDao wpd = new WarrantyProcessDao();
+    WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
+    WarrantyFormDao wfd = new WarrantyFormDao();
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -117,7 +115,7 @@ public class VerifyForm extends HttpServlet {
             String customerId = request.getParameter("customerId");
             String productId = request.getParameter("productId");
             String staffId = request.getParameter("staffid");
-            String confirmLink = "http://localhost:9999/SWP391_Group1/verifyform?formId=" + formId
+            String confirmLink = "http://localhost:9999/SWP391_Group1/techverify?formId=" + formId
                     + "&customerId=" + customerId + "&productid=" + productId
                     + "&requirementid=" + requirementId + "&staffid=" + staffId;
 
@@ -151,12 +149,12 @@ public class VerifyForm extends HttpServlet {
             }
         } else if ("reject".equals(action)) {
             // Hủy xác nhận, cập nhật trạng thái yêu cầu bảo hành thành "Rejected"
-            wfd.updateUnverify(formId); // Cập nhật Verified = false (0)
+            wfd.updateTechUnverify(formId); // Cập nhật Verified = false (0)
 //            wrd.UpdateStatusRequest("Rejected", requirementId);
 
         }
 
-        response.sendRedirect("customerrequest");
+        response.sendRedirect("technicianrequest");
     }
 
     /**

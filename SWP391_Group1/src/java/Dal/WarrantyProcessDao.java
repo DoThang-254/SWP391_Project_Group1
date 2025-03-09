@@ -24,15 +24,31 @@ public class WarrantyProcessDao extends DBContext {
     private PreparedStatement p;
     private ResultSet rs;
 
+    public boolean isWarrantyProcessExists(int requirementId) {
+        String sql = "SELECT COUNT(*) FROM WarrantyProcessing WHERE RequirementId = ?";
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, requirementId);
+            rs = p.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Nếu có bản ghi => true
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public void insertWarrantyProcess(int requirementId, String staffId) {
         String sql = "INSERT INTO [dbo].[WarrantyProcessing]\n"
-                + "           ([RequirementId],[StaffId])\n"
-                + "     VALUES (?,?)";
+                + "           ([RequirementId],[StaffId] , [Status])\n"
+                + "     VALUES (?,?,?)";
 
         try {
             p = connection.prepareStatement(sql);
             p.setInt(1, requirementId);
             p.setString(2, staffId);
+            p.setString(3, "Approved");
 
             p.executeUpdate();
         } catch (SQLException e) {

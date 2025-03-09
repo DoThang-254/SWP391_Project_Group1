@@ -165,6 +165,10 @@
                                                 <th>
                                                     Xác nhận từ khách hàng
                                                 </th> 
+
+                                                <th>
+                                                    Xác nhận từ nhân viên
+                                                </th> 
                                             </tr>
                                         </thead>
                                         <c:if test="${requestScope.list == null || requestScope.list.isEmpty()}">
@@ -202,11 +206,12 @@
 
                                                 </c:if>
 
-                                                <td class="${r.form.verified ? 'verified-yes' : 'verified-no'}">
+                                                <td>
                                                     <c:choose>
-                                                        <c:when test="${r.form.verified}">Đã xác nhận</c:when>
-                                                        <c:when test="${r.status eq 'Rejected'}">Đã Từ chối</c:when>
-                                                        <c:otherwise>
+                                                        <c:when test="${r.form.verified eq 'yes'}">Đã xác nhận</c:when>
+                                                        <c:when test="${r.form.verified eq 'no'}">Đã từ chối</c:when>
+                                                        <c:when test="${empty r.form.verified}">
+                                                            chưa xác nhận 
                                                             <form action="verifyform" method="post">
                                                                 <input type="hidden" name="email" value="${r.customer.email}">
                                                                 <input type="hidden" name="formId" value="${r.form.formId}">
@@ -226,10 +231,22 @@
                                                                     Từ chối
                                                                 </button>
                                                             </form>
+                                                        </c:when>
+                                                    </c:choose>
+                                                </td>
+                                                <td class="${r.form.technicianVerify eq 'yes' ? 'verified-yes' : (r.form.technicianVerify eq 'no' ? 'verified-no' : 'verified-empty')}">
+                                                    <c:choose>
+
+                                                        <c:when test="${r.form.technicianVerify eq 'yes'}">Đã xác nhận</c:when>
+                                                        <c:when test="${r.form.technicianVerify eq 'no'}">
+                                                            đã từ chối
+                                                        </c:when>
+
+                                                        <c:otherwise>
+                                                            chưa xác nhận 
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
-
 
 
                                             </tr>

@@ -17,7 +17,18 @@ import java.sql.SQLException;
 public class WarrantyFormDao extends DBContext {
 
     public void updateUnverify(int formId) {
-        String query = "UPDATE [dbo].[WarrantyForm] SET Verified = 0 WHERE FormId = ?";
+        String query = "UPDATE [dbo].[WarrantyForm] SET Verified = 'no' WHERE FormId = ?";
+        try {
+            p = connection.prepareStatement(query);
+            p.setInt(1, formId);
+            p.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateTechUnverify(int formId) {
+        String query = "UPDATE [dbo].[WarrantyForm] SET TechnicianVerify = 'no' WHERE FormId = ?";
         try {
             p = connection.prepareStatement(query);
             p.setInt(1, formId);
@@ -119,11 +130,9 @@ public class WarrantyFormDao extends DBContext {
         String sql = "INSERT INTO [dbo].[WarrantyForm]\n"
                 + "           ([ProductId]\n"
                 + "           ,[StartDate]\n"
-                + "           ,[EndDate]\n"
-                + "           ,[Status]\n"
-                + "           ,[Verified])\n"
+                + "           ,[Status])\n"
                 + "     VALUES\n"
-                + "           (?,GETDATE(),DATEADD(YEAR, 1, GETDATE()),'Inactive',0)";
+                + "           (?,GETDATE(),'Inactive')";
         try {
             p = connection.prepareStatement(sql);
             p.setString(1, productId);
@@ -168,7 +177,7 @@ public class WarrantyFormDao extends DBContext {
                 warrantyForm.setStartDate(rs.getDate("StartDate"));
                 warrantyForm.setEndDate(rs.getDate("EndDate"));
                 warrantyForm.setStatus(rs.getString("Status"));
-                warrantyForm.setVerified(rs.getBoolean(6));
+                warrantyForm.setVerified(rs.getString(6));
                 warrantyForm.setFaultType(rs.getString(7));
                 warrantyForm.setImgUrl(rs.getString(8));
             }
@@ -198,7 +207,7 @@ public class WarrantyFormDao extends DBContext {
                 warrantyForm.setStartDate(rs.getDate("StartDate"));
                 warrantyForm.setEndDate(rs.getDate("EndDate"));
                 warrantyForm.setStatus(rs.getString("Status"));
-                warrantyForm.setVerified(rs.getBoolean(6));
+                warrantyForm.setVerified(rs.getString(6));
                 warrantyForm.setFaultType(rs.getString(7));
                 warrantyForm.setImgUrl(rs.getString(8));
             }
@@ -278,6 +287,57 @@ public class WarrantyFormDao extends DBContext {
         return warrantyForm;
     }
 
+    public void UpdateFullFormId(WarrantyForm wf) {
+        String sql = "UPDATE [dbo].[WarrantyForm]\n"
+                + " SET \n"
+                + " [EndDate] = ?\n"
+                + " ,[FaultType] = ?\n"
+                + " ,[ImageUrl] = ?\n"
+                + " WHERE FormId = ? ";
+
+        try {
+            p = connection.prepareStatement(sql);
+            java.sql.Date sqlEndDate = (wf.getEndDate() != null) ? new java.sql.Date(wf.getEndDate().getTime()) : null;
+
+            p.setDate(1, sqlEndDate);
+            p.setString(2, wf.getFaultType());
+            p.setString(3, wf.getImgUrl());
+            p.setInt(4, wf.getFormId());
+            p.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public WarrantyForm getWarrantyFormbyFormId(int formId) { // lấy ra warranty formid mới nhất 
+        WarrantyForm warrantyForm = null;
+        String sql = "select * from WarrantyForm where FormId = ?";
+
+        try {
+            p = connection.prepareStatement(sql);
+
+            p.setInt(1, formId);
+            ResultSet rs = p.executeQuery();
+
+            if (rs.next()) {
+                warrantyForm = new WarrantyForm();
+                warrantyForm.setFormId(rs.getInt("FormId"));
+                Product p = new Product();
+                p.setProductId(rs.getString("ProductId"));
+                warrantyForm.setProduct(p);
+                warrantyForm.setStartDate(rs.getDate("StartDate"));
+                warrantyForm.setEndDate(rs.getDate("EndDate"));
+                warrantyForm.setStatus(rs.getString("Status"));
+                warrantyForm.setVerified(rs.getString(6));
+                warrantyForm.setFaultType(rs.getString(7));
+                warrantyForm.setImgUrl(rs.getString(8));
+            }
+        } catch (SQLException e) {
+        }
+        return warrantyForm;
+    }
+
     public void updateStatus(WarrantyForm wf) {
         String query = "UPDATE [dbo].[WarrantyForm]\n"
                 + "   SET \n"
@@ -331,7 +391,22 @@ public class WarrantyFormDao extends DBContext {
 
     public void updateVerify(int formId) {
         String query = "UPDATE [dbo].[WarrantyForm]\n"
-                + "   SET [Verified] = 1\n"
+                + "   SET [Verified] = 'yes'\n"
+                + "      \n"
+                + " WHERE FormId = ? ";
+        try {
+
+            p = connection.prepareStatement(query);
+            p.setInt(1, formId);
+            p.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateTechVerify(int formId) {
+        String query = "UPDATE [dbo].[WarrantyForm]\n"
+                + "   SET [TechnicianVerify] = 'yes'\n"
                 + "      \n"
                 + " WHERE FormId = ? ";
         try {
@@ -351,7 +426,24 @@ public class WarrantyFormDao extends DBContext {
             p.setInt(1, formId);
             ResultSet rs = p.executeQuery();
             if (rs.next()) {
-                return rs.getBoolean("Verified"); // Lấy giá trị boolean trực tiếp
+                String verified = rs.getString("Verified"); 
+                return "yes".equalsIgnoreCase(verified); 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; 
+    }
+
+    public boolean isTechVerified(int formId) {
+        String query = "SELECT TechnicianVerify FROM [dbo].[WarrantyForm] WHERE FormId = ?";
+        try {
+            p = connection.prepareStatement(query);
+            p.setInt(1, formId);
+            ResultSet rs = p.executeQuery();
+            if (rs.next()) {
+                String techVerified = rs.getString("TechnicianVerify");
+                return "yes".equalsIgnoreCase(techVerified); 
             }
         } catch (SQLException e) {
             e.printStackTrace();

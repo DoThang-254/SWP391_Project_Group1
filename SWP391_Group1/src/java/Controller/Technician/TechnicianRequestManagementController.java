@@ -13,7 +13,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -61,11 +64,39 @@ public class TechnicianRequestManagementController extends HttpServlet {
             throws ServletException, IOException {
         Staff s = (Staff) request.getSession().getAttribute("Staff");
 
+//        WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
+//        List<WarrantyRequirement> list = wrd.GetAllRequestByStaffId(s.getStaffId());
+//        request.setAttribute("list", list);
         WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
-        List<WarrantyRequirement> list = wrd.GetAllRequestByStaffId(s.getStaffId());
-        request.setAttribute("list", list);
+        List<WarrantyRequirement> listA = wrd.GetAllRequestByStaffId(s.getStaffId());
+        List<WarrantyRequirement> listB = wrd.GetAllRequestByStaffIdWithout(s.getStaffId());
 
+// Map lưu trữ requirementId -> WarrantyRequirement
+        Map<Integer, WarrantyRequirement> map = new HashMap<>();
+
+// Thêm dữ liệu từ listB trước (dữ liệu chính)
+        for (WarrantyRequirement r : listB) {
+            r.setCategory("B");
+            map.put(r.getRequirementId(), r);
+        }
+
+// Cập nhật dữ liệu từ listA (chỉ bổ sung thêm các thuộc tính của form)
+        for (WarrantyRequirement r : listA) {
+            if (map.containsKey(r.getRequirementId())) {
+                WarrantyRequirement existing = map.get(r.getRequirementId());
+                existing.setForm(r.getForm()); // Gán thông tin form
+            } else {
+                r.setCategory("A");
+                map.put(r.getRequirementId(), r);
+            }
+        }
+
+// Chuyển Map thành List
+        List<WarrantyRequirement> mergedList = new ArrayList<>(map.values());
+
+        request.setAttribute("list", mergedList);
         request.getRequestDispatcher("TechnicianRequestManagement.jsp").forward(request, response);
+
     }
 
     /**
@@ -79,7 +110,7 @@ public class TechnicianRequestManagementController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
     /**

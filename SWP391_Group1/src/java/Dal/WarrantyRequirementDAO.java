@@ -111,7 +111,9 @@ public class WarrantyRequirementDAO extends DBContext {
 
     public List<WarrantyRequirement> GetAllRequestByStaffId(String staffId) {
         List<WarrantyRequirement> list = new ArrayList<>();
-        String sql = "SELECT * FROM WarrantyRequirement where StaffId = ? ";
+        String sql = "SELECT wr.* , s.Email , wf.* FROM WarrantyRequirement wr join Staff s on wr.StaffId = s.StaffId\n"
+                + "join WarrantyForm wf on wf.FormId = wr.FormId\n"
+                + "where s.StaffId = ?";
 
         try {
             p = connection.prepareStatement(sql);
@@ -126,6 +128,7 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setProduct(p);
                 Staff s = new Staff();
                 s.setStaffId(rs.getString(4));
+                s.setEmail(rs.getString(11));
                 wr.setStaff(s);
                 Customer c = new Customer();
                 c.setCustomerId(rs.getInt(3));
@@ -136,6 +139,50 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setIsPay(rs.getString(9));
                 WarrantyForm form = new WarrantyForm();
                 form.setFormId(rs.getInt(10));
+                form.setStatus(rs.getString(16));
+                form.setVerified(rs.getString(17));
+                form.setFaultType(rs.getString(18));
+                form.setTechnicianVerify(rs.getString(19));
+                wr.setForm(form);
+                list.add(wr);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public List<WarrantyRequirement> GetAllRequestByStaffIdWithout(String staffId) {
+        List<WarrantyRequirement> list = new ArrayList<>();
+        String sql = "SELECT wr.* , s.Email FROM WarrantyRequirement wr join Staff s on wr.StaffId = s.StaffId\n"
+                + "\n"
+                + "where s.StaffId = ?";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, staffId);
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+                WarrantyRequirement wr = new WarrantyRequirement();
+                wr.setRequirementId(rs.getInt(1));
+                Product p = new Product();
+                p.setProductId(rs.getString(2));
+                wr.setProduct(p);
+                Staff s = new Staff();
+                s.setStaffId(rs.getString(4));
+                s.setEmail(rs.getString(11));
+                wr.setStaff(s);
+                Customer c = new Customer();
+                c.setCustomerId(rs.getInt(3));
+                wr.setCustomer(c);
+                wr.setStatus(rs.getString(5));
+                wr.setDescription(rs.getString(6));
+                wr.setRegisterDate(rs.getDate(8));
+                wr.setIsPay(rs.getString(9));
+                WarrantyForm form = new WarrantyForm();
+                form.setFormId(rs.getInt(10));
+               
                 wr.setForm(form);
                 list.add(wr);
             }
@@ -252,13 +299,14 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setDescription(rs.getString(6));
                 Customer cust = new Customer();
                 cust.setCustomerId(rs.getInt(3));
-                cust.setEmail(rs.getString(19));
+                cust.setEmail(rs.getString(20));
                 wr.setCustomer(cust);
                 wr.setRegisterDate(rs.getDate(8));
                 WarrantyForm form = new WarrantyForm();
                 form.setFormId(rs.getInt(10));
-                form.setVerified(rs.getBoolean(16));
+                form.setVerified(rs.getString(16));
                 form.setFaultType(rs.getString(17));
+                form.setTechnicianVerify(rs.getString(18));
                 wr.setForm(form);
                 wr.setIsPay(rs.getString(9));
 

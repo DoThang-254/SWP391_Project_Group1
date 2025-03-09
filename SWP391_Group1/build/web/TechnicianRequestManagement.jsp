@@ -39,10 +39,10 @@
     </head>
 
     <body class="skin-black">
-        <c:import url="navbar.jsp"/>
+        <c:import url="StaffNavbar.jsp"/>
 
         <div class="wrapper row-offcanvas row-offcanvas-left">
-            <c:import url="menu.jsp"/>
+            <c:import url="StaffMenu.jsp"/>
 
 
             <!-- Right side column. Contains the navbar and content of the page -->
@@ -164,6 +164,9 @@
 
                                                 </th>
                                                 <th>fault type</th>
+                                                <th>Customer feedback</th>
+                                                <th>Accept requirement</th>
+
                                                 <th>
                                                     Form 
                                                 </th> 
@@ -183,17 +186,14 @@
                                             }
                                         </script>
                                         <c:forEach var="r" items="${requestScope.list}">
-
-
                                             <tr>
                                                 <td>${r.requirementId}</td>
                                                 <td>${r.product.productId}</td>
                                                 <td>${r.customer.firstName} ${r.customer.lastName}</td>
                                                 <td>${r.registerDate}</td>
-                                                <td>
-                                                    ${r.staff.staffId}
-                                                </td>
+                                                <td>${r.staff.staffId}</td>
 
+                                                <!-- Dữ liệu từ listB -->
                                                 <td>
                                                     <form action="requestmanagement" method="post">
                                                         <input type="hidden" name="requirementId" value="${r.requirementId}">
@@ -205,16 +205,45 @@
                                                         </select>
                                                     </form>
                                                 </td>
-
                                                 <td>${r.description}</td>
-
-
                                                 <td>${r.isPay}</td>
 
+                                                <!-- Dữ liệu từ listA -->
                                                 <td>${r.form.faultType}</td>
+                                                <td class="${r.form.verified eq 'yes' ? 'verified-yes' : (r.form.verified eq 'no' ? 'verified-no' : 'verified-empty')}">
+                                                    <c:choose>
+                                                        <c:when test="${r.form.verified eq 'yes'}">Đã xác nhận</c:when>
+                                                        <c:when test="${r.form.verified eq 'no'}">Đã từ chối</c:when>
+                                                        <c:otherwise>Chưa xác nhận</c:otherwise>
+                                                    </c:choose>
+                                                </td>
 
+                                                <td class="${r.form.technicianVerify eq 'yes' ? 'verified-yes' : (r.form.technicianVerify eq 'no' ? 'verified-no' : 'verified-empty')}">
+                                                    <c:choose>
+                                                        <c:when test="${r.form.technicianVerify eq 'yes'}">Đã xác nhận</c:when>
+                                                        <c:when test="${r.form.technicianVerify eq 'no'}">Đã từ chối</c:when>
+                                                        <c:otherwise>
+                                                            Chưa xác nhận 
+                                                            <form action="techverify" method="post">
+                                                                <input type="hidden" name="email" value="${r.staff.email}">
+                                                                <input type="hidden" name="formId" value="${r.form.formId}">
+                                                                <input type="hidden" name="customerId" value="${r.customer.customerId}">
+                                                                <input type="hidden" name="productId" value="${r.product.productId}">
+                                                                <input type="hidden" name="requirementid" value="${r.requirementId}">
+                                                                <input type="hidden" name="staffid" value="${r.staff.staffId}">
+                                                                <button type="submit" name="action" value="confirm" 
+                                                                        onclick="return confirm('Bạn có chắc chắn muốn xác nhận yêu cầu này?');">
+                                                                    Xác nhận qua Email
+                                                                </button>
+                                                                <button type="submit" name="action" value="reject" 
+                                                                        onclick="return confirm('Bạn có chắc chắn muốn từ chối yêu cầu này?');">
+                                                                    Từ chối
+                                                                </button>
+                                                            </form>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
 
-                                               
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${r.form.formId != 0}">
@@ -229,11 +258,10 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
-
-
                                             </tr>
-
                                         </c:forEach>
+
+
                                     </table>
 
                                     <br>

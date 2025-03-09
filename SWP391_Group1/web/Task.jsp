@@ -305,9 +305,7 @@
                     </div>
                     <!-- row end -->
                 </section><!-- /.content -->
-                <div class="footer-main">
-                    Copyright &copy Director, 2014
-                </div>
+                
             </aside><!-- /.right-side -->
 
         </div><!-- ./wrapper -->

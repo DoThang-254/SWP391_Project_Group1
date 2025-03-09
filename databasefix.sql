@@ -1,5 +1,4 @@
-﻿--create database LaptopWarranty
-USE [master]
+﻿USE [master]
 GO
 
 /*******************************************************************************
@@ -70,8 +69,9 @@ CREATE TABLE WarrantyForm (
     StartDate DATE NOT NULL,
     EndDate DATE NULL,
     Status VARCHAR(50) DEFAULT 'Active', 
-    Verified BIT DEFAULT 0, -- '1' nếu đã xác nhận, '0' nếu chưa 
+    Verified varchar(3) DEFAULT null, 
     FaultType VARCHAR(50) CHECK (FaultType IN ('Manufacturer', 'User')) NULL,
+	TechnicianVerify varchar(3) DEFAULT null, -- '1' nếu đã xác nhận, '0' nếu chưa 
     ImageUrl VARCHAR(500), -- URL ảnh
     FOREIGN KEY (ProductId) REFERENCES Product(ProductId)
 );
@@ -142,13 +142,15 @@ CREATE TABLE WarrantyProcessing (
     ProcessingId INT IDENTITY(1,1) PRIMARY KEY,
     RequirementId INT NOT NULL,
     StaffId VARCHAR(255) NOT NULL,
-    Status VARCHAR(255) DEFAULT 'Approved' CHECK (Status IN ('In Repair', 'Completed', 'Start Repair')),
+    Status VARCHAR(255) DEFAULT 'Approved' CHECK (Status IN ('Approved','In Repair', 'Completed', 'Start Repair')),
     Note VARCHAR(255),
     ReturnDate DATE,
 	IsAccept VARCHAR(255) Null,
     FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId),
     FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
 );
+
+
 CREATE TABLE TokenForgetPassword (
     ID INT IDENTITY(1,1) PRIMARY KEY,
     Token VARCHAR(255) NOT NULL,

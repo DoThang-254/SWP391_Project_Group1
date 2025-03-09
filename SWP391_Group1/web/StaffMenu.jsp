@@ -51,19 +51,14 @@
                 </form>
                 <ul class="sidebar-menu">
 
-                    <li class="active">
-                        <a href="">
-                            <i class="fa fa-dashboard"></i> <span>Home page</span>
+                    <li>
+                        <a href="technicianrequest">
+                            <i class="fa fa-dashboard"></i> <span>Request Management</span>
                         </a>
                     </li>
                     <li>
                         <a href="task">
                             <i class="fa fa-glass"></i> <span>Task</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="fa fa-gavel"></i> <span>Warranty Processing</span>
                         </a>
                     </li>
 

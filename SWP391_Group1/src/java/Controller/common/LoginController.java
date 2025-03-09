@@ -54,17 +54,17 @@ public class LoginController extends HttpServlet {
                     request.getSession().setAttribute("Staff", s);
                     switch (s.getRole().getRoleId()) {
                         case 3 -> response.sendRedirect("Admin.jsp");
-                        case 1 -> response.sendRedirect("Technician.jsp");
-                        case 2 -> response.sendRedirect("ServiceManager.jsp");
+                        case 1 -> response.sendRedirect("technicianrequest");
+                        case 2 -> response.sendRedirect("requestmanagement");
                         case 4 -> response.sendRedirect("Cashier.jsp");
                         default -> response.sendRedirect("Login.jsp");
                     }
                 } else {
                     request.getSession().setAttribute("Customer", c);
-                    response.sendRedirect("CustomerHomePage.jsp");
+                    response.sendRedirect("home");
                 }
             } else {
-                request.getRequestDispatcher("Login.jsp").forward(request, response);
+                request.getRequestDispatcher("login").forward(request, response);
             }
         } else {
             String hashPassword = v.encode(passWord);
@@ -94,14 +94,14 @@ public class LoginController extends HttpServlet {
                     request.getSession().setAttribute("Staff", s);
                     switch (s.getRole().getRoleId()) {
                         case 3 -> response.sendRedirect("Admin.jsp");
-                        case 1 -> response.sendRedirect("Technician.jsp");
-                        case 2 -> response.sendRedirect("ServiceManager.jsp");
+                        case 1 -> response.sendRedirect("technicianrequest");
+                        case 2 -> response.sendRedirect("requestmanagement");
                         case 4 -> response.sendRedirect("Cashier.jsp");
                         default -> response.sendRedirect("Login.jsp");
                     }
                 } else {
                     request.getSession().setAttribute("Customer", c);
-                    response.sendRedirect("CustomerHomePage.jsp");
+                    response.sendRedirect("home");
                 }
             } else {
                 request.setAttribute("userName", userName);

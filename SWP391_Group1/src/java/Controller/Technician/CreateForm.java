@@ -13,6 +13,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -87,11 +90,31 @@ public class CreateForm extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+//        String faultType = request.getParameter("faultType");
+//        int formId = Integer.parseInt(request.getParameter("formId"));
+//        WarrantyFormDao wfd = new WarrantyFormDao();
+//        wfd.updateForm(faultType, null, formId);
+//        response.sendRedirect("technicianrequest");
+        String formId = request.getParameter("formId");
+        String endDate = request.getParameter("endDate");
         String faultType = request.getParameter("faultType");
-        int formId = Integer.parseInt(request.getParameter("formId"));
-        WarrantyFormDao wfd = new WarrantyFormDao();
-        wfd.updateForm(faultType, null, formId);
-        response.sendRedirect("technicianrequest");
+        String img = request.getParameter("img");
+        WarrantyForm wf = new WarrantyForm();
+        wf.setFormId(Integer.parseInt(formId));
+        if (endDate != null && !endDate.isEmpty()) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date newEndDate = sdf.parse(endDate);
+                wf.setEndDate(newEndDate); // Gán ngày vào đối tượng WarrantyForm
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        wf.setFaultType(faultType);
+        wf.setImgUrl(img);
+        wfd.UpdateFullFormId(wf);
+        response.sendRedirect("updateform?formId=" + formId);
     }
 
     /**

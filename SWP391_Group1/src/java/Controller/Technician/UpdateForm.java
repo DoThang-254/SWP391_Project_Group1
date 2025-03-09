@@ -13,6 +13,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -60,15 +63,10 @@ public class UpdateForm extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productId = request.getParameter("productid");
-        int requireId = Integer.parseInt(request.getParameter("requireId"));
-        WarrantyForm updateWf = wfd.getWarrantyFormbyProductId(productId);
-        wfd.ResetForm(updateWf);
-        WarrantyForm afterReset = wfd.getWarrantyFormByProductId(productId);
-        wrd.UpdateFormId(updateWf.getFormId(), requireId);
-        request.setAttribute("form", afterReset);
-        
-        request.getRequestDispatcher("UpdateForm.jsp").forward(request, response);
+        String formId = request.getParameter("formId");
+        WarrantyForm wf = wfd.getWarrantyFormbyFormId(Integer.parseInt(formId));
+        request.setAttribute("form", wf);
+        request.getRequestDispatcher("CreateForm.jsp").forward(request, response);
 
     }
 
@@ -80,10 +78,11 @@ public class UpdateForm extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
     }
 
     /**
