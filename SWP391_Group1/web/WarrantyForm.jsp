@@ -159,13 +159,14 @@
                                                 <td>${w.status}</td>
                                                 <td>
                                                     <c:choose>
-                                                        <c:when test="${w.verified}">
+                                                        <c:when test="${w.verified eq 'yes' and w.technicianVerify eq 'yes'}">
                                                             <span style="color: green; font-weight: bold;">Đã xác nhận</span>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <span style="color: red; font-weight: bold;">Đã từ chối</span>
                                                         </c:otherwise>
                                                     </c:choose>
+
                                                 </td>
                                                 <td>${w.faultType}</td>
                                                 <td>${w.imgUrl}</td>

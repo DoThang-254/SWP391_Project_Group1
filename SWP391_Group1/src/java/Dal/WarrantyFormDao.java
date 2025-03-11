@@ -16,6 +16,23 @@ import java.sql.SQLException;
  */
 public class WarrantyFormDao extends DBContext {
 
+    public boolean hasFormId(int requirementId) {
+    String sql = "SELECT COUNT(*) FROM WarrantyRequirement WHERE requirementId = ? AND formId IS NOT NULL";
+    try {
+         p = connection.prepareStatement(sql) ;
+        p.setInt(1, requirementId);
+        try (ResultSet rs = p.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Trả về true nếu có formId
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+    
     public void updateUnverify(int formId) {
         String query = "UPDATE [dbo].[WarrantyForm] SET Verified = 'no' WHERE FormId = ?";
         try {
@@ -44,21 +61,25 @@ public class WarrantyFormDao extends DBContext {
     }
     private PreparedStatement p;
 
-//    public boolean hasActive(String productId) {
-//        String sql = "SELECT TOP 1 FormId FROM WarrantyForm "
-//                + "WHERE Status = 'active' and productId = ? "
-//                + "ORDER BY FormId DESC ";
-//
-//        try {
-//            p = connection.prepareStatement(sql);
-//            p.setString(1, productId);
-//            ResultSet rs = p.executeQuery();
-//            return rs.next();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return false; // Lỗi xảy ra hoặc không có dữ liệu
-//    }
+   public boolean hasActive(String productId) {
+    String sql = "SELECT TOP 1 Status FROM WarrantyForm "
+               + "WHERE productId = ? "
+               + "ORDER BY FormId DESC"; // Lấy phiếu bảo hành mới nhất
+
+    try {
+        p = connection.prepareStatement(sql);
+        p.setString(1, productId);
+        ResultSet rs = p.executeQuery();
+        if (rs.next()) {
+            String status = rs.getString("Status");
+            return "active".equalsIgnoreCase(status); // Chỉ trả về true nếu phiếu mới nhất là "active"
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false; // Trả về false nếu không có phiếu hoặc có lỗi
+}
+
 //    public boolean hasInactive(String productId) {
 //        String sql = "SELECT TOP 1 FormId FROM WarrantyForm "
 //                + "WHERE Status = 'inactive' and productId = ? "
@@ -74,36 +95,38 @@ public class WarrantyFormDao extends DBContext {
 //        }
 //        return false; // Lỗi xảy ra hoặc không có dữ liệu
 //    }
-    public WarrantyForm hasActive(String productId) {
-        WarrantyForm warrantyForm = null;
-        String sql = "SELECT TOP 1 * FROM WarrantyForm \n"
-                + "WHERE  productId = ?\n"
-                + "ORDER BY FormId DESC , StartDate desc";
-
-        try {
-            p = connection.prepareStatement(sql);
-
-            p.setString(1, productId);
-            ResultSet rs = p.executeQuery();
-
-            if (rs.next()) {
-                warrantyForm = new WarrantyForm();
-                warrantyForm.setFormId(rs.getInt("FormId"));
-                Product p = new Product();
-                p.setProductId(rs.getString("ProductId"));
-                warrantyForm.setProduct(p);
-                warrantyForm.setStartDate(rs.getDate("StartDate"));
-                warrantyForm.setEndDate(rs.getDate("EndDate"));
-                warrantyForm.setStatus(rs.getString("Status"));
-            }
-        } catch (SQLException e) {
-        }
-        return warrantyForm;
-    }
+//    public WarrantyForm hasActive(String productId) {
+//        WarrantyForm warrantyForm = null;
+//        String sql = "SELECT TOP 1 * FROM WarrantyForm \n"
+//                + "WHERE  productId = ?\n"
+//                + "ORDER BY FormId DESC , StartDate desc";
+//
+//        try {
+//            p = connection.prepareStatement(sql);
+//
+//            p.setString(1, productId);
+//            ResultSet rs = p.executeQuery();
+//
+//            if (rs.next()) {
+//                warrantyForm = new WarrantyForm();
+//                warrantyForm.setFormId(rs.getInt("FormId"));
+//                Product p = new Product();
+//                p.setProductId(rs.getString("ProductId"));
+//                warrantyForm.setProduct(p);
+//                warrantyForm.setStartDate(rs.getDate("StartDate"));
+//                warrantyForm.setEndDate(rs.getDate("EndDate"));
+//                warrantyForm.setStatus(rs.getString("Status"));
+//            }
+//        } catch (SQLException e) {
+//        }
+//        return warrantyForm;
+//    }
 
     public WarrantyForm getActiveWarrantyFormByProduct(String productId) {
         WarrantyForm warrantyForm = null;
-        String sql = "  SELECT * FROM WarrantyForm WHERE ProductId = ? AND EndDate >= GETDATE() and  Status = 'active' ORDER BY EndDate DESC , FormId desc";
+        String sql = "  SELECT * FROM WarrantyForm WHERE ProductId = ? AND EndDate >= GETDATE() and  Status = 'active' \n"
+                + "  and Verified = 'yes' and TechnicianVerify = 'yes'\n"
+                + "  ORDER BY EndDate DESC , FormId desc";
 
         try {
             p = connection.prepareStatement(sql);
@@ -310,7 +333,7 @@ public class WarrantyFormDao extends DBContext {
         }
     }
 
-    public WarrantyForm getWarrantyFormbyFormId(int formId) { // lấy ra warranty formid mới nhất 
+    public WarrantyForm getWarrantyFormbyFormId(int formId) {
         WarrantyForm warrantyForm = null;
         String sql = "select * from WarrantyForm where FormId = ?";
 
@@ -426,13 +449,13 @@ public class WarrantyFormDao extends DBContext {
             p.setInt(1, formId);
             ResultSet rs = p.executeQuery();
             if (rs.next()) {
-                String verified = rs.getString("Verified"); 
-                return "yes".equalsIgnoreCase(verified); 
+                String verified = rs.getString("Verified");
+                return "yes".equalsIgnoreCase(verified);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false; 
+        return false;
     }
 
     public boolean isTechVerified(int formId) {
@@ -443,7 +466,7 @@ public class WarrantyFormDao extends DBContext {
             ResultSet rs = p.executeQuery();
             if (rs.next()) {
                 String techVerified = rs.getString("TechnicianVerify");
-                return "yes".equalsIgnoreCase(techVerified); 
+                return "yes".equalsIgnoreCase(techVerified);
             }
         } catch (SQLException e) {
             e.printStackTrace();

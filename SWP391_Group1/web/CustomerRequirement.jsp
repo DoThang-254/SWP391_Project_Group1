@@ -169,6 +169,10 @@
                                                 <th>
                                                     Xác nhận từ nhân viên
                                                 </th> 
+
+                                                <th>
+                                                    View Invoice
+                                                </th> 
                                             </tr>
                                         </thead>
                                         <c:if test="${requestScope.list == null || requestScope.list.isEmpty()}">
@@ -247,8 +251,18 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
-
-
+                                                <td>
+                                                    
+                                                    <c:choose>
+                                                        <c:when test="${r.isPay == 'yes'}">
+                                                            <p>${r.requirementId}</p>
+                                                            <a href="payment?requirementId=${r.requirementId}">View</a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            No Invoice
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
                                             </tr>
 
                                         </c:forEach>

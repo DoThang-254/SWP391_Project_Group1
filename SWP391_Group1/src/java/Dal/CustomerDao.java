@@ -307,7 +307,8 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
                 wf.setStatus(rs.getString(5));
                 wf.setVerified(rs.getString(6));
                 wf.setFaultType(rs.getString(7));
-                wf.setImgUrl(rs.getString(8));
+                wf.setTechnicianVerify(rs.getString(8));
+                wf.setImgUrl(rs.getString(9));
                 list.add(wf);
             }
         } catch (Exception e) {

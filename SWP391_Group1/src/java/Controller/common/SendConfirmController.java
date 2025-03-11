@@ -49,16 +49,17 @@ public class SendConfirmController extends HttpServlet {
 
         InvoiceDao ivd = new InvoiceDao();
         ivd.updateIsConfirmInvoice(invoiceId);
+        int requirementId = Integer.parseInt(request.getParameter("requirementId"));
 
-        List<Invoice> invoices = ivd.getInvoiceByCustomerId(customerId);
+//        List<Invoice> invoices = ivd.getInvoiceByCustomerId(customerId);
 
-        for (Invoice invoice : invoices) {
-            boolean isConfirmed = ivd.checkIsConfirm(invoice.getInvoiceId());
-            invoice.setConfirmed(isConfirmed); 
-        }
-
-        request.setAttribute("list", invoices);
-        response.sendRedirect("payment?customerId=" + customerId);
+//        for (Invoice invoice : invoices) {
+//            boolean isConfirmed = ivd.checkIsConfirm(invoice.getInvoiceId());
+//            invoice.setConfirmed(isConfirmed); 
+//        }
+//
+//        request.setAttribute("list", invoices);
+        response.sendRedirect("payment?requirementId=" + requirementId);
     }
 
     /**
@@ -72,13 +73,17 @@ public class SendConfirmController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            
+        
         String customerIdRaw = request.getParameter("customerId");
-
+        int requirementId = Integer.parseInt(request.getParameter("requirementId"));
         int customerId = Integer.parseInt(customerIdRaw);
 
         String userEmail = request.getParameter("email"); // Lấy email người dùng nhập
         String invoiceId = request.getParameter("invoiceId"); // Lấy ID hóa đơn
-        String confirmLink = "http://localhost:9999/SWP391_Group1/sendconfirm?invoiceId=" + invoiceId + "&customerId=" + customerId;
+        String confirmLink = "http://localhost:9999/SWP391_Group1/sendconfirm?invoiceId=" + invoiceId + "&customerId=" + customerId +"&requirementId="
+                + requirementId;
 
         // Cấu hình SMTP server (Gmail)
         final String senderEmail = "thangditto2231977@gmail.com";  // Thay bằng email của bạn
@@ -106,9 +111,12 @@ public class SendConfirmController extends HttpServlet {
 
             Transport.send(message);
             request.setAttribute("msg", "Email xác nhận đã được gửi!");
-            response.sendRedirect("payment");
+            response.sendRedirect("payment?requirementId=" + requirementId);
         } catch (MessagingException e) {
             throw new ServletException("Lỗi gửi email", e);
+        }
+        } catch (Exception e) {
+            response.sendRedirect("404.jsp");
         }
     }
 }

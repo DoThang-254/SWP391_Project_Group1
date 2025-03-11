@@ -80,8 +80,8 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>Status</th>
-                                                <th>Is Accept</th>
                                                 <th>View Invoice</th>
+
                                                 <th>View Warranty Form</th>
 
                                             </tr>
@@ -116,20 +116,22 @@
                                                     </td>
 
 
+
                                                     <td>
-                                                        <c:if test="${pr.isAccept != null}"> ${pr.isAccept}</c:if>
-                                                        <c:if test="${pr.isAccept == null}"> Không cần phản hồi</c:if>
-
-                                                        </td>
-
-
-                                                        <td> 
-                                                            <a href="invoice?requirementId=${pr.requirement.requirementId}" class="btn btn-info btn-sm" title="View Details">
-                                                            <i class="fa fa-eye"></i>
-                                                        </a>
-
+                                                        <c:choose>
+                                                            <c:when test="${pr.requirement.isPay eq 'yes'}">
+                                                                <a href="invoice?requirementId=${pr.requirement.requirementId}" class="btn btn-info btn-sm" title="View Details">
+                                                                    <i class="fa fa-eye"></i>
+                                                                </a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                Bảo hành miễn phí 
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
                                                     <td> 
-                                                        <a href="invoice?requirementId=${pr.requirement.requirementId}" class="btn btn-info btn-sm" title="View Details">
+
+                                                        <a href="viewform?formId=${pr.requirement.form.formId}" class="btn btn-info btn-sm" title="View Details">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
                                                     </td>
@@ -305,7 +307,7 @@
                     </div>
                     <!-- row end -->
                 </section><!-- /.content -->
-                
+
             </aside><!-- /.right-side -->
 
         </div><!-- ./wrapper -->

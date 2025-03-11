@@ -71,7 +71,7 @@ public class WarrantyFormDetail extends HttpServlet {
             // Nếu không có customerId, thử lấy từ session
             Customer c = (Customer) request.getSession().getAttribute("Customer");
             if (c == null) {
-                response.sendRedirect("login"); // Yêu cầu đăng nhập nếu không có session
+                response.sendRedirect("404.jsp"); // Yêu cầu đăng nhập nếu không có session
                 return;
             }
             customerIdParam = String.valueOf(c.getCustomerId());

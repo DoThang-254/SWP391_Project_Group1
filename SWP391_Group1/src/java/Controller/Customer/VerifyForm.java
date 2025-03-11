@@ -67,34 +67,39 @@ public class VerifyForm extends HttpServlet {
     WarrantyProcessDao wpd = new WarrantyProcessDao();
     WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
     WarrantyFormDao wfd = new WarrantyFormDao();
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int formId = Integer.parseInt(request.getParameter("formId"));
+        try {
+            int formId = Integer.parseInt(request.getParameter("formId"));
 //        int customerId = Integer.parseInt(request.getParameter("customerId"));
 //        String productId = request.getParameter("productid");
-        int requirementId = Integer.parseInt(request.getParameter("requirementid"));
-        String staffId = request.getParameter("staffid");
-        wfd.updateVerify(formId);
-        if (wfd.isVerified(formId) && wfd.isTechVerified(formId)) {
-            if (!wpd.isWarrantyProcessExists(requirementId)) { // Nếu chưa tồn tại, mới insert
-                wpd.insertWarrantyProcess(requirementId, staffId);
-                wrd.UpdateStatusRequest("Approved", requirementId);
-            } else {
-                System.out.println("Yêu cầu này đã được xử lý!");
+            int requirementId = Integer.parseInt(request.getParameter("requirementid"));
+            String staffId = request.getParameter("staffid");
+            wfd.updateVerify(formId);
+            if (wfd.isVerified(formId) && wfd.isTechVerified(formId)) {
+                if (!wpd.isWarrantyProcessExists(requirementId)) { // Nếu chưa tồn tại, mới insert
+                    wpd.insertWarrantyProcess(requirementId, staffId);
+                    wrd.UpdateStatusRequest("Approved", requirementId);
+                } else {
+                    System.out.println("Yêu cầu này đã được xử lý!");
+                }
+            } else if (!wfd.isVerified(formId) && !wfd.isTechVerified(formId)) {
+                wrd.UpdateStatusRequest("Rejected", requirementId);
+                
+            } else if (!wfd.isVerified(formId) && wfd.isTechVerified(formId)) {
+                // Một trong hai chưa đồng ý -> Chờ xử lý (Pending)
+                wrd.UpdateStatusRequest("Rejected", requirementId);
+            } else if (wfd.isVerified(formId) && !wfd.isTechVerified(formId)) {
+                // Một trong hai chưa đồng ý -> Chờ xử lý (Pending)
+                wrd.UpdateStatusRequest("Rejected", requirementId);
             }
-        } else if (!wfd.isVerified(formId) && !wfd.isTechVerified(formId)) {
-            wrd.UpdateStatusRequest("Rejected", requirementId);
-
-        } else if (!wfd.isVerified(formId) && wfd.isTechVerified(formId)) {
-            // Một trong hai chưa đồng ý -> Chờ xử lý (Pending)
-            wrd.UpdateStatusRequest("Rejected", requirementId);
-        } else if (wfd.isVerified(formId) && !wfd.isTechVerified(formId)) {
-            // Một trong hai chưa đồng ý -> Chờ xử lý (Pending)
-            wrd.UpdateStatusRequest("Rejected", requirementId);
+            response.sendRedirect("customerrequest");
+            return;
+        } catch (Exception e) {
+            response.sendRedirect("404.jsp");
         }
-        response.sendRedirect("customerrequest");
     }
 
     /**
@@ -124,20 +129,20 @@ public class VerifyForm extends HttpServlet {
             // Gửi email xác nhận
             final String senderEmail = "thangditto2231977@gmail.com";
             final String senderPassword = "zkdq kzsm alyz ynaq";
-
+            
             Properties properties = new Properties();
             properties.put("mail.smtp.auth", "true");
             properties.put("mail.smtp.starttls.enable", "true");
             properties.put("mail.smtp.host", "smtp.gmail.com");
             properties.put("mail.smtp.port", "587");
-
+            
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(senderEmail, senderPassword);
                 }
             });
-
+            
             try {
                 Message message = new MimeMessage(session);
                 message.setFrom(new InternetAddress(senderEmail));
@@ -155,7 +160,7 @@ public class VerifyForm extends HttpServlet {
 //            wrd.UpdateStatusRequest("Rejected", requirementId);
 
         }
-
+        
         response.sendRedirect("customerrequest");
     }
 

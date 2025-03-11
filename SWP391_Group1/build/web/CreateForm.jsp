@@ -35,7 +35,10 @@
             <input type="text" id="status" name="status" value="${requestScope.form.status}" readonly> <br>
 
             <label for="verified">Customer Verified:</label>
-            <input type="text" id="verified" name="verified" value="${requestScope.form.verified}" readonly> <br>
+            <input type="text" id="verified" name="verified" 
+                   value="${empty requestScope.form.verified ? 'Chưa xác nhận' : requestScope.form.verified}" 
+                   readonly> 
+            <br>
 
             <label for="faultType">Fault Type:</label>
             <select id="faultType" name="faultType">
@@ -52,4 +55,78 @@
 
         <a href="technicianrequest">Back</a>
     </body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: red; /* Đỏ đô */
+        }
+
+        form {
+            background-color: white;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-left: 5px solid red; /* Viền đỏ đô */
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+            color: red;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input:focus, select:focus {
+            border-color: #8B0000;
+            outline: none;
+            box-shadow: 0 0 5px rgba(139, 0, 0, 0.5);
+        }
+
+        input[type="submit"] {
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #a40000;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #8B0000;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
 </html>

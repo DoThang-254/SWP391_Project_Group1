@@ -96,11 +96,6 @@ public class TaskController extends HttpServlet {
         //check xem ispay của requirement 1 trong process 1 có phải là yes ko nếu yes thì tạo hóa đơn
         boolean checkIsPay = wpd.checkIsPayinRequirement(requirementId, processId);
         boolean checkFaultType = wpd.checkFaultTypeInRequirement(productId, requirementId, processId);
-//        if (status.equals("Start Repair")) {
-//            //gửi thông báo cho khách có đồng ý ko
-//            wpd.updateIsAcceptWarrantyProcess(processId, "Waiting Response");
-//
-//        } else 
         if ((status.equals("Completed") && checkIsPay)
                 || (status.equals("Completed") && !checkIsPay && checkFaultType)) {
 

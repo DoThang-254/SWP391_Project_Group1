@@ -23,6 +23,39 @@ public class InvoiceDao extends DBContext {
     private PreparedStatement p;
     private ResultSet rs;
 
+    public Invoice getInvoiceByRequirementId(int requirementId) {
+        String sql = "select i.* , p.CustomerId , p.ProductId from Product p join WarrantyRequirement wr on p.ProductId = wr.ProductId\n"
+                + "join Invoice i on i.RequirementId = wr.RequirementId\n"
+                + "where wr.RequirementId = ? and i.Status = 'unpaid'";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, requirementId);
+            rs = p.executeQuery();
+            if (rs.next()) {
+                Invoice i = new Invoice();
+                i.setInvoiceId(rs.getInt(1));
+                WarrantyRequirement wr = new WarrantyRequirement();
+                wr.setRequirementId(rs.getInt(2));
+                Product p = new Product();
+                p.setProductId(rs.getString(8));
+                wr.setProduct(p);
+                Customer c = new Customer();
+                c.setCustomerId(rs.getInt(7));
+                wr.setCustomer(c);
+                i.setRequirement(wr);
+                i.setPrice(rs.getLong(3));
+                i.setStatus(rs.getString(4));
+                i.setNote(rs.getString(5));
+                i.setConfirmed(rs.getBoolean(6));
+                return i ;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Invoice> getInvoiceByCustomerId(int customerId) {
         List<Invoice> list = new ArrayList<>();
         String sql = "select i.* , p.CustomerId , p.ProductId from Product p join WarrantyRequirement wr on p.ProductId = wr.ProductId\n"
@@ -74,30 +107,30 @@ public class InvoiceDao extends DBContext {
         }
     }
 
-    public Invoice getInvoiceByRequirementId(int requirementId) {
-        String sql = "  select * from Invoice where RequirementId = ?";
-
-        try {
-            p = connection.prepareStatement(sql);
-            p.setInt(1, requirementId);
-            rs = p.executeQuery();
-            if (rs.next()) {
-                Invoice i = new Invoice();
-                i.setInvoiceId(rs.getInt(1));
-                WarrantyRequirement wr = new WarrantyRequirement();
-                wr.setRequirementId(rs.getInt(2));
-                i.setRequirement(wr);
-                i.setPrice(rs.getLong(3));
-                i.setStatus(rs.getString(4));
-                i.setNote(rs.getString(5));
-
-                return i;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    public Invoice getInvoiceByRequirementId(int requirementId) {
+//        String sql = "  select * from Invoice where RequirementId = ?";
+//
+//        try {
+//            p = connection.prepareStatement(sql);
+//            p.setInt(1, requirementId);
+//            rs = p.executeQuery();
+//            if (rs.next()) {
+//                Invoice i = new Invoice();
+//                i.setInvoiceId(rs.getInt(1));
+//                WarrantyRequirement wr = new WarrantyRequirement();
+//                wr.setRequirementId(rs.getInt(2));
+//                i.setRequirement(wr);
+//                i.setPrice(rs.getLong(3));
+//                i.setStatus(rs.getString(4));
+//                i.setNote(rs.getString(5));
+//
+//                return i;
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     public void updateInvoie(long price, String note, int invoiceId) {
         String sql = "UPDATE [dbo].[Invoice]\n"
@@ -165,4 +198,6 @@ public class InvoiceDao extends DBContext {
         }
         return false;
     }
+    
+    
 }

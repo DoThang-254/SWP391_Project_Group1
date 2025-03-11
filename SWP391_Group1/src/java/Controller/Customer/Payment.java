@@ -59,23 +59,34 @@ public class Payment extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String customerIdParam = request.getParameter("customerId");
+//        String customerIdParam = request.getParameter("customerId");
+//
+//        if (customerIdParam == null || customerIdParam.isEmpty()) {
+//            // Nếu không có customerId, thử lấy từ session
+//            Customer c = (Customer) request.getSession().getAttribute("Customer");
+//            if (c == null) {
+//                response.sendRedirect("login"); // Yêu cầu đăng nhập nếu không có session
+//                return;
+//            }
+//            customerIdParam = String.valueOf(c.getCustomerId());
+//        }
+//
+//        int customerId = Integer.parseInt(customerIdParam);
+        InvoiceDao ivd = new InvoiceDao();
+//        request.setAttribute("list", list);
+        try {
+            
 
-        if (customerIdParam == null || customerIdParam.isEmpty()) {
-            // Nếu không có customerId, thử lấy từ session
-            Customer c = (Customer) request.getSession().getAttribute("Customer");
-            if (c == null) {
-                response.sendRedirect("login"); // Yêu cầu đăng nhập nếu không có session
-                return;
-            }
-            customerIdParam = String.valueOf(c.getCustomerId());
+            int requirementId = Integer.parseInt(request.getParameter("requirementId"));
+            Invoice invoice = ivd.getInvoiceByRequirementId(requirementId);
+            request.setAttribute("i", invoice);
+            request.setAttribute("requirementId", requirementId);
+            request.getRequestDispatcher("Payment.jsp").forward(request, response);
+        } catch (Exception e) {
+            response.sendRedirect("404.jsp");
+            return;
         }
 
-        int customerId = Integer.parseInt(customerIdParam);
-        InvoiceDao ivd = new InvoiceDao();
-        List<Invoice> list = ivd.getInvoiceByCustomerId(customerId);
-        request.setAttribute("list", list);
-        request.getRequestDispatcher("Payment.jsp").forward(request, response);
     }
 
     /**

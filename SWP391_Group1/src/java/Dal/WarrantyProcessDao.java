@@ -7,6 +7,7 @@ package Dal;
 import Model.Invoice;
 import Model.Product;
 import Model.Staff;
+import Model.WarrantyForm;
 import Model.WarrantyProcessing;
 import Model.WarrantyRequirement;
 import java.sql.PreparedStatement;
@@ -58,7 +59,7 @@ public class WarrantyProcessDao extends DBContext {
 
     public List<WarrantyProcessing> getAllWarrantyProcess(String staffId) {
         List<WarrantyProcessing> list = new ArrayList<>();
-        String sql = "select wp.* , wr.RequirementId , p.ProductId from WarrantyProcessing wp join WarrantyRequirement wr \n"
+        String sql = "select wp.* , wr.* , p.ProductId from WarrantyProcessing wp join WarrantyRequirement wr \n"
                 + "  on  wr.RequirementId = wp.RequirementId join  Product p on p.ProductId = wr.ProductId\n"
                 + "  where wp.StaffId = ?";
 
@@ -71,6 +72,10 @@ public class WarrantyProcessDao extends DBContext {
                 wp.setProcessingId(rs.getInt(1));
                 WarrantyRequirement wr = new WarrantyRequirement();
                 wr.setRequirementId(rs.getInt(2));
+                wr.setIsPay(rs.getString(16));
+                WarrantyForm form = new WarrantyForm();
+                form.setFormId(rs.getInt(17));
+                wr.setForm(form);
                 Product p = new Product();
                 p.setProductId(rs.getString(9));
                 wr.setProduct(p);
