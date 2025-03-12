@@ -333,6 +333,45 @@ public class WarrantyFormDao extends DBContext {
         }
     }
 
+    public void updateIsPay(int formId) {
+    String sql = "UPDATE [dbo].[WarrantyRequirement] SET [IsPay] = 'yes' WHERE FormId = ?";
+
+    try {
+        p = connection.prepareStatement(sql);
+        p.setInt(1, formId);
+        int rowsUpdated = p.executeUpdate();
+
+        if (rowsUpdated > 0) {
+            System.out.println("Cập nhật IsPay thành 'yes' thành công cho FormId: " + formId);
+        } else {
+            System.out.println("Không tìm thấy FormId: " + formId);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+    
+    public boolean isUserFault(int formId) {
+    String sql = "SELECT FaultType FROM [dbo].[WarrantyForm] WHERE FormId = ?";
+    
+    try {
+        p = connection.prepareStatement(sql);
+        p.setInt(1, formId);
+        ResultSet rs = p.executeQuery();
+        
+        if (rs.next()) {
+            String faultType = rs.getString("FaultType");
+            // Kiểm tra nếu FaultType là "user"
+            return "user".equalsIgnoreCase(faultType);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+    
     public WarrantyForm getWarrantyFormbyFormId(int formId) {
         WarrantyForm warrantyForm = null;
         String sql = "select * from WarrantyForm where FormId = ?";

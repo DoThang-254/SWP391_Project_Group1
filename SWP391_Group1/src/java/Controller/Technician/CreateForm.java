@@ -118,6 +118,9 @@ public class CreateForm extends HttpServlet {
         wf.setFaultType(faultType);
         wf.setImgUrl(img);
         wfd.UpdateFullFormId(wf);
+        if(wfd.isUserFault(Integer.parseInt(formId))){
+            wfd.updateIsPay(Integer.parseInt(formId));
+        }
         response.sendRedirect("updateform?formId=" + formId);
     }
 

@@ -86,7 +86,7 @@ public class AssignTechnicianController extends HttpServlet {
 
         WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
         int reqId = Integer.parseInt(requirementId);
-        wrd.UpdateStaffRequest(staffId, reqId , "Waiting");
+        wrd.UpdateStaffRequest(staffId, reqId , "Uncheck");
         
 
         

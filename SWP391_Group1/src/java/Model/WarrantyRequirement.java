@@ -22,6 +22,8 @@ public class WarrantyRequirement {
     private String isPay;
     private WarrantyForm form;
     private String category; 
+    private int invoiceId ;
+    private boolean hasInvoice;
 
     public WarrantyRequirement() {
     }
@@ -116,4 +118,22 @@ public class WarrantyRequirement {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    public int getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(int invoiceId) {
+        this.invoiceId = invoiceId;
+    }
+
+    public boolean isHasInvoice() {
+        return hasInvoice;
+    }
+
+    public void setHasInvoice(boolean hasInvoice) {
+        this.hasInvoice = hasInvoice;
+    }
+    
+    
 }

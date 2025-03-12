@@ -116,19 +116,27 @@
                                                     </td>
 
 
-
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${pr.requirement.isPay eq 'yes'}">
-                                                                <a href="invoice?requirementId=${pr.requirement.requirementId}" class="btn btn-info btn-sm" title="View Details">
-                                                                    <i class="fa fa-eye"></i>
-                                                                </a>
+                                                                <c:choose>
+                                                                    <c:when test="${pr.requirement.hasInvoice}">
+                                                                        <a href="createinvoice?requirementId=${pr.requirement.requirementId}" class="btn btn-info btn-sm" title="Tạo hóa đơn">
+                                                                            Update Invoice
+                                                                        </a>                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <a href="createinvoice?requirementId=${pr.requirement.requirementId}" class="btn btn-info btn-sm" title="Tạo hóa đơn">
+                                                                            Create Invoice
+                                                                        </a>
+                                                                    </c:otherwise>
+                                                                </c:choose>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                Bảo hành miễn phí 
+                                                                Bảo hành miễn phí
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
+
                                                     <td> 
 
                                                         <a href="viewform?formId=${pr.requirement.form.formId}" class="btn btn-info btn-sm" title="View Details">

@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/Technician/UpdateForm.java</file>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/web/Payment.jsp</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/common/VNPayReturnController.java</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/common/BlogController.java</file>
             <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Controller/Technician/CreateForm.java</file>
-            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/thang/Downloads/clone/SWP391_Project_Group1/SWP391_Group1/src/java/Filter/LoginFilter.java</file>
         </group>
     </open-files>
 </project-private>

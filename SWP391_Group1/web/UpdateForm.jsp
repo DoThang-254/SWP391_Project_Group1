@@ -35,9 +35,6 @@
             <label for="status">Status:</label>
             <input type="text" id="status" name="status" value="${requestScope.form.status}" readonly> <br>
 
-            <label for="verified">Customer Verified:</label>
-            <input type="text" id="verified" name="verified" value="${requestScope.form.verified}" readonly> <br>
-
             <label for="faultType">Fault Type:</label>
             <select id="faultType" name="faultType">
                 <option value="manufacturer" ${requestScope.form.faultType == 'manufacturer' ? 'selected' : ''}>Lỗi nhà sản xuất</option>

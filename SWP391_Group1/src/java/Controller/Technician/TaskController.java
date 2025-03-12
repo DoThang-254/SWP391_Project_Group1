@@ -66,9 +66,6 @@ public class TaskController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Staff s = (Staff) request.getSession().getAttribute("Staff");
-
-//        WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
-//        List<WarrantyRequirement> list = wrd.GetAllRequestByStaffId(s.getStaffId());
         WarrantyProcessDao wpd = new WarrantyProcessDao();
         List<WarrantyProcessing> list = wpd.getAllWarrantyProcess(s.getStaffId());
         request.setAttribute("list", list);
@@ -98,9 +95,6 @@ public class TaskController extends HttpServlet {
         boolean checkFaultType = wpd.checkFaultTypeInRequirement(productId, requirementId, processId);
         if ((status.equals("Completed") && checkIsPay)
                 || (status.equals("Completed") && !checkIsPay && checkFaultType)) {
-
-            InvoiceDao ivd = new InvoiceDao();
-            ivd.createInvoie(requirementId);
             WarrantyForm updateForm = wfd.getWarrantyFormByRequirementId(productId, requirementId);
             wfd.updateStatus(updateForm);
         } else if (status.equals("Completed") && !checkIsPay && !checkFaultType) {

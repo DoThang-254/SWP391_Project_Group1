@@ -4,24 +4,20 @@
  */
 package Controller.Technician;
 
-import Dal.WarrantyFormDao;
-import Model.WarrantyForm;
-import dao.WarrantyRequirementDAO;
+import Dal.InvoiceDao;
+import Model.Invoice;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  *
  * @author thang
  */
-public class UpdateForm extends HttpServlet {
+public class CreateInvoice extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,16 +36,14 @@ public class UpdateForm extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateForm</title>");
+            out.println("<title>Servlet CreateInvoice</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateForm at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CreateInvoice at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
-    WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
-    WarrantyFormDao wfd = new WarrantyFormDao();
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -63,10 +57,12 @@ public class UpdateForm extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String formId = request.getParameter("formId");
-        WarrantyForm wf = wfd.getWarrantyFormbyFormId(Integer.parseInt(formId));
-        request.setAttribute("form", wf);
-        request.getRequestDispatcher("CreateForm.jsp").forward(request, response);
+        int requirementId = Integer.parseInt(request.getParameter("requirementId"));
+        InvoiceDao ivd = new InvoiceDao();
+        ivd.createInvoie(requirementId);
+        Invoice invoice = ivd.getInvoiceByRequirementId(requirementId);
+        request.setAttribute("invoice", invoice);
+        request.getRequestDispatcher("Invoice.jsp").forward(request, response);
     }
 
     /**
@@ -77,10 +73,10 @@ public class UpdateForm extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {        
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**

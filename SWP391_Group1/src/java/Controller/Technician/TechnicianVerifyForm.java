@@ -68,27 +68,23 @@ public class TechnicianVerifyForm extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int formId = Integer.parseInt(request.getParameter("formId"));
-//        int customerId = Integer.parseInt(request.getParameter("customerId"));
-//        String productId = request.getParameter("productid");
         int requirementId = Integer.parseInt(request.getParameter("requirementid"));
         String staffId = request.getParameter("staffid");
         wfd.updateTechVerify(formId);
-        if (wfd.isVerified(formId) && wfd.isTechVerified(formId)) { // phải check cả 2 đồng ý mới đc thêm process
 
-            
-            wrd.UpdateStatusRequest("Approved", requirementId);
-        } else if (!wfd.isVerified(formId) && !wfd.isTechVerified(formId)) {
-            wrd.UpdateStatusRequest("Rejected", requirementId);
+        if (wfd.isTechVerified(formId)) {
+            if (!wpd.isWarrantyProcessExists(requirementId)) { // Nếu chưa tồn tại, mới insert
+                wpd.insertWarrantyProcess(requirementId, staffId);
+                wrd.UpdateStatusRequest("Checked", requirementId);
+            } else {
+                System.out.println("Yêu cầu này đã được xử lý!");
+            }
+        } else if (!wfd.isTechVerified(formId)) {
+            wrd.UpdateStatusRequest("Reject", requirementId);
+        }
 
-        } else if(!wfd.isVerified(formId) && wfd.isTechVerified(formId)){
-            // Một trong hai chưa đồng ý -> Chờ xử lý (Pending)
-            wrd.UpdateStatusRequest("Rejected", requirementId);
-        }
-         else if(wfd.isVerified(formId) && !wfd.isTechVerified(formId)){
-            // Một trong hai chưa đồng ý -> Chờ xử lý (Pending)
-            wrd.UpdateStatusRequest("Rejected", requirementId);
-        }
         response.sendRedirect("technicianrequest");
+        return;
     }
 
     /**
@@ -110,48 +106,15 @@ public class TechnicianVerifyForm extends HttpServlet {
         int formId = Integer.parseInt(request.getParameter("formId"));
         int requirementId = Integer.parseInt(request.getParameter("requirementid"));
         if ("confirm".equals(action)) {
-            // Xác nhận qua Email
-            String userEmail = request.getParameter("email");
-            String customerId = request.getParameter("customerId");
-            String productId = request.getParameter("productId");
+
             String staffId = request.getParameter("staffid");
-            String confirmLink = "http://localhost:9999/SWP391_Group1/techverify?formId=" + formId
-                    + "&customerId=" + customerId + "&productid=" + productId
-                    + "&requirementid=" + requirementId + "&staffid=" + staffId;
 
-            // Gửi email xác nhận
-            final String senderEmail = "thangditto2231977@gmail.com";
-            final String senderPassword = "zkdq kzsm alyz ynaq";
-
-            Properties properties = new Properties();
-            properties.put("mail.smtp.auth", "true");
-            properties.put("mail.smtp.starttls.enable", "true");
-            properties.put("mail.smtp.host", "smtp.gmail.com");
-            properties.put("mail.smtp.port", "587");
-
-            Session session = Session.getInstance(properties, new Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(senderEmail, senderPassword);
-                }
-            });
-
-            try {
-                Message message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(senderEmail));
-                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userEmail));
-                message.setSubject("Xác nhận Đồng ý điều khoản bảo hành");
-                message.setText("Nhấn vào link sau để xác nhận: " + confirmLink);
-                Transport.send(message);
-                request.setAttribute("msg", "Email xác nhận đã được gửi!");
-            } catch (MessagingException e) {
-                throw new ServletException("Lỗi gửi email", e);
-            }
+            response.sendRedirect("techverify?formId=" + formId + "&requirementid=" + requirementId + "&staffid=" + staffId);
+            return;
         } else if ("reject".equals(action)) {
-            // Hủy xác nhận, cập nhật trạng thái yêu cầu bảo hành thành "Rejected"
             wfd.updateTechUnverify(formId); // Cập nhật Verified = false (0)
-//            wrd.UpdateStatusRequest("Rejected", requirementId);
-
+            wrd.UpdateStatusRequest("Rejected", requirementId);
+            return;
         }
 
         response.sendRedirect("technicianrequest");

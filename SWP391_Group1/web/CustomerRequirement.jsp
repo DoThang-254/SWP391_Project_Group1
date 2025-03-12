@@ -162,9 +162,7 @@
 
                                                 </th>
                                                 <th>fault type</th>
-                                                <th>
-                                                    Xác nhận từ khách hàng
-                                                </th> 
+                                              
 
                                                 <th>
                                                     Xác nhận từ nhân viên
@@ -210,52 +208,18 @@
 
                                                 </c:if>
 
-                                                <td>
-                                                    <c:choose>
-                                                        <c:when test="${r.form.verified eq 'yes'}">Đã xác nhận</c:when>
-                                                        <c:when test="${r.form.verified eq 'no'}">Đã từ chối</c:when>
-                                                        <c:when test="${empty r.form.verified}">
-                                                            chưa xác nhận 
-                                                            <form action="verifyform" method="post">
-                                                                <input type="hidden" name="email" value="${r.customer.email}">
-                                                                <input type="hidden" name="formId" value="${r.form.formId}">
-                                                                <input type="hidden" name="customerId" value="${r.customer.customerId}">
-                                                                <input type="hidden" name="productId" value="${w.product.productId}">
-                                                                <input type="hidden" name="requirementid" value="${r.requirementId}">
-                                                                <input type="hidden" name="staffid" value="${r.staff.staffId}">
-
-                                                                ${requestScope.msg}
-                                                                <br>
-                                                                <button type="submit" name="action" value="confirm" 
-                                                                        onclick="return confirm('Bạn có chắc chắn muốn xác nhận yêu cầu này?');">
-                                                                    Xác nhận qua Email
-                                                                </button>
-                                                                <button type="submit" name="action" value="reject" 
-                                                                        onclick="return confirm('Bạn có chắc chắn muốn từ chối yêu cầu này?');">
-                                                                    Từ chối
-                                                                </button>
-                                                            </form>
-                                                        </c:when>
-                                                    </c:choose>
-                                                </td>
+                                                
                                                 <td class="${r.form.technicianVerify eq 'yes' ? 'verified-yes' : (r.form.technicianVerify eq 'no' ? 'verified-no' : 'verified-empty')}">
                                                     <c:choose>
 
-                                                        <c:when test="${r.form.technicianVerify eq 'yes'}">Đã xác nhận</c:when>
-                                                        <c:when test="${r.form.technicianVerify eq 'no'}">
-                                                            đã từ chối
-                                                        </c:when>
-
-                                                        <c:otherwise>
-                                                            chưa xác nhận 
-                                                        </c:otherwise>
+                                                        <c:when test="${r.form.technicianVerify eq 'yes'}">Đã nhận</c:when>
+                                              
                                                     </c:choose>
                                                 </td>
                                                 <td>
-                                                    
+                                                   
                                                     <c:choose>
-                                                        <c:when test="${r.isPay == 'yes'}">
-                                                            <p>${r.requirementId}</p>
+                                                        <c:when test="${r.isPay == 'yes' && r.invoiceId != null}">
                                                             <a href="payment?requirementId=${r.requirementId}">View</a>
                                                         </c:when>
                                                         <c:otherwise>

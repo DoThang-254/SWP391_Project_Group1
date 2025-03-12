@@ -104,33 +104,37 @@ public class WarrantyRequestController extends HttpServlet {
             request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
             return;
         }
-
-        // Kiểm tra nếu đã có yêu cầu bảo hành đang chờ xử lý
         boolean hasPendingRequest = wrd.hasPendingRequest(productId);
 //        WarrantyForm hasActive = wfd.hasActive(productId);
         boolean hasUnPay = wrd.hasUnPayRequest(productId);
+        if (!hasPendingRequest && !hasUnPay && wfd.hasActive(productId)) {
+
+            // Tạo yêu cầu bảo hành mới
+            WarrantyRequirement requestWarranty = new WarrantyRequirement();
+            Product p = new Product();
+            p.setProductId(productId);
+            requestWarranty.setProduct(p);
+            Customer c = new Customer();
+            c.setCustomerId(customer.getCustomerId());
+            requestWarranty.setCustomer(c);
+            requestWarranty.setStatus(status);
+            requestWarranty.setDescription(description);
+            requestWarranty.setRegisterDate(new Date());
+            requestWarranty.setIsPay(isPay);
+            wrd.insertWarrantyRequirement(requestWarranty);
+
+            request.setAttribute("successMessage", "Yêu cầu bảo hành đã được gửi thành công!");
+            request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
+            return;
+        }
+        // Kiểm tra nếu đã có yêu cầu bảo hành đang chờ xử lý
+
         if (hasPendingRequest || hasUnPay || !wfd.hasActive(productId)) { //|| !hasActive.getStatus().equals("active")
             request.setAttribute("errorMessage", "Bạn đã gửi yêu cầu bảo hành cho sản phẩm này.");
             request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
             return;
         }
 
-        // Tạo yêu cầu bảo hành mới
-        WarrantyRequirement requestWarranty = new WarrantyRequirement();
-        Product p = new Product();
-        p.setProductId(productId);
-        requestWarranty.setProduct(p);
-        Customer c = new Customer();
-        c.setCustomerId(customer.getCustomerId());
-        requestWarranty.setCustomer(c);
-        requestWarranty.setStatus(status);
-        requestWarranty.setDescription(description);
-        requestWarranty.setRegisterDate(new Date());
-        requestWarranty.setIsPay(isPay);
-        wrd.insertWarrantyRequirement(requestWarranty);
-
-        request.setAttribute("successMessage", "Yêu cầu bảo hành đã được gửi thành công!");
-        request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
     }
 
     /**

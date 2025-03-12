@@ -34,11 +34,6 @@
             <label for="status">Status:</label>
             <input type="text" id="status" name="status" value="${requestScope.form.status}" readonly> <br>
 
-            <label for="verified">Customer Verified:</label>
-            <input type="text" id="verified" name="verified" 
-                   value="${empty requestScope.form.verified ? 'Chưa xác nhận' : requestScope.form.verified}" 
-                   readonly> 
-            <br>
 
             <label for="faultType">Fault Type:</label>
             <select id="faultType" name="faultType">

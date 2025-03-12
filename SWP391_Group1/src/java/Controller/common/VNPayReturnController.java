@@ -66,8 +66,8 @@ public class VNPayReturnController extends HttpServlet {
                 td.saveTransaction(customerId, invoiceId, amount, "VNPay", "Success");
                 InvoiceDao ivd = new InvoiceDao();
                 ivd.updateStatusInvoie(invoiceId);
-                WarrantyFormDao wfd = new WarrantyFormDao();
-                wfd.createWarrantyForm(productId);
+//                WarrantyFormDao wfd = new WarrantyFormDao();
+//                wfd.createWarrantyForm(productId);
             } else {
                 // Giao dịch thất bại
                 request.setAttribute("message", "Giao dịch thất bại! Mã lỗi: " + vnp_ResponseCode);

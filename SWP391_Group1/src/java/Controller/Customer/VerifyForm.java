@@ -78,23 +78,24 @@ public class VerifyForm extends HttpServlet {
             int requirementId = Integer.parseInt(request.getParameter("requirementid"));
             String staffId = request.getParameter("staffid");
             wfd.updateVerify(formId);
-            if (wfd.isVerified(formId) && wfd.isTechVerified(formId)) {
+//            wfd.isVerified(formId) &&
+            if ( wfd.isTechVerified(formId)) { 
                 if (!wpd.isWarrantyProcessExists(requirementId)) { // Nếu chưa tồn tại, mới insert
                     wpd.insertWarrantyProcess(requirementId, staffId);
-                    wrd.UpdateStatusRequest("Approved", requirementId);
+                    wrd.UpdateStatusRequest("Checked", requirementId);
                 } else {
                     System.out.println("Yêu cầu này đã được xử lý!");
                 }
-            } else if (!wfd.isVerified(formId) && !wfd.isTechVerified(formId)) {
-                wrd.UpdateStatusRequest("Rejected", requirementId);
-                
-            } else if (!wfd.isVerified(formId) && wfd.isTechVerified(formId)) {
-                // Một trong hai chưa đồng ý -> Chờ xử lý (Pending)
-                wrd.UpdateStatusRequest("Rejected", requirementId);
-            } else if (wfd.isVerified(formId) && !wfd.isTechVerified(formId)) {
-                // Một trong hai chưa đồng ý -> Chờ xử lý (Pending)
-                wrd.UpdateStatusRequest("Rejected", requirementId);
-            }
+            } else if (!wfd.isTechVerified(formId)) {
+                wrd.UpdateStatusRequest("Reject", requirementId);
+            }  
+//            } else if (!wfd.isVerified(formId) && wfd.isTechVerified(formId)) {
+//                // Một trong hai chưa đồng ý -> Chờ xử lý (Pending)
+//                wrd.UpdateStatusRequest("UnCheck", requirementId);
+//            } else if (wfd.isVerified(formId) && !wfd.isTechVerified(formId)) {
+//                // Một trong hai chưa đồng ý -> Chờ xử lý (Pending)
+//                wrd.UpdateStatusRequest("UnCheck", requirementId);
+//            }
             response.sendRedirect("customerrequest");
             return;
         } catch (Exception e) {
