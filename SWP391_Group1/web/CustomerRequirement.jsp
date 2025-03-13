@@ -162,7 +162,7 @@
 
                                                 </th>
                                                 <th>fault type</th>
-                                              
+
 
                                                 <th>
                                                     Xác nhận từ nhân viên
@@ -208,23 +208,26 @@
 
                                                 </c:if>
 
-                                                
+
                                                 <td class="${r.form.technicianVerify eq 'yes' ? 'verified-yes' : (r.form.technicianVerify eq 'no' ? 'verified-no' : 'verified-empty')}">
                                                     <c:choose>
 
                                                         <c:when test="${r.form.technicianVerify eq 'yes'}">Đã nhận</c:when>
-                                              
+
                                                     </c:choose>
                                                 </td>
                                                 <td>
-                                                   
+
                                                     <c:choose>
-                                                        <c:when test="${r.isPay == 'yes' && r.invoiceId != null}">
-                                                            <a href="payment?requirementId=${r.requirementId}">View</a>
+                                                        <c:when test="${r.invoiceStatus eq 'Unpaid' }">
+                                                            <a href="payment?requirementId=${r.requirementId}&formId=${r.form.formId}">View</a>
                                                         </c:when>
+
                                                         <c:otherwise>
-                                                            No Invoice
+                                                            Your Invoice is Purchased
+
                                                         </c:otherwise>
+
                                                     </c:choose>
                                                 </td>
                                             </tr>

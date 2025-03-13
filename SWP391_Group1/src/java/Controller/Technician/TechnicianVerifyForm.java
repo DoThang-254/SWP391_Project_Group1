@@ -114,7 +114,6 @@ public class TechnicianVerifyForm extends HttpServlet {
         } else if ("reject".equals(action)) {
             wfd.updateTechUnverify(formId); // Cập nhật Verified = false (0)
             wrd.UpdateStatusRequest("Rejected", requirementId);
-            return;
         }
 
         response.sendRedirect("technicianrequest");

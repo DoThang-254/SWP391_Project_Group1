@@ -17,6 +17,8 @@
     <body>
         <h1>Update Form</h1>
         <form action="createform" method="post">
+            <input type="hidden" id="requireId" name="requireId" value="${requestScope.requireId}"> <br>
+            <input type="hidden" id="staffId" name="staffId" value="${requestScope.staffId}"> <br>
             <label for="formId">Form Id:</label>
             <input type="text" id="formId" name="formId" value="${requestScope.form.formId}" readonly> <br>
 
@@ -29,7 +31,7 @@
             <fmt:formatDate value="${requestScope.form.endDate}" pattern="yyyy-MM-dd" var="formattedDate" />
 
             <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" name="endDate" value="${formattedDate}"> <br>
+            <input type="date" id="endDate" name="endDate" value="${formattedDate}" required> <br>
 
             <label for="status">Status:</label>
             <input type="text" id="status" name="status" value="${requestScope.form.status}" readonly> <br>

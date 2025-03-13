@@ -75,12 +75,14 @@ public class Payment extends HttpServlet {
         InvoiceDao ivd = new InvoiceDao();
 //        request.setAttribute("list", list);
         try {
-            
 
+            int formId = Integer.parseInt(request.getParameter("formId"));
             int requirementId = Integer.parseInt(request.getParameter("requirementId"));
             Invoice invoice = ivd.getInvoiceByRequirementId(requirementId);
             request.setAttribute("i", invoice);
             request.setAttribute("requirementId", requirementId);
+            request.setAttribute("formId", formId);
+            request.setAttribute("msg", "Email is sended");
             request.getRequestDispatcher("Payment.jsp").forward(request, response);
         } catch (Exception e) {
             response.sendRedirect("404.jsp");

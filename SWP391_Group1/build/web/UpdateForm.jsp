@@ -17,7 +17,7 @@
     </head>
     <body>
         <h1>Update Form</h1>
-        <form action="createform" method="post">
+        <form action="updateform" method="post">
             <label for="formId">Form Id:</label>
             <input type="text" id="formId" name="formId" value="${requestScope.form.formId}" readonly> <br>
 

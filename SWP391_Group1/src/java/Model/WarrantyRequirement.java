@@ -24,6 +24,7 @@ public class WarrantyRequirement {
     private String category; 
     private int invoiceId ;
     private boolean hasInvoice;
+    private String invoiceStatus;
 
     public WarrantyRequirement() {
     }
@@ -133,6 +134,14 @@ public class WarrantyRequirement {
 
     public void setHasInvoice(boolean hasInvoice) {
         this.hasInvoice = hasInvoice;
+    }
+
+    public String getInvoiceStatus() {
+        return invoiceStatus;
+    }
+
+    public void setInvoiceStatus(String invoiceStatus) {
+        this.invoiceStatus = invoiceStatus;
     }
     
     

@@ -159,7 +159,7 @@
                                                 <td>${w.status}</td>
                                                 <td>
                                                     <c:choose>
-                                                        <c:when test="${w.verified eq 'yes' and w.technicianVerify eq 'yes'}">
+                                                        <c:when test="${w.technicianVerify eq 'yes'}">
                                                             <span style="color: green; font-weight: bold;">Đã xác nhận</span>
                                                         </c:when>
                                                         <c:otherwise>

@@ -181,8 +181,8 @@ public class WarrantyProcessDao extends DBContext {
         String sql = "SELECT wp.*, wr.*, p.ProductId "
                 + "FROM WarrantyProcessing wp "
                 + "JOIN WarrantyRequirement wr ON wr.RequirementId = wp.RequirementId "
-                + "JOIN Product p ON p.ProductId = wr.ProductId "
-                + "WHERE wp.StaffId = ?";
+                + "JOIN Product p ON p.ProductId = wr.ProductId"
+                + " WHERE wp.StaffId = ?";
 
         try {
             p = connection.prepareStatement(sql);

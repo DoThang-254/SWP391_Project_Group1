@@ -152,7 +152,7 @@ public class WarrantyRequirementDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<WarrantyRequirement> GetAllRequestByStaffIdWithout(String staffId) {
         List<WarrantyRequirement> list = new ArrayList<>();
         String sql = "SELECT wr.* , s.Email FROM WarrantyRequirement wr join Staff s on wr.StaffId = s.StaffId\n"
@@ -183,7 +183,7 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setIsPay(rs.getString(9));
                 WarrantyForm form = new WarrantyForm();
                 form.setFormId(rs.getInt(10));
-               
+
                 wr.setForm(form);
                 list.add(wr);
             }
@@ -204,6 +204,24 @@ public class WarrantyRequirementDAO extends DBContext {
 
             p.setInt(1, formId);
             p.setInt(2, requirementId);
+            p.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void UpdateTechVerifyForm(int formId) {
+        String sql = "UPDATE [dbo].[WarrantyForm]\n"
+                + "   SET \n"
+                + "      [TechnicianVerify] = 'yes'\n"
+                + "     \n"
+                + " WHERE FormId = ? ";
+
+        try {
+            p = connection.prepareStatement(sql);
+
+            p.setInt(1, formId);
             p.executeUpdate();
 
         } catch (SQLException e) {
@@ -273,11 +291,11 @@ public class WarrantyRequirementDAO extends DBContext {
 
     public List<WarrantyRequirement> GetAllRequestByCustomerId(int index, int customerId, int amount) {
         List<WarrantyRequirement> list = new ArrayList<>();
-        String sql = " select wr.* , wf.* , c.Email , i.InvoiceId from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId \n" +
-"                 join Customer c on c.CustomerId = wr.CustomerId join Invoice i on i.RequirementId = wr.RequirementId\n" +
-"                 where wr.CustomerId = ?\n" +
-"                 order by wr.requirementId desc , wr.registerDate desc\n" +
-"                 offset ? rows fetch next ? rows only";
+        String sql = " select wr.* , wf.* , c.Email , i.* from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId \n"
+                + "                 join Customer c on c.CustomerId = wr.CustomerId join Invoice i on i.RequirementId = wr.RequirementId\n"
+                + "                 where wr.CustomerId = ?\n"
+                + "                 order by wr.requirementId desc , wr.registerDate desc\n"
+                + "                 offset ? rows fetch next ? rows only";
 
         try {
             p = connection.prepareStatement(sql);
@@ -308,9 +326,12 @@ public class WarrantyRequirementDAO extends DBContext {
                 form.setVerified(rs.getString(16));
                 form.setFaultType(rs.getString(17));
                 form.setTechnicianVerify(rs.getString(18));
+                form.setStatus(rs.getString(15));
                 wr.setForm(form);
                 wr.setIsPay(rs.getString(9));
                 wr.setInvoiceId(rs.getInt(21));
+                wr.setInvoiceStatus(rs.getString(24));
+
                 list.add(wr);
             }
         } catch (SQLException e) {

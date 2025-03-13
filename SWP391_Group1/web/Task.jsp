@@ -121,7 +121,7 @@
                                                             <c:when test="${pr.requirement.isPay eq 'yes'}">
                                                                 <c:choose>
                                                                     <c:when test="${pr.requirement.hasInvoice}">
-                                                                        <a href="createinvoice?requirementId=${pr.requirement.requirementId}" class="btn btn-info btn-sm" title="Tạo hóa đơn">
+                                                                        <a href="updateinvoice?requirementId=${pr.requirement.requirementId}" class="btn btn-info btn-sm" title="Tạo hóa đơn">
                                                                             Update Invoice
                                                                         </a>                                                                    </c:when>
                                                                     <c:otherwise>

@@ -15,7 +15,7 @@ import org.apache.http.client.fluent.Request;
  */
 public class GoogleAccountDao {
 
-     private static final String GOOGLE_CLIENT_ID = System.getenv("GOOGLE_CLIENT_ID");
+    private static final String GOOGLE_CLIENT_ID = System.getenv("GOOGLE_CLIENT_ID");
     private static final String GOOGLE_CLIENT_SECRET = System.getenv("GOOGLE_CLIENT_SECRET");
     private static final String GOOGLE_REDIRECT_URI = "http://localhost:9999/SWP391_Group1/login";
     private static final String GOOGLE_GRANT_TYPE = "authorization_code";

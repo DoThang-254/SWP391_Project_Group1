@@ -211,41 +211,21 @@
                                                 <td class="${r.form.technicianVerify eq 'yes' ? 'verified-yes' : (r.form.technicianVerify eq 'no' ? 'verified-no' : 'verified-empty')}">
                                                     <c:choose>
                                                         <c:when test="${r.form.technicianVerify eq 'yes'}">Đã xác nhận</c:when>
-                                                        <c:when test="${r.form.technicianVerify eq 'no'}">Đã từ chối</c:when>
                                                         <c:otherwise>
-                                                            Chưa xác nhận 
-                                                            <form action="techverify" method="post">
-                                                                <input type="hidden" name="email" value="${r.staff.email}">
-                                                                <input type="hidden" name="formId" value="${r.form.formId}">
-                                                                <input type="hidden" name="customerId" value="${r.customer.customerId}">
-                                                                <input type="hidden" name="productId" value="${r.product.productId}">
-                                                                <input type="hidden" name="requirementid" value="${r.requirementId}">
-                                                                <input type="hidden" name="staffid" value="${r.staff.staffId}">
 
-                                                                <c:if test="${not empty r.form.formId and r.form.formId != 0}">
-                                                                    <button type="submit" name="action" value="confirm" 
-                                                                            onclick="return confirm('Bạn có chắc chắn muốn xác nhận yêu cầu này?');">
-                                                                        Xác nhận
-                                                                    </button>
-                                                                    <button type="submit" name="action" value="reject" 
-                                                                            onclick="return confirm('Bạn có chắc chắn muốn từ chối yêu cầu này?');">
-                                                                        Từ chối
-                                                                    </button>
-                                                                </c:if>
-                                                            </form>
-                                                        </c:otherwise>
+                                                            Đã từ chối                                                        </c:otherwise>
                                                     </c:choose>
                                                 </td>
 
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${r.form.formId != 0}">
-                                                            <a href="updateform?formId=${r.form.formId}" class="btn btn-warning btn-sm" title="Update Form">
+                                                            <a href="updateform?formId=${r.form.formId}&productid=${r.product.productId}&requireId=${r.requirementId}&staffId=${r.staff.staffId}" class="btn btn-warning btn-sm" title="Update Form">
                                                                 Update Form
                                                             </a>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <a href="createform?productid=${r.product.productId}&requireId=${r.requirementId}" class="btn btn-info btn-sm" title="Create New Form">
+                                                            <a href="createform?productid=${r.product.productId}&requireId=${r.requirementId}&staffId=${r.staff.staffId}" class="btn btn-info btn-sm" title="Create New Form">
                                                                 Create New Form
                                                             </a>
                                                         </c:otherwise>

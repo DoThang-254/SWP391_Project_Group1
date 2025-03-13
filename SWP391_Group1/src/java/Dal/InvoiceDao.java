@@ -26,7 +26,7 @@ public class InvoiceDao extends DBContext {
     public Invoice getInvoiceByRequirementId(int requirementId) {
         String sql = "select i.* , p.CustomerId , p.ProductId from Product p join WarrantyRequirement wr on p.ProductId = wr.ProductId\n"
                 + "join Invoice i on i.RequirementId = wr.RequirementId\n"
-                + "where wr.RequirementId = ? and i.Status = 'unpaid'";
+                + "where wr.RequirementId = ?";
 
         try {
             p = connection.prepareStatement(sql);

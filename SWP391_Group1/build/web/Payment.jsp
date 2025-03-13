@@ -12,7 +12,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        
+
     </head>
     <body>
         <h2>Thanh toán qua VNPay</h2>
@@ -28,8 +28,13 @@
                     <input type="email" name="email" required>
                     <input type="hidden" name="customerId" value="${i.requirement.customer.customerId}">
                     <input type="hidden" name="requirementId" value="${requestScope.requirementId}">
+                    <input type="hidden" name="formId" value="${requestScope.formId}">
                     <input type="hidden" name="invoiceId" value="${i.invoiceId}">
-                    ${requestScope.msg}
+                    <br>
+                    <c:if test="${requestScope.msg != null}">
+                        ${requestScope.msg}
+                    </c:if>
+                    
                     <br>
                     <button type="submit">Xác nhận qua Email</button>
                 </form>
@@ -44,6 +49,7 @@
                     <input type="hidden" name="invoiceId" value="${i.invoiceId}">
                     <input type="hidden" name="customerId" value="${i.requirement.customer.customerId}">
                     <input type="hidden" name="productId" value="${i.requirement.product.productId}">
+                    <input type="hidden" name="formId" value="${requestScope.formId}">
                     <button type="submit">Thanh toán</button>
                 </form>
             </c:otherwise>
@@ -52,6 +58,6 @@
 
         <hr>
         <a href="transactionHistory.jsp">Xem lịch sử giao dịch</a>    </body>
-    
-    
+
+
 </html>

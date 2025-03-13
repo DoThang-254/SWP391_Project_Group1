@@ -43,28 +43,41 @@ public class LoginController extends HttpServlet {
         Staff s = null;
 
         if (code != null) {
-            String accessToken = gg.getToken(code);
-            GoogleAccount googleAccount = gg.getUserInfo(accessToken);
-            String email = googleAccount.getEmail();
-            c = d.LoginByEmail(email);
-            s = d.StaffLoginByEmail(email);
+            try {
+                String accessToken = gg.getToken(code);
+                GoogleAccount googleAccount = gg.getUserInfo(accessToken);
+                String email = googleAccount.getEmail();
+                c = d.LoginByEmail(email);
+                s = d.StaffLoginByEmail(email);
 
-            if (c != null || s != null) {
-                if (s != null) {
-                    request.getSession().setAttribute("Staff", s);
-                    switch (s.getRole().getRoleId()) {
-                        case 3 -> response.sendRedirect("Admin.jsp");
-                        case 1 -> response.sendRedirect("technicianrequest");
-                        case 2 -> response.sendRedirect("requestmanagement");
-                        case 4 -> response.sendRedirect("Cashier.jsp");
-                        default -> response.sendRedirect("Login.jsp");
+                if (c != null || s != null) {
+                    if (s != null) {
+                        request.getSession().setAttribute("Staff", s);
+                        switch (s.getRole().getRoleId()) {
+                            case 3 ->
+                                response.sendRedirect("Admin.jsp");
+                            case 1 ->
+                                response.sendRedirect("technicianrequest");
+                            case 2 ->
+                                response.sendRedirect("requestmanagement");
+                            case 4 ->
+                                response.sendRedirect("Cashier.jsp");
+                            default ->
+                                response.sendRedirect("Login.jsp");
+                        }
+                    } else {
+                        request.getSession().setAttribute("Customer", c);
+                        response.sendRedirect("home");
                     }
                 } else {
-                    request.getSession().setAttribute("Customer", c);
-                    response.sendRedirect("home");
+                    // Nếu không tìm thấy tài khoản trong hệ thống, quay lại login với thông báo lỗi
+                    request.setAttribute("msg", "Tài khoản Google này chưa được đăng ký trong hệ thống.");
+                    request.getRequestDispatcher("Login.jsp").forward(request, response);
                 }
-            } else {
-                request.getRequestDispatcher("login").forward(request, response);
+            } catch (IOException e) {
+                // Nếu có lỗi khi gọi API Google, quay lại login với thông báo lỗi
+                request.setAttribute("msg", "Đăng nhập Google thất bại: " + e.getMessage());
+                request.getRequestDispatcher("Login.jsp").forward(request, response);
             }
         } else {
             String hashPassword = v.encode(passWord);
@@ -76,7 +89,7 @@ public class LoginController extends HttpServlet {
                     Cookie userNameCookie = new Cookie("username", userName);
                     userNameCookie.setMaxAge(60 * 60 * 24 * 7);
                     response.addCookie(userNameCookie);
-                    
+
                     Cookie passWordCookie = new Cookie("password", passWord);
                     passWordCookie.setMaxAge(60 * 60 * 24 * 7);
                     response.addCookie(passWordCookie);
@@ -84,7 +97,7 @@ public class LoginController extends HttpServlet {
                     Cookie userNameCookie = new Cookie("username", "");
                     userNameCookie.setMaxAge(0);
                     response.addCookie(userNameCookie);
-                    
+
                     Cookie passWordCookie = new Cookie("password", "");
                     passWordCookie.setMaxAge(0);
                     response.addCookie(passWordCookie);
@@ -93,11 +106,16 @@ public class LoginController extends HttpServlet {
                 if (s != null) {
                     request.getSession().setAttribute("Staff", s);
                     switch (s.getRole().getRoleId()) {
-                        case 3 -> response.sendRedirect("Admin.jsp");
-                        case 1 -> response.sendRedirect("technicianrequest");
-                        case 2 -> response.sendRedirect("requestmanagement");
-                        case 4 -> response.sendRedirect("Cashier.jsp");
-                        default -> response.sendRedirect("Login.jsp");
+                        case 3 ->
+                            response.sendRedirect("Admin.jsp");
+                        case 1 ->
+                            response.sendRedirect("technicianrequest");
+                        case 2 ->
+                            response.sendRedirect("requestmanagement");
+                        case 4 ->
+                            response.sendRedirect("Cashier.jsp");
+                        default ->
+                            response.sendRedirect("Login.jsp");
                     }
                 } else {
                     request.getSession().setAttribute("Customer", c);

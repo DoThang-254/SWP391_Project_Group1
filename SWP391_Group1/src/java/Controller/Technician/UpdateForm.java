@@ -63,9 +63,15 @@ public class UpdateForm extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int requireId = Integer.parseInt(request.getParameter("requireId"));
+        String staffId = request.getParameter("staffId");
+        String productId = request.getParameter("productid");
+
         String formId = request.getParameter("formId");
         WarrantyForm wf = wfd.getWarrantyFormbyFormId(Integer.parseInt(formId));
         request.setAttribute("form", wf);
+        request.setAttribute("requireId", requireId);
+        request.setAttribute("staffId", staffId);
         request.getRequestDispatcher("CreateForm.jsp").forward(request, response);
     }
 
@@ -77,10 +83,9 @@ public class UpdateForm extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {        
+            throws ServletException, IOException {
     }
 
     /**

@@ -43,13 +43,13 @@ public class VNPayReturnController extends HttpServlet {
             // Lấy thông tin từ vnp_OrderInfo
             String orderInfo = params.get("vnp_OrderInfo");
             int customerId = 0, invoiceId = 0;
-            String productId = null;
+            int formId = 0;
             if (orderInfo != null) {
                 String[] parts = orderInfo.split("-");
                 if (parts.length == 3) {
                     invoiceId = Integer.parseInt(parts[0].replace("Invoice:", "").trim());
                     customerId = Integer.parseInt(parts[1].replace("Customer:", "").trim());
-                    productId = parts[2].replace("Product:", "").trim();
+                    formId = Integer.parseInt(parts[2].replace("Form:", "").trim());
                 }
             }
 
@@ -66,8 +66,8 @@ public class VNPayReturnController extends HttpServlet {
                 td.saveTransaction(customerId, invoiceId, amount, "VNPay", "Success");
                 InvoiceDao ivd = new InvoiceDao();
                 ivd.updateStatusInvoie(invoiceId);
-//                WarrantyFormDao wfd = new WarrantyFormDao();
-//                wfd.createWarrantyForm(productId);
+                WarrantyFormDao wfd = new WarrantyFormDao();
+                wfd.updateStatus(formId);
             } else {
                 // Giao dịch thất bại
                 request.setAttribute("message", "Giao dịch thất bại! Mã lỗi: " + vnp_ResponseCode);

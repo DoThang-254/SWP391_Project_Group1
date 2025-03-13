@@ -5,6 +5,7 @@
 package Controller.Technician;
 
 import Dal.WarrantyFormDao;
+import Dal.WarrantyProcessDao;
 import Model.WarrantyForm;
 import dao.WarrantyRequirementDAO;
 import java.io.IOException;
@@ -66,6 +67,7 @@ public class CreateForm extends HttpServlet {
             throws ServletException, IOException {
         String productId = request.getParameter("productid");
         int requireId = Integer.parseInt(request.getParameter("requireId"));
+        String staffId = request.getParameter("staffId");
         if (productId == null || productId.trim().isEmpty()) {
 
         }
@@ -74,10 +76,14 @@ public class CreateForm extends HttpServlet {
             wfd.createWarrantyForm(productId);
             WarrantyForm newWf = wfd.getWarrantyFormbyProductId(productId);
             wrd.UpdateFormId(newWf.getFormId(), requireId);
+            wrd.UpdateTechVerifyForm(newWf.getFormId());
             request.setAttribute("form", newWf);
+            request.setAttribute("requireId", requireId);
+            request.setAttribute("staffId", staffId);
             request.getRequestDispatcher("CreateForm.jsp").forward(request, response);
             return;
         }
+
         request.setAttribute("msg", "You created Form for this request.");
         request.getRequestDispatcher("CreateForm.jsp").forward(request, response);
 
@@ -94,18 +100,15 @@ public class CreateForm extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-//        String faultType = request.getParameter("faultType");
-//        int formId = Integer.parseInt(request.getParameter("formId"));
-//        WarrantyFormDao wfd = new WarrantyFormDao();
-//        wfd.updateForm(faultType, null, formId);
-//        response.sendRedirect("technicianrequest");
-        String formId = request.getParameter("formId");
+        int requireId = Integer.parseInt(request.getParameter("requireId"));
+        String productId = request.getParameter("productId");
+        String staffId = request.getParameter("staffId");
+        int formId = Integer.parseInt(request.getParameter("formId"));
         String endDate = request.getParameter("endDate");
         String faultType = request.getParameter("faultType");
         String img = request.getParameter("img");
         WarrantyForm wf = new WarrantyForm();
-        wf.setFormId(Integer.parseInt(formId));
+        wf.setFormId(formId);
         if (endDate != null && !endDate.isEmpty()) {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -118,10 +121,50 @@ public class CreateForm extends HttpServlet {
         wf.setFaultType(faultType);
         wf.setImgUrl(img);
         wfd.UpdateFullFormId(wf);
-        if(wfd.isUserFault(Integer.parseInt(formId))){
-            wfd.updateIsPay(Integer.parseInt(formId));
+//        if (wfd.isUserFault(Integer.parseInt(formId)) && wfd.isPay(Integer.parseInt(formId))) {
+//            wfd.updateIsPay(Integer.parseInt(formId), "yes");
+//        } else if (wfd.isUserFault(Integer.parseInt(formId)) && !wfd.isPay(Integer.parseInt(formId))) {
+//            wfd.updateIsPay(Integer.parseInt(formId), "yes");
+//
+//        } else if (!wfd.isUserFault(Integer.parseInt(formId)) && wfd.isPay(Integer.parseInt(formId))) {
+//            wfd.updateIsPay(Integer.parseInt(formId), "yes");
+//
+//        } else {
+//            wfd.updateIsPay(Integer.parseInt(formId), "no");
+//
+//        }
+        boolean isUserFault = wfd.isUserFault(formId);
+        boolean isPay = wfd.isPay(formId);
+        WarrantyForm isWarrantyValid = wfd.getActiveWarrantyFormByProduct(productId); // Kiểm tra còn hạn bảo hành không
+        WarrantyProcessDao wpd = new WarrantyProcessDao();
+
+        if (isUserFault) {
+            if (isWarrantyValid != null) {
+                wfd.updateIsPay(formId, "yes"); // Còn hạn + lỗi user → Trả phí
+                wfd.updateTechVerify(formId);
+
+                if (!wpd.isWarrantyProcessExists(requireId)) { // Nếu chưa tồn tại, mới insert
+                    wpd.insertWarrantyProcess(requireId, staffId);
+                    wrd.UpdateStatusRequest("Checked", requireId);
+                } else {
+                    System.out.println("Yêu cầu này đã được xử lý!");
+                }
+            }
+
+            // Nếu hết hạn mà `isPay` đã là "yes", giữ nguyên (không cần update lại)
+        } else {
+            if (isWarrantyValid != null) {
+                wfd.updateIsPay(formId, "no"); // Còn hạn + lỗi NSX → Miễn phí
+                if (!wpd.isWarrantyProcessExists(requireId)) { // Nếu chưa tồn tại, mới insert
+                    wpd.insertWarrantyProcess(requireId, staffId);
+                    wrd.UpdateStatusRequest("Checked", requireId);
+                } else {
+                    System.out.println("Yêu cầu này đã được xử lý!");
+                }
+            }
         }
-        response.sendRedirect("updateform?formId=" + formId);
+
+        response.sendRedirect("updateform?formId=" + formId + "&requireId=" + requireId + "&staffId=" + staffId);
     }
 
     /**

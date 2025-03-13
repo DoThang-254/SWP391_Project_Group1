@@ -4,7 +4,7 @@ GO
 /*******************************************************************************
    Drop database if it exists
 ********************************************************************************/
-IF EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N' LaptopWarranty')
+IF EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'LaptopWarranty')
 BEGIN
 	ALTER DATABASE  LaptopWarranty SET OFFLINE WITH ROLLBACK IMMEDIATE;
 	ALTER DATABASE  LaptopWarranty SET ONLINE;
