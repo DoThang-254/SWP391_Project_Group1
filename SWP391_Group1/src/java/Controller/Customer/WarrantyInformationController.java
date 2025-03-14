@@ -69,9 +69,6 @@ public class WarrantyInformationController extends HttpServlet {
         if (request.getServletPath().equals("/searchinformation")) {
             searchWarrantyInformation(request, response);
         }
-        if (request.getServletPath().equals("/warrantyinformation")) {
-            WarrantyInformation(request, response);
-        }
 
     }
     CustomerDao cd = new CustomerDao();
@@ -128,39 +125,7 @@ public class WarrantyInformationController extends HttpServlet {
         request.getRequestDispatcher("SearchInformation.jsp").forward(request, response);
     }
 
-    protected void WarrantyInformation(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String input = request.getParameter("index");
-        if (input == null || input.isBlank()) {
-            input = "1";
-        }
-        int index = Integer.parseInt(input);
-        Customer c = (Customer) request.getSession().getAttribute("Customer");
-        String searchBox = request.getParameter("table_search");
-        String brand = request.getParameter("filterBrand");
-        Product newProduct = new Product(null, null, 0, brand, c.getCustomerId());
-        int count = cd.GetTotalProductWarrantyByCustomerId(c.getCustomerId(), searchBox, newProduct);
-
-        int endPage = count / 10;
-        if (count % 10 != 0) {
-            endPage++;
-        }
-
-        String sort = request.getParameter("sort");
-        String order = request.getParameter("order");
-        String priceRange = request.getParameter("filterPriceRange");
-
-        //List<WarrantyInformation> list = cd.WarrantyProductInformation(index, c.getCustomerId(), searchBox, newProduct, sort, order, priceRange);
-        request.setAttribute("endpage", endPage);
-        //  request.setAttribute("listA", list);
-        request.setAttribute("tag", index);
-        request.setAttribute("brand", brand);
-        request.setAttribute("sort", sort);
-        request.setAttribute("order", order);
-        request.setAttribute("priceRange", priceRange);
-        request.setAttribute("save", searchBox);
-        request.getRequestDispatcher("WarrantyInformation.jsp").forward(request, response);
-    }
+    
 
     @Override
     public String getServletInfo() {

@@ -60,7 +60,7 @@ public class WarrantyRequirementDAO extends DBContext {
     }
 
     public void insertWarrantyRequirement(WarrantyRequirement request) {
-        String sql = "INSERT INTO WarrantyRequirement (ProductId, CustomerId, Status,Description ,RegisterDate , Ispay) VALUES (?, ?, ?, ? , ? , ?)";
+        String sql = "INSERT INTO WarrantyRequirement (ProductId, CustomerId, Status,Description ,RegisterDate , Ispay , [ImageUrl]) VALUES (?, ?, ?, ? , ? , ? , ?)";
 
         try {
             p = connection.prepareStatement(sql);
@@ -70,7 +70,7 @@ public class WarrantyRequirementDAO extends DBContext {
             p.setString(4, request.getDescription());
             p.setDate(5, new java.sql.Date(request.getRegisterDate().getTime()));
             p.setString(6, request.getIsPay());
-
+            p.setString(7, request.getImg());
             p.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -100,6 +100,7 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setCustomer(c);
                 wr.setStatus(rs.getString(5));
                 wr.setDescription(rs.getString(6));
+                wr.setImg(rs.getString(7));
                 wr.setRegisterDate(rs.getDate(8));
                 wr.setIsPay(rs.getString(9));
                 list.add(wr);
@@ -136,6 +137,7 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setCustomer(c);
                 wr.setStatus(rs.getString(5));
                 wr.setDescription(rs.getString(6));
+                wr.setImg(rs.getString(7));
                 wr.setRegisterDate(rs.getDate(8));
                 wr.setIsPay(rs.getString(9));
                 WarrantyForm form = new WarrantyForm();
@@ -179,6 +181,7 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setCustomer(c);
                 wr.setStatus(rs.getString(5));
                 wr.setDescription(rs.getString(6));
+                wr.setImg(rs.getString(7));
                 wr.setRegisterDate(rs.getDate(8));
                 wr.setIsPay(rs.getString(9));
                 WarrantyForm form = new WarrantyForm();
@@ -331,6 +334,76 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setIsPay(rs.getString(9));
                 wr.setInvoiceId(rs.getInt(21));
                 wr.setInvoiceStatus(rs.getString(24));
+
+                list.add(wr);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public int GetTotalHistoryWarrantyRequest(int customerId) {
+        String sql = " select count(*) from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId \n"
+                + " join Customer c on c.CustomerId = wr.CustomerId\n"
+                + "                  where wr.CustomerId = ?";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, customerId);
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<WarrantyRequirement> historyRequestByCustomerId(int index, int customerId, int amount) {
+        List<WarrantyRequirement> list = new ArrayList<>();
+        String sql = " select wr.* , wf.* , c.Email from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId \n"
+                + "                 join Customer c on c.CustomerId = wr.CustomerId\n"
+                + "                 where wr.CustomerId = ?\n"
+                + "                 order by wr.requirementId desc , wr.registerDate desc\n"
+                + "                 offset ? rows fetch next ? rows only";
+        ;
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, customerId);
+            p.setInt(2, (index - 1) * amount);
+            p.setInt(3, amount);
+
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+                WarrantyRequirement wr = new WarrantyRequirement();
+                wr.setRequirementId(rs.getInt(1));
+                Product p = new Product();
+                p.setProductId(rs.getString(2));
+                wr.setProduct(p);
+                Staff s = new Staff();
+                s.setStaffId(rs.getString(4));
+                wr.setStaff(s);
+                wr.setStatus(rs.getString(5));
+                wr.setDescription(rs.getString(6));
+                Customer cust = new Customer();
+                cust.setCustomerId(rs.getInt(3));
+                cust.setEmail(rs.getString(20));
+                wr.setCustomer(cust);
+                wr.setRegisterDate(rs.getDate(8));
+                WarrantyForm form = new WarrantyForm();
+                form.setFormId(rs.getInt(10));
+                form.setVerified(rs.getString(16));
+                form.setFaultType(rs.getString(17));
+                form.setTechnicianVerify(rs.getString(18));
+                form.setStatus(rs.getString(15));
+                wr.setForm(form);
+                wr.setIsPay(rs.getString(9));
 
                 list.add(wr);
             }

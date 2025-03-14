@@ -49,27 +49,57 @@
                         </span>
                     </div>
                 </form>
+
                 <ul class="sidebar-menu">
+                    <c:choose>
+                        <c:when test="${sessionScope.Staff.roleId == 1}">
+                            <!-- Role 1: Technician -->
+                            <li>
+                                <a href="technicianrequest">
+                                    <i class="fa fa-dashboard"></i> <span>Request Management</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="task">
+                                    <i class="fa fa-glass"></i> <span>Task</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="blog">
+                                    <i class="fa fa-globe"></i> <span>Blog</span>
+                                </a>
+                            </li>
+                        </c:when>
 
-                    <li>
-                        <a href="technicianrequest">
-                            <i class="fa fa-dashboard"></i> <span>Request Management</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="task">
-                            <i class="fa fa-glass"></i> <span>Task</span>
-                        </a>
-                    </li>
+                        <c:when test="${sessionScope.Staff.roleId == 2}">
+                            <!-- Role 2: Service Manager -->
+                            <li>
+                                <a href="requestmanagement">
+                                    <i class="fa fa-dashboard"></i> <span>Request Management</span>
+                                </a>
+                            </li>
+                            
+                             <li>
+                                <a href="technicianlist">
+                                    <i class="fa fa-dashboard"></i> <span>Technician Management</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="blog">
+                                    <i class="fa fa-globe"></i> <span>Blog</span>
+                                </a>
+                            </li>
+                        </c:when>
 
-                    <li>
-                        <a href="blog">
-                            <i class="fa fa-globe"></i> <span>Blog</span>
-                        </a>
-                    </li>
-
-
-
+                        <c:when test="${sessionScope.Staff.roleId == 3}">
+                            <!-- Role 3: Admin -->
+                            <li>
+                                <a href="staffmanagement">
+                                    <i class="fa fa-users"></i> <span>Staff Management</span>
+                                </a>
+                            </li>
+                        </c:when>
+                    </c:choose>
                 </ul>
             </section>
 

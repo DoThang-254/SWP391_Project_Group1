@@ -16,6 +16,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -45,9 +46,9 @@ public class SendConfirmController extends HttpServlet {
                 response.sendRedirect("home");
                 return;
             }
-            
+
             int invoiceId = Integer.parseInt(invoiceIdRaw);
-            
+
             InvoiceDao ivd = new InvoiceDao();
             ivd.updateIsConfirmInvoice(invoiceId);
             int requirementId = Integer.parseInt(request.getParameter("requirementId"));
@@ -56,7 +57,7 @@ public class SendConfirmController extends HttpServlet {
         } catch (Exception e) {
             response.sendRedirect("404.jsp");
         }
-        
+
     }
 
     /**
@@ -71,12 +72,12 @@ public class SendConfirmController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            
+
             String customerIdRaw = request.getParameter("customerId");
             int requirementId = Integer.parseInt(request.getParameter("requirementId"));
             int customerId = Integer.parseInt(customerIdRaw);
             int formId = Integer.parseInt(request.getParameter("formId"));
-            
+
             String userEmail = request.getParameter("email"); // Lấy email người dùng nhập
             String invoiceId = request.getParameter("invoiceId"); // Lấy ID hóa đơn
             String confirmLink = "http://localhost:9999/SWP391_Group1/sendconfirm?invoiceId=" + invoiceId + "&customerId=" + customerId + "&requirementId="
@@ -91,24 +92,25 @@ public class SendConfirmController extends HttpServlet {
             properties.put("mail.smtp.starttls.enable", "true");
             properties.put("mail.smtp.host", "smtp.gmail.com");
             properties.put("mail.smtp.port", "587");
-            
+
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(senderEmail, senderPassword);
                 }
             });
-            
+
             try {
                 Message message = new MimeMessage(session);
                 message.setFrom(new InternetAddress(senderEmail));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userEmail));
                 message.setSubject("Xác nhận thanh toán VNPay");
                 message.setText("Nhấn vào link sau để xác nhận thanh toán: " + confirmLink);
-                
+
                 Transport.send(message);
-                request.setAttribute("msg", "Email xác nhận đã được gửi!");
-                response.sendRedirect("payment?requirementId=" + requirementId + "&formId=" + formId);
+                String msg = "Email xác nhận đã được gửi!";
+                response.sendRedirect("payment?requirementId=" + requirementId + "&formId=" + formId + "&msg=" + URLEncoder.encode(msg, "UTF-8"));
+
             } catch (MessagingException e) {
                 throw new ServletException("Lỗi gửi email", e);
             }

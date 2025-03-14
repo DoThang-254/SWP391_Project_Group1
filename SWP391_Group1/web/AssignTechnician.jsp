@@ -39,10 +39,10 @@
     </head>
 
     <body class="skin-black">
-        <c:import url="navbar.jsp"/>
+        <c:import url="StaffNavbar.jsp"/>
 
         <div class="wrapper row-offcanvas row-offcanvas-left">
-            <c:import url="menu.jsp"/>
+            <c:import url="StaffMenu.jsp"/>
 
 
             <!-- Right side column. Contains the navbar and content of the page -->
@@ -129,7 +129,7 @@
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Product ID
+                                                <th>Staff ID
                                                     <a href="searchinformation?sort=productid&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}">
                                                         <i class="fa fa-arrow-up"></i>
                                                     </a>
@@ -137,24 +137,6 @@
                                                         <i class="fa fa-arrow-down"></i>
                                                     </a>
                                                 </th>
-
-                                                <th>Product Name
-                                                    <a href="searchinformation?sort=productname&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
-                                                </th>
-
-                                                <th>Price
-                                                    <a href="searchinformation?sort=Price&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=Price&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
-                                                </th>
-                                                <th>Brand
-                                                    <a href="searchinformation?sort=Brand&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=Brand&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
-                                                </th>
-
-                                                <th>Status
-
-                                                </th> 
                                                 <th>
                                                     Assign Task
                                                 </th>

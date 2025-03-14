@@ -48,11 +48,11 @@ public class Dao extends DBContext implements ILoginDAO {
             p.setString(1, email);
             rs = p.executeQuery();
             if (rs.next()) {
-                Role r = new Role(rs.getInt(11), rs.getString(12));
+                Role r = new Role(rs.getInt(12), rs.getString(13));
                 return new Staff(rs.getString(1), rs.getString(2),
                         rs.getString(3), rs.getString(4), rs.getString(5),
                         rs.getString(6), rs.getString(7), rs.getString(8),
-                        rs.getDate(9), rs.getString(10), rs.getInt(11), r);
+                        rs.getDate(9), rs.getString(11), rs.getInt(12), r);
             }
         } catch (Exception e) {
         }

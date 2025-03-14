@@ -24,6 +24,7 @@ public class WarrantyRequirement {
     private String category; 
     private int invoiceId ;
     private boolean hasInvoice;
+    private String img;
     private String invoiceStatus;
 
     public WarrantyRequirement() {
@@ -143,6 +144,15 @@ public class WarrantyRequirement {
     public void setInvoiceStatus(String invoiceStatus) {
         this.invoiceStatus = invoiceStatus;
     }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+    
     
     
 }

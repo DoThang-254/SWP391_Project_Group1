@@ -160,6 +160,8 @@
                                                 <th>Description
 
                                                 </th>
+                                                <th>Img Fault </th>
+
                                                 <th> is pay
 
                                                 </th>
@@ -202,6 +204,8 @@
                                                 </td>
 
                                                 <td>${r.description}</td>
+                                                <td><img src="${r.img}" width="200" height="200" alt="Warranty Image"> </td>
+
                                                 <td>${r.isPay}</td>
 
                                                 <!-- Dữ liệu từ listA -->
@@ -216,7 +220,11 @@
                                                             Đã từ chối                                                        </c:otherwise>
                                                     </c:choose>
                                                 </td>
-
+                                                <td>
+                                                    <a href="viewnewest?productid=${r.product.productId}" title="Update Form">
+                                                        View Form
+                                                    </a>
+                                                </td>
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${r.form.formId != 0}">

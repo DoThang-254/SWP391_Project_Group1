@@ -138,7 +138,6 @@
             <p><label>Start Date: </label> ${wf.startDate}</p>
             <p><label>End Date: </label> ${wf.endDate}</p>
             <p><label>Form Status: </label> ${wf.status}</p>
-            <p><label>Customer Verify: </label> ${wf.verified}</p>
             <p><label>Fault Type: </label> ${wf.faultType}</p>
             <p><label>Img: </label></p>
             <img src="${wf.imgUrl}" alt="img">

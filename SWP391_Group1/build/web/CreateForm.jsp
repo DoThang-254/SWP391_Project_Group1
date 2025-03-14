@@ -16,7 +16,7 @@
     </head>
     <body>
         <h1>Update Form</h1>
-        <form action="createform" method="post">
+        <form action="createform" method="post" enctype="multipart/form-data">
             <input type="hidden" id="requireId" name="requireId" value="${requestScope.requireId}"> <br>
             <input type="hidden" id="staffId" name="staffId" value="${requestScope.staffId}"> <br>
             <label for="formId">Form Id:</label>
@@ -43,8 +43,18 @@
                 <option value="user" ${requestScope.form.faultType == 'user' ? 'selected' : ''}>Lỗi người dùng</option>
             </select> <br>
 
-            <label for="img">Upload Image:</label>
-            <input type="file" id="img" name="img"> <br>
+            <div class="form-group">
+                <label for="image">Upload Image:</label>
+                <input type="hidden" id="existingImage" name="existingImage" value="${requestScope.form.imgUrl}">
+
+                <input type="file" id="image" name="image" accept="image/*">
+                <c:if test="${not empty requestScope.form.imgUrl}">
+                    <p>Current Image: <a href="${pageContext.request.contextPath}/${requestScope.form.imgUrl}" target="_blank">${requestScope.form.imgUrl}</a></p>
+                    <img src="${pageContext.request.contextPath}/${requestScope.form.imgUrl}" alt="Uploaded Image" width="200">
+                </c:if>
+            </div>
+
+            <br>
             ${requestScope.msg}
             <br>
             <input type="submit" value="Update Form">

@@ -175,7 +175,7 @@
                                         </thead>
                                         <c:if test="${requestScope.list == null || requestScope.list.isEmpty()}">
                                             <tr>
-                                                <td colspan="7" style="text-align: center;">Warranty Form is not exist</td>
+                                                <td colspan="7" style="text-align: center;">Warranty Purchase is not exist</td>
                                             </tr>
                                         </c:if>
 

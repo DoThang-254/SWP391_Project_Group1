@@ -39,10 +39,10 @@
     </head>
 
     <body class="skin-black">
-        <c:import url="navbar.jsp"/>
+        <c:import url="StaffNavbar.jsp"/>
 
         <div class="wrapper row-offcanvas row-offcanvas-left">
-            <c:import url="menu.jsp"/>
+            <c:import url="StaffMenu.jsp"/>
 
 
             <!-- Right side column. Contains the navbar and content of the page -->
@@ -77,7 +77,7 @@
                                         </div>
 
                                         <div class="col-md-3">
-                                            <label for="filterBrand">Brand</label>
+                                            <label for="filterBrand">Fault Type</label>
                                             <select name="filterBrand" id="filterBrand" class="form-control">
                                                 <option value="" ${empty requestScope.brand ? 'selected' : ''}>-- All Brands --</option>
                                                 <option value="BrandY" ${requestScope.brand == 'BrandY' ? 'selected' : ''}>BrandY</option>
@@ -85,7 +85,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="filterBrand">amount of product</label>
+                                            <label for="filterBrand"></label>
                                             <select name="amount" id="filterBrand" class="form-control">
                                                 <option value="">-- All --</option>
 
@@ -160,9 +160,13 @@
                                                 <th>Description
 
                                                 </th>
-                                                <th>Is Pay
-
+                                                <th>
+                                                    Image
                                                 </th> 
+                                                <th>
+                                                    View Form
+                                                </th> 
+
                                             </tr>
                                         </thead>
                                         <c:if test="${requestScope.list == null || requestScope.list.isEmpty()}">
@@ -209,10 +213,11 @@
                                                 </td>
 
                                                 <td>${r.description}</td>
-
+                                                <td><img src="${r.img}" width="200" height="200" alt="Warranty Image"> 
+                                                </td>
                                                 <td> 
-                                                    <a href="?requirementid=${r.requirementId}" class="btn btn-info btn-sm" title="View Details">
-                                                        <i class="fa fa-eye"></i>
+                                                     <a href="viewnewest?productid=${r.product.productId}" title="Update Form">
+                                                        View Form
                                                     </a>
                                                 </td>
                                             </tr>

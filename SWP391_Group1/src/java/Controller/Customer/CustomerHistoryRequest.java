@@ -4,9 +4,9 @@
  */
 package Controller.Customer;
 
-import Dal.InvoiceDao;
 import Model.Customer;
-import Model.Invoice;
+import Model.WarrantyRequirement;
+import dao.WarrantyRequirementDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author thang
  */
-public class Payment extends HttpServlet {
+public class CustomerHistoryRequest extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +38,10 @@ public class Payment extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Payment</title>");
+            out.println("<title>Servlet CustomerHistoryRequest</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Payment at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CustomerHistoryRequest at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,43 +56,35 @@ public class Payment extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        String customerIdParam = request.getParameter("customerId");
-//
-//        if (customerIdParam == null || customerIdParam.isEmpty()) {
-//            // Nếu không có customerId, thử lấy từ session
-//            Customer c = (Customer) request.getSession().getAttribute("Customer");
-//            if (c == null) {
-//                response.sendRedirect("login"); // Yêu cầu đăng nhập nếu không có session
-//                return;
-//            }
-//            customerIdParam = String.valueOf(c.getCustomerId());
-//        }
-//
-//        int customerId = Integer.parseInt(customerIdParam);
-        String msg = request.getParameter("msg");
-        if (msg != null) {
-            request.setAttribute("msg", msg);
+        Customer c = (Customer) request.getSession().getAttribute("Customer");
+        String input = request.getParameter("index");
+        String amount = request.getParameter("amount");
+
+        if (input == null) {
+            input = "1";
         }
 
-        InvoiceDao ivd = new InvoiceDao();
-//        request.setAttribute("list", list);
-        try {
-
-            int formId = Integer.parseInt(request.getParameter("formId"));
-            int requirementId = Integer.parseInt(request.getParameter("requirementId"));
-            Invoice invoice = ivd.getInvoiceByRequirementId(requirementId);
-            request.setAttribute("i", invoice);
-            request.setAttribute("requirementId", requirementId);
-            request.setAttribute("formId", formId);
-            request.getRequestDispatcher("Payment.jsp").forward(request, response);
-        } catch (Exception e) {
-            response.sendRedirect("404.jsp");
-            return;
+        if (amount == null) {
+            amount = "1";
         }
-
+        int x = Integer.parseInt(amount);
+        int index = Integer.parseInt(input);
+        int count = wrd.GetTotalWarrantyRequest(c.getCustomerId());
+        int endPage = count / x;
+        if (endPage % x != 0) {
+            endPage++;
+        }
+        List<WarrantyRequirement> list = wrd.historyRequestByCustomerId(index, c.getCustomerId(), x);
+        request.setAttribute("list", list);
+        request.setAttribute("tag", index);
+        request.setAttribute("endpage", endPage);
+        request.setAttribute("amount", x);
+        request.getRequestDispatcher("HistoryRequest.jsp").forward(request, response);
     }
 
     /**

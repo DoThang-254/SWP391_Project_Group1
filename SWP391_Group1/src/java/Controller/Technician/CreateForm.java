@@ -11,13 +11,23 @@ import dao.WarrantyRequirementDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+)
 /**
  *
  * @author thang
@@ -106,7 +116,9 @@ public class CreateForm extends HttpServlet {
         int formId = Integer.parseInt(request.getParameter("formId"));
         String endDate = request.getParameter("endDate");
         String faultType = request.getParameter("faultType");
-        String img = request.getParameter("img");
+        Part filePart = request.getPart("image"); // Lấy file từ input name="image"
+        String existingImage = request.getParameter("existingImage");
+
         WarrantyForm wf = new WarrantyForm();
         wf.setFormId(formId);
         if (endDate != null && !endDate.isEmpty()) {
@@ -119,20 +131,30 @@ public class CreateForm extends HttpServlet {
             }
         }
         wf.setFaultType(faultType);
-        wf.setImgUrl(img);
+        String imagePath = existingImage; // Mặc định giữ ảnh cũ
+        if (filePart != null && filePart.getSize() > 0) { // Nếu có ảnh mới, cập nhật ảnh
+            String fileName = filePart.getSubmittedFileName();
+            String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            // Lưu file vào server
+            String filePath = uploadPath + File.separator + fileName;
+            try (InputStream input = filePart.getInputStream(); FileOutputStream output = new FileOutputStream(filePath)) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = input.read(buffer)) != -1) {
+                    output.write(buffer, 0, bytesRead);
+                }
+            }
+            imagePath = "uploads/" + fileName; // Cập nhật đường dẫn mới
+        }
+
+        wf.setImgUrl(imagePath);
         wfd.UpdateFullFormId(wf);
-//        if (wfd.isUserFault(Integer.parseInt(formId)) && wfd.isPay(Integer.parseInt(formId))) {
-//            wfd.updateIsPay(Integer.parseInt(formId), "yes");
-//        } else if (wfd.isUserFault(Integer.parseInt(formId)) && !wfd.isPay(Integer.parseInt(formId))) {
-//            wfd.updateIsPay(Integer.parseInt(formId), "yes");
-//
-//        } else if (!wfd.isUserFault(Integer.parseInt(formId)) && wfd.isPay(Integer.parseInt(formId))) {
-//            wfd.updateIsPay(Integer.parseInt(formId), "yes");
-//
-//        } else {
-//            wfd.updateIsPay(Integer.parseInt(formId), "no");
-//
-//        }
+
         boolean isUserFault = wfd.isUserFault(formId);
         boolean isPay = wfd.isPay(formId);
         WarrantyForm isWarrantyValid = wfd.getActiveWarrantyFormByProduct(productId); // Kiểm tra còn hạn bảo hành không
@@ -140,10 +162,10 @@ public class CreateForm extends HttpServlet {
 
         if (isUserFault) {
             if (isWarrantyValid != null) {
-                wfd.updateIsPay(formId, "yes"); // Còn hạn + lỗi user → Trả phí
+                wfd.updateIsPay(formId, "yes"); // Còn hạn + lỗi user 
                 wfd.updateTechVerify(formId);
 
-                if (!wpd.isWarrantyProcessExists(requireId)) { // Nếu chưa tồn tại, mới insert
+                if (!wpd.isWarrantyProcessExists(requireId)) {
                     wpd.insertWarrantyProcess(requireId, staffId);
                     wrd.UpdateStatusRequest("Checked", requireId);
                 } else {

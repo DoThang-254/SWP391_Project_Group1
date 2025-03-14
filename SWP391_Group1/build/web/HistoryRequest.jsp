@@ -59,7 +59,7 @@
 
                                 </header>
                                 <div class="filter-section">
-                                    <form action="searchinformation" method="get" class="row">
+                                    <form action="historyrequest" method="get" class="row">
                                         <input type="hidden" name="sort" value="${requestScope.sort}">
                                         <input type="hidden" name="order" value="${requestScope.order}">
                                         <div class="box-tools m-b-15">
@@ -77,7 +77,7 @@
                                         </div>
 
                                         <div class="col-md-3">
-                                            <label for="filterBrand">Brand</label>
+                                            <label for="filterBrand">StaffId</label>
                                             <select name="filterBrand" id="filterBrand" class="form-control">
                                                 <option value="" ${empty requestScope.brand ? 'selected' : ''}>-- All Brands --</option>
                                                 <option value="BrandY" ${requestScope.brand == 'BrandY' ? 'selected' : ''}>BrandY</option>
@@ -85,7 +85,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="filterBrand">amount of product</label>
+                                            <label for="filterBrand">amount of requirement</label>
                                             <select name="amount" id="filterBrand" class="form-control">
                                                 <option value="">-- All --</option>
 
@@ -100,7 +100,7 @@
                                         <!-- Filter Price -->
                                         <div class="col-md-3">
 
-                                            <label for="filterPriceRange">Price Range</label>
+                                            <label for="filterPriceRange">Fault Type</label>
                                             <select name="filterPriceRange" id="filterPriceRange" class="form-control">
                                                 <option value="" ${empty requestScope.priceRange ? 'selected' : ''}>Tất cả giá</option>
                                                 <option value="0-5000" ${requestScope.priceRange == '0-5000' ? 'selected' : ''}>Dưới 5.000</option>
@@ -168,9 +168,7 @@
                                                     Xác nhận từ nhân viên
                                                 </th> 
 
-                                                <th>
-                                                    View Invoice
-                                                </th> 
+                                              
                                             </tr>
                                         </thead>
                                         <c:if test="${requestScope.list == null || requestScope.list.isEmpty()}">
@@ -216,20 +214,7 @@
 
                                                     </c:choose>
                                                 </td>
-                                                <td>
 
-                                                    <c:choose>
-                                                        <c:when test="${r.invoiceStatus eq 'Unpaid' }">
-                                                            <a href="payment?requirementId=${r.requirementId}&formId=${r.form.formId}">View</a>
-                                                        </c:when>
-
-                                                        <c:otherwise>
-                                                            Your Invoice is Purchased
-
-                                                        </c:otherwise>
-
-                                                    </c:choose>
-                                                </td>
                                             </tr>
 
                                         </c:forEach>
@@ -241,7 +226,7 @@
                                             <c:forEach begin="1" end="${requestScope.endpage}" var="i">
                                                 <li>
                                                     <a class="${tag == i ? 'active' : ''}"
-                                                       href="customerrequest?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}&amount=${requestScope.amount}">${i}</a>
+                                                       href="historyrequest?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}&amount=${requestScope.amount}">${i}</a>
                                                 </li>
                                             </c:forEach>
                                         </ul>

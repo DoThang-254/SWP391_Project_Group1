@@ -58,28 +58,41 @@
                                 </header>
                                 <div class="form-container">
                                     <h2>Warranty Requirement Form</h2>
-                                    <form action="warrantyrequest" method="post">
+                                    <form action="warrantyrequest" method="post" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <label for="productId">Product ID:</label>
-                                            <input type="text" id="productId" name="productId" value="${requestScope.productid}" readonly>
+                                            <input type="text" id="productId" name="productId" value="${param.productId != null ? param.productId : requestScope.productid}" readonly>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="productName">Product Name:</label>
-                                            <input type="text" id="productName" name="productName" value="${requestScope.product.productName}" readonly>
+                                            <input type="text" id="productName" name="productName" value="${param.productName != null ? param.productName : requestScope.product.productName}" readonly>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="productBrand">Brand :</label>
-                                            <input type="text" id="productBrand" name="productBrand" value="${requestScope.product.brand}" readonly>
+                                            <input type="text" id="productBrand" name="productBrand" value="${param.productBrand != null ? param.productBrand : requestScope.product.brand}" readonly>
                                         </div>
 
                                         <input type="hidden" id="status" name="status" value="Pending">
-                                        <input type="hidden" id="ispay" name="ispay" value="${requestScope.ispay}">
+                                        <input type="hidden" id="ispay" name="ispay" value="${param.ispay != null ? param.ispay : requestScope.ispay}">
 
                                         <div class="form-group">
                                             <label for="description">Description:</label>
-                                            <textarea id="description" name="description" required></textarea>
+                                            <textarea id="description" name="description" required>${param.description != null ? param.description : ''}</textarea>
+                                        </div>
+
+                                        <!-- Input để tải ảnh lên -->
+                                        <div class="form-group">
+                                            <label for="image">Upload Image:</label>
+                                            <input type="file" id="image" name="image" accept="image/*" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Ảnh đã tải lên:</label>
+                                            <c:if test="${not empty requestScope.imagePath}">
+                                                <img src="${pageContext.request.contextPath}/${requestScope.imagePath}" alt="Uploaded Image" width="150">
+                                            </c:if>
                                         </div>
 
                                         <div class="form-group text-danger">
@@ -93,6 +106,7 @@
                                         </div>
                                     </form>
                                 </div>
+
 
 
 

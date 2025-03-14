@@ -78,13 +78,17 @@
                                 <span>View Detail Products & Warranty Form</span>
                             </a>
                         </li>
-
                         <li>
-                            <a href="customerrequest">
+                            <a href="historyrequest">
                                 <i class="fa fa-globe"></i> <span>History Request</span>
                             </a>
                         </li>
-                        
+                        <li>
+                            <a href="customerrequest">
+                                <i class="fa fa-globe"></i> <span>Purchase Request</span>
+                            </a>
+                        </li>
+
                         <li>
                             <a href="customerprocess">
                                 <i class="fa fa-globe"></i> <span>View Warranty Process</span>
@@ -101,32 +105,32 @@
         <!-- Right side column. Contains the navbar and content of the page -->
 
         <!-- /.sidebar -->
-       <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let currentUrl = window.location.pathname;
-        let activeUrl = localStorage.getItem("activeMenu") || "home"; // Mặc định Home nếu chưa có lưu
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let currentUrl = window.location.pathname;
+                let activeUrl = localStorage.getItem("activeMenu") || "home"; // Mặc định Home nếu chưa có lưu
 
-        let menuItems = document.querySelectorAll(".sidebar-menu li");
+                let menuItems = document.querySelectorAll(".sidebar-menu li");
 
-        // Xóa tất cả class "active"
-        menuItems.forEach(item => item.classList.remove("active"));
+                // Xóa tất cả class "active"
+                menuItems.forEach(item => item.classList.remove("active"));
 
-        // Đánh dấu menu được chọn
-        let isActiveSet = false; // Đảm bảo chỉ có 1 mục active
-        menuItems.forEach(item => {
-            let link = item.querySelector("a");
-            if (link && (link.getAttribute("href") === activeUrl || (activeUrl === "home" && link.getAttribute("href") === "home")) && !isActiveSet) {
-                item.classList.add("active");
-                isActiveSet = true; // Đánh dấu đã đặt "active" để tránh trùng lặp
-            }
+                // Đánh dấu menu được chọn
+                let isActiveSet = false; // Đảm bảo chỉ có 1 mục active
+                menuItems.forEach(item => {
+                    let link = item.querySelector("a");
+                    if (link && (link.getAttribute("href") === activeUrl || (activeUrl === "home" && link.getAttribute("href") === "home")) && !isActiveSet) {
+                        item.classList.add("active");
+                        isActiveSet = true; // Đánh dấu đã đặt "active" để tránh trùng lặp
+                    }
 
-            // Gán sự kiện click để lưu vào localStorage
-            link.addEventListener("click", function () {
-                localStorage.setItem("activeMenu", link.getAttribute("href"));
+                    // Gán sự kiện click để lưu vào localStorage
+                    link.addEventListener("click", function () {
+                        localStorage.setItem("activeMenu", link.getAttribute("href"));
+                    });
+                });
             });
-        });
-    });
-</script>
+        </script>
 
 
 

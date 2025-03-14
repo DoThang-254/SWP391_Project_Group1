@@ -293,6 +293,12 @@ public class WarrantyProcessDao extends DBContext {
                 WarrantyRequirement wr = new WarrantyRequirement();
                 wr.setRequirementId(rs.getInt(2));
                 wr.setRegisterDate(rs.getDate(15));
+                Product product = new Product() ;
+                product.setProductId(rs.getString(9));
+                wr.setProduct(product);
+                WarrantyForm wf = new WarrantyForm();
+                wf.setFormId(rs.getInt(17));
+                wr.setForm(wf);
                 wp.setRequirement(wr);
                 Staff s = new Staff();
                 s.setStaffId(rs.getString(3));
@@ -301,7 +307,7 @@ public class WarrantyProcessDao extends DBContext {
                 wp.setNote(rs.getString(5));
                 wp.setReturnDate(rs.getDate(6));
                 wp.setIsAccept(rs.getString(7));
-
+               
                 list.add(wp);
             }
         } catch (Exception e) {

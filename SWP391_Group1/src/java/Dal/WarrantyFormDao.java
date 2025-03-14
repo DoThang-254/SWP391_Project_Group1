@@ -304,6 +304,7 @@ public class WarrantyFormDao extends DBContext {
                 warrantyForm.setStartDate(rs.getDate("StartDate"));
                 warrantyForm.setEndDate(rs.getDate("EndDate"));
                 warrantyForm.setStatus(rs.getString("Status"));
+                warrantyForm.setImgUrl(rs.getString(9));
             }
         } catch (SQLException e) {
         }
@@ -438,9 +439,9 @@ public class WarrantyFormDao extends DBContext {
                 warrantyForm.setStartDate(rs.getDate("StartDate"));
                 warrantyForm.setEndDate(rs.getDate("EndDate"));
                 warrantyForm.setStatus(rs.getString("Status"));
-                warrantyForm.setVerified(rs.getString(6));
                 warrantyForm.setFaultType(rs.getString(7));
-                warrantyForm.setImgUrl(rs.getString(8));
+                warrantyForm.setTechnicianVerify(rs.getString(8));
+                warrantyForm.setImgUrl(rs.getString(9));
             }
         } catch (SQLException e) {
         }
