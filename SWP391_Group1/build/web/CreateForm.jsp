@@ -56,11 +56,12 @@
 
             <br>
             ${requestScope.msg}
+            ${requestScope.newmsg}
             <br>
             <input type="submit" value="Update Form">
         </form>
 
-        <a href="technicianrequest">Back</a>
+        <a href="javascript:history.back()">Back</a>
     </body>
     <style>
         body {

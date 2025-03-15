@@ -66,12 +66,13 @@ public class UpdateForm extends HttpServlet {
         int requireId = Integer.parseInt(request.getParameter("requireId"));
         String staffId = request.getParameter("staffId");
         String productId = request.getParameter("productid");
-
+        String msg = request.getParameter("msg");
         String formId = request.getParameter("formId");
         WarrantyForm wf = wfd.getWarrantyFormbyFormId(Integer.parseInt(formId));
         request.setAttribute("form", wf);
         request.setAttribute("requireId", requireId);
         request.setAttribute("staffId", staffId);
+        request.setAttribute("newmsg", msg);
         request.getRequestDispatcher("CreateForm.jsp").forward(request, response);
     }
 

@@ -83,7 +83,7 @@
                                                 <th>View Invoice</th>
 
                                                 <th>View Warranty Form</th>
-
+                                                <th>Update End date Warranty Form</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -118,7 +118,7 @@
 
                                                     <td>
                                                         <c:choose>
-                                                            <c:when test="${pr.requirement.isPay eq 'yes'}">
+                                                            <c:when test="${pr.requirement.isPay eq 'Yes'}">
                                                                 <c:choose>
                                                                     <c:when test="${pr.requirement.hasInvoice}">
                                                                         <a href="updateinvoice?requirementId=${pr.requirement.requirementId}" class="btn btn-info btn-sm" title="Tạo hóa đơn">
@@ -144,6 +144,10 @@
                                                         </a>
                                                     </td>
 
+                                                    <td> <a href="updateform?formId=${pr.requirement.form.formId}&productid=${pr.requirement.product.productId}&requireId=${pr.requirement.requirementId}&staffId=${pr.staff.staffId}" class="btn btn-warning btn-sm" title="Update Form">
+                                                            Update Form
+                                                        </a></td>
+
                                                 </tr>
                                             </c:forEach>
 
@@ -165,7 +169,7 @@
 
 
                     </div>
-                    
+
                     <!-- row end -->
                 </section><!-- /.content -->
 

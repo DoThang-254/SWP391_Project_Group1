@@ -71,16 +71,13 @@ public class TechnicianRequestManagementController extends HttpServlet {
         List<WarrantyRequirement> listA = wrd.GetAllRequestByStaffId(s.getStaffId());
         List<WarrantyRequirement> listB = wrd.GetAllRequestByStaffIdWithout(s.getStaffId());
 
-// Map lưu trữ requirementId -> WarrantyRequirement
         Map<Integer, WarrantyRequirement> map = new HashMap<>();
 
-// Thêm dữ liệu từ listB trước (dữ liệu chính)
         for (WarrantyRequirement r : listB) {
             r.setCategory("B");
             map.put(r.getRequirementId(), r);
         }
 
-// Cập nhật dữ liệu từ listA (chỉ bổ sung thêm các thuộc tính của form)
         for (WarrantyRequirement r : listA) {
             if (map.containsKey(r.getRequirementId())) {
                 WarrantyRequirement existing = map.get(r.getRequirementId());
@@ -91,7 +88,6 @@ public class TechnicianRequestManagementController extends HttpServlet {
             }
         }
 
-// Chuyển Map thành List
         List<WarrantyRequirement> mergedList = new ArrayList<>(map.values());
 
         request.setAttribute("list", mergedList);

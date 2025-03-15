@@ -86,6 +86,7 @@
                                         <div class="form-group">
                                             <label for="image">Upload Image:</label>
                                             <input type="file" id="image" name="image" accept="image/*" required>
+<!--                                            <small id="avatar-error"></small>-->
                                         </div>
 
                                         <div class="form-group">
@@ -94,6 +95,30 @@
                                                 <img src="${pageContext.request.contextPath}/${requestScope.imagePath}" alt="Uploaded Image" width="150">
                                             </c:if>
                                         </div>
+<!--                                        <script>
+                                            document.getElementById("image").addEventListener("change", function () {
+                                                var file = this.files[0];
+                                                var errorElement = document.getElementById("avatar-error");
+
+                                                if (file) {
+                                                    var fileSize = file.size; // Đổi sang MB
+                                                    var fileType = file.type;
+
+                                                    // Danh sách định dạng ảnh hợp lệ
+                                                    var validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+
+                                                    if (!validImageTypes.includes(fileType)) {
+                                                        errorElement.textContent = "Chỉ được chọn file ảnh (JPG, PNG, GIF)!";
+                                                        this.value = ""; // Xóa file đã chọn
+                                                    } else if (fileSize > 3 * 1024 * 1024) {
+                                                        errorElement.textContent = "File không được vượt quá 3MB!";
+                                                        this.value = ""; // Xóa file đã chọn
+                                                    } else {
+                                                        errorElement.textContent = ""; // Xóa lỗi nếu hợp lệ
+                                                    }
+                                                }
+                                            });
+                                        </script>-->
 
                                         <div class="form-group text-danger">
                                             ${requestScope.errorMessage}

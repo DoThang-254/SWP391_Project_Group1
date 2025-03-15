@@ -366,22 +366,21 @@ public class WarrantyFormDao extends DBContext {
         return false;
     }
 
-  public boolean isWarrantyValid(int requireId) {
-    String sql = "SELECT TOP 1 form_id FROM WarrantyForm "
-               + "WHERE require_id = ? AND status = 'Active' "
-               + "ORDER BY start_date DESC"; // Lấy phiếu mới nhất còn hiệu lực
+    public boolean isWarrantyValid(int requireId) {
+        String sql = "SELECT TOP 1 form_id FROM WarrantyForm "
+                + "WHERE require_id = ? AND status = 'Active' "
+                + "ORDER BY start_date DESC"; // Lấy phiếu mới nhất còn hiệu lực
 
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setInt(1, requireId);
-        try (ResultSet rs = p.executeQuery()) {
-            return rs.next(); // Nếu có dữ liệu thì return true (còn hạn bảo hành)
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setInt(1, requireId);
+            try (ResultSet rs = p.executeQuery()) {
+                return rs.next(); // Nếu có dữ liệu thì return true (còn hạn bảo hành)
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return false; // Không có phiếu bảo hành hợp lệ
     }
-    return false; // Không có phiếu bảo hành hợp lệ
-}
-
 
     public boolean isManufacturerFault(int formId) {
         String sql = "SELECT FaultType FROM [dbo].[WarrantyForm] WHERE FormId = ?";
@@ -446,6 +445,18 @@ public class WarrantyFormDao extends DBContext {
         } catch (SQLException e) {
         }
         return warrantyForm;
+    }
+
+    public void markAsCompleted(int requirementId) {
+        String sql = "UPDATE WarrantyRequirement SET Status = 'Completed' WHERE RequirementId = ?";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, requirementId);
+            p.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateStatus(WarrantyForm wf) {

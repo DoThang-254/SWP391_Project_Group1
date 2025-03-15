@@ -22,22 +22,38 @@ public class WarrantyRequirementDAO extends DBContext {
         System.out.println(check);
     }
 
+//    public boolean hasPendingRequest(String productId) {
+//        String sql = "SELECT COUNT(*) FROM WarrantyRequirement WHERE ProductId = ? AND (Status = 'Pending' or Status = 'Uncheck' or Status = 'In Repair')";
+//
+//        try {
+//            p = connection.prepareStatement(sql);
+//
+//            p.setString(1, productId);
+//            rs = p.executeQuery();
+//
+//            if (rs.next()) {
+//                return rs.getInt(1) > 0;
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
     public boolean hasPendingRequest(String productId) {
-        String sql = "SELECT COUNT(*) FROM WarrantyRequirement WHERE ProductId = ? AND (Status = 'Pending' or Status = 'Uncheck')";
+        String sql = "SELECT COUNT(*) FROM WarrantyRequirement WHERE ProductId = ? AND Status <> 'Completed'";
 
         try {
             p = connection.prepareStatement(sql);
-
             p.setString(1, productId);
             rs = p.executeQuery();
 
             if (rs.next()) {
-                return rs.getInt(1) > 0;
+                return rs.getInt(1) > 0; // Nếu có bất kỳ yêu cầu nào chưa hoàn thành thì trả về true
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return false; // Nếu không có yêu cầu nào chưa hoàn thành thì trả về false
     }
 
     public boolean hasUnPayRequest(String productId) {

@@ -23,6 +23,9 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
@@ -175,7 +178,7 @@ public class WarrantyRequestController extends HttpServlet {
         // Kiểm tra trạng thái yêu cầu bảo hành
         boolean hasPendingRequest = wrd.hasPendingRequest(productId);
         boolean hasUnPay = wrd.hasUnPayRequest(productId);
-        if (!hasPendingRequest && !hasUnPay && wfd.hasActive(productId)) {
+        if (!hasPendingRequest && !hasUnPay) { //&& wfd.hasActive(productId)
             WarrantyRequirement requestWarranty = new WarrantyRequirement();
             requestWarranty.setProduct(product);
             requestWarranty.setCustomer(customer);
@@ -183,7 +186,28 @@ public class WarrantyRequestController extends HttpServlet {
             requestWarranty.setDescription(description);
             requestWarranty.setRegisterDate(new Date());
             requestWarranty.setIsPay(isPay);
-            String fileName = filePart.getSubmittedFileName(); // Lấy tên file gốc
+
+//            String fileName = filePart.getSubmittedFileName(); // Lấy tên file gốc
+            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            List<String> allowedExtensions = Arrays.asList("png", "jpg", "jpeg");
+            if (!fileName.isEmpty()) {
+                if (filePart.getSize() > 3 * 1024 * 1024) {
+                    request.setAttribute("errorMessage", "Ảnh phải nhỏ hơn 3MB!");
+                    request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
+                    return;
+                }
+
+                String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+                if (!allowedExtensions.contains(fileExtension)) {
+                    request.setAttribute("errorMessage", "Chỉ được chọn file có đuôi png, jpg, jpeg!");
+                    request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
+                    return;
+                }
+            } else {
+                request.setAttribute("errorMessage", "Ảnh không được để trống");
+                request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
+                return ;
+            }
 
             // Đường dẫn thư mục lưu ảnh (thay đổi tùy theo server của bạn)
             String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
@@ -201,6 +225,17 @@ public class WarrantyRequestController extends HttpServlet {
                     output.write(buffer, 0, bytesRead);
                 }
             }
+
+            if (!fileName.equals("default-avatar.png")) {
+                try (InputStream input = filePart.getInputStream(); FileOutputStream output = new FileOutputStream(filePath)) {
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = input.read(buffer)) != -1) {
+                        output.write(buffer, 0, bytesRead);
+                    }
+                }
+            }
+
             String imagePath = "uploads/" + fileName;
             request.setAttribute("imagePath", imagePath);
             requestWarranty.setImg(imagePath); // Lưu đường dẫn ảnh vào DB (nếu có cột này)
@@ -209,8 +244,9 @@ public class WarrantyRequestController extends HttpServlet {
 
             request.setAttribute("successMessage", "Yêu cầu bảo hành đã được gửi thành công!");
             request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
+            return;
         }
-        
+
         request.setAttribute("errorMessage", "Bạn đã gửi yêu cầu bảo hành cho sản phẩm này.");
         request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
     }

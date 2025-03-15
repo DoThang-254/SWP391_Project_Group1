@@ -86,7 +86,7 @@ CREATE TABLE WarrantyRequirement (
     ImageUrl VARCHAR(500), -- URL ảnh
     RegisterDate DATE DEFAULT GETDATE() NOT NULL,
     IsPay VARCHAR(3), -- 'Yes' nếu có phí, 'No' nếu miễn phí
-    FormId INT UNIQUE NULL, -- Mỗi Requirement chỉ có 1 Form duy nhất
+    FormId INT NULL, -- Mỗi Requirement chỉ có 1 Form duy nhất
     FOREIGN KEY (ProductId) REFERENCES Product(ProductId),
     FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
     FOREIGN KEY (StaffId) REFERENCES Staff(StaffId),
@@ -258,16 +258,6 @@ VALUES
 ('P001', '2023-06-20', '2024-06-20', 'Active', 0),
 ('P001', '2022-07-25', '2023-07-25', 'Canceled', 0),
 ('P001', '2024-08-30', '2025-08-30', 'Active', 1),
-('P001', '2023-09-10', '2024-09-10', 'Active', 1),
-    ('P002', GETDATE(), DATEADD(YEAR, 1, GETDATE()), 'active', 'yes'),
-    ('P003', GETDATE(), DATEADD(YEAR, 1, GETDATE()), 'active', 'yes'),
-    ('P004', GETDATE(), DATEADD(YEAR, 1, GETDATE()), 'active', 'yes'),
-    ('P005', GETDATE(), DATEADD(YEAR, 1, GETDATE()), 'active', 'yes'),
-    ('P006', GETDATE(), DATEADD(YEAR, 1, GETDATE()), 'active', 'yes'),
-    ('P007', GETDATE(), DATEADD(YEAR, 1, GETDATE()), 'active', 'yes'),
-    ('P008', GETDATE(), DATEADD(YEAR, 1, GETDATE()), 'active', 'yes'),
-    ('P009', GETDATE(), DATEADD(YEAR, 1, GETDATE()), 'active', 'yes'),
-    ('P010', GETDATE(), DATEADD(YEAR, 1, GETDATE()), 'active', 'yes'),
-    ('P011', GETDATE(), DATEADD(YEAR, 1, GETDATE()), 'active', 'yes'),
-    ('P012', GETDATE(), DATEADD(YEAR, 1, GETDATE()), 'active', 'yes');
+('P001', '2023-09-10', '2024-09-10', 'Active', 1);
+
 

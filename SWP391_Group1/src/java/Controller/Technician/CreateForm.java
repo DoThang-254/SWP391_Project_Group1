@@ -22,6 +22,8 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
@@ -116,8 +118,6 @@ public class CreateForm extends HttpServlet {
         int formId = Integer.parseInt(request.getParameter("formId"));
         String endDate = request.getParameter("endDate");
         String faultType = request.getParameter("faultType");
-        Part filePart = request.getPart("image"); // Lấy file từ input name="image"
-        String existingImage = request.getParameter("existingImage");
 
         WarrantyForm wf = new WarrantyForm();
         wf.setFormId(formId);
@@ -131,9 +131,33 @@ public class CreateForm extends HttpServlet {
             }
         }
         wf.setFaultType(faultType);
+
+        Part filePart = request.getPart("image"); // Lấy file từ input name="image"
+        String existingImage = request.getParameter("existingImage");
         String imagePath = existingImage; // Mặc định giữ ảnh cũ
+        String msg = null;
+// Danh sách định dạng ảnh hợp lệ
+        List<String> allowedExtensions = Arrays.asList("png", "jpg", "jpeg");
+
         if (filePart != null && filePart.getSize() > 0) { // Nếu có ảnh mới, cập nhật ảnh
             String fileName = filePart.getSubmittedFileName();
+            String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+
+            // Kiểm tra kích thước ảnh (<= 3MB)
+            if (filePart.getSize() > 3 * 1024 * 1024) {
+                msg = "img <= 3 mb";
+                response.sendRedirect("updateform?formId=" + formId + "&requireId=" + requireId + "&staffId=" + staffId + "&msg=" + msg);
+                return;
+            }
+
+            // Kiểm tra đuôi ảnh có hợp lệ không
+            if (!allowedExtensions.contains(fileExtension)) {
+                msg = "img is .png, jpg, jpeg!";
+                response.sendRedirect("updateform?formId=" + formId + "&requireId=" + requireId + "&staffId=" + staffId + "&msg=" + msg);
+                return;
+            }
+
+            // Đường dẫn lưu ảnh
             String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) {
@@ -150,6 +174,11 @@ public class CreateForm extends HttpServlet {
                 }
             }
             imagePath = "uploads/" + fileName; // Cập nhật đường dẫn mới
+        } else if (existingImage == null || existingImage.isEmpty()) {
+            // Trường hợp không chọn ảnh và ảnh cũ không tồn tại
+            msg = "img is not empty";
+            response.sendRedirect("updateform?formId=" + formId + "&requireId=" + requireId + "&staffId=" + staffId + "&msg=" + msg);
+            return;
         }
 
         wf.setImgUrl(imagePath);
@@ -171,6 +200,13 @@ public class CreateForm extends HttpServlet {
                 } else {
                     System.out.println("Yêu cầu này đã được xử lý!");
                 }
+            } else {
+                if (!wpd.isWarrantyProcessExists(requireId)) {
+                    wpd.insertWarrantyProcess(requireId, staffId);
+                    wrd.UpdateStatusRequest("Checked", requireId);
+                } else {
+                    System.out.println("Yêu cầu này đã được xử lý!");
+                }
             }
 
             // Nếu hết hạn mà `isPay` đã là "yes", giữ nguyên (không cần update lại)
@@ -178,6 +214,13 @@ public class CreateForm extends HttpServlet {
             if (isWarrantyValid != null) {
                 wfd.updateIsPay(formId, "no"); // Còn hạn + lỗi NSX → Miễn phí
                 if (!wpd.isWarrantyProcessExists(requireId)) { // Nếu chưa tồn tại, mới insert
+                    wpd.insertWarrantyProcess(requireId, staffId);
+                    wrd.UpdateStatusRequest("Checked", requireId);
+                } else {
+                    System.out.println("Yêu cầu này đã được xử lý!");
+                }
+            } else {
+                if (!wpd.isWarrantyProcessExists(requireId)) {
                     wpd.insertWarrantyProcess(requireId, staffId);
                     wrd.UpdateStatusRequest("Checked", requireId);
                 } else {

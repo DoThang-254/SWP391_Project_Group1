@@ -24,15 +24,6 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
     private PreparedStatement p;
     private ResultSet rs;
 
-    public static void main(String[] args) {
-        CustomerDao c = new CustomerDao();
-        Product newProduct = new Product(null, null, 0, null, 1);
-        for (WarrantyForm wf : c.ProductDetail(1, 1, null, 5)) {
-            System.out.println(wf.getFormId());
-        }
-
-    }
-
     public Customer GetCustomer(int CustomerId) {
         String sql = "select * from Customer where CustomerId = ?";
 
@@ -69,7 +60,7 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
 
             int index = 2;
             if (search != null && !search.trim().isEmpty()) {
-                String searchPattern = "%" + search.replaceAll("\\s+", "") + "%";
+                String searchPattern = "%" + search.replaceAll("\\s+", "").trim() + "%";
                 p.setString(index++, searchPattern);
                 p.setString(index++, searchPattern);
             }
@@ -88,6 +79,19 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         return 0;  // Trả về 0 nếu có lỗi
     }
 
+     public static void main(String[] args) {
+        CustomerDao c = new CustomerDao();
+        Product n = new Product();
+         for (Product pr : c.SearchingProductByProductId(1, 1, "l      aptop",n , null, null, null, 5)) {
+             System.out.println(pr.getProductId());
+         }
+         String search = "   l     ap   ";
+         System.out.println("1: " + search);
+         String test = search.trim().replaceAll("\\s+", "");
+         System.out.println(test);
+
+    }
+    
     public List<Product> SearchingProductByProductId(int index, int CustomerId, String search, Product product, String sort, String order, String priceRange, int amount) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId WHERE c.CustomerId = ? ";
@@ -121,7 +125,7 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
 
             int paramIndex = 2;
             if (search != null && !search.trim().isEmpty()) {
-                String searchPattern = "%" + search.replaceAll("\\s+", " ") + "%";
+                String searchPattern = "%" + search.replaceAll("\\s+", "").trim() + "%";
                 p.setString(paramIndex++, searchPattern);
                 p.setString(paramIndex++, searchPattern);
             }
