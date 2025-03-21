@@ -139,7 +139,7 @@
                                                     </a>
                                                 </th>
 
-                                                <th>Product Id
+                                                <th>Product 
                                                     <a href="searchinformation?sort=productname&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
                                                     <a href="searchinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
@@ -184,10 +184,12 @@
 
                                             <tr>
                                                 <td>${r.requirementId}</td>
-                                                <td>${r.product.productId}</td>
+                                                <td><a href="viewproduct?productId=${r.product.productId}">View product information</a></td>
                                                 <td>${r.registerDate}</td>
                                                 <td>
-                                                    ${r.staff.staffId}
+                                                    <a href="viewstaff?staffId=${r.staff.staffId}" title="Update Form">
+                                                                View information
+                                                            </a>
                                                 </td>
                                                 <td>
                                                     ${r.status}

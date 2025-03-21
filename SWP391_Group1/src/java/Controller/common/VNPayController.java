@@ -81,6 +81,8 @@ public class VNPayController extends HttpServlet {
         String orderId = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String customerIdRaw = request.getParameter("customerId");
         String productId = request.getParameter("productId");
+        int requirementId = Integer.parseInt(request.getParameter("requirementId"));
+
         if (customerIdRaw == null) {
             response.sendRedirect("home");
             return;
@@ -97,7 +99,7 @@ public class VNPayController extends HttpServlet {
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_TxnRef", orderId);
-        vnp_Params.put("vnp_OrderInfo", "Invoice:" + invoiceId + "-Customer:" + customerId + "-Form:" + formId);
+        vnp_Params.put("vnp_OrderInfo", "Invoice:" + invoiceId + "-Customer:" + customerId + "-Form:" + formId + "-Req:" + requirementId);
         vnp_Params.put("vnp_OrderType", "topup");
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_ReturnUrl", RETURN_URL);

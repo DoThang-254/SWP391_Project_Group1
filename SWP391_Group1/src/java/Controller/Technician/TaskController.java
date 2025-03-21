@@ -96,8 +96,8 @@ public class TaskController extends HttpServlet {
         if ((status.equals("Completed") && checkIsPay)
                 || (status.equals("Completed") && !checkIsPay && checkFaultType)) {
             WarrantyForm updateForm = wfd.getWarrantyFormByRequirementId(productId, requirementId);
-            wfd.updateStatus(updateForm);
-            wfd.markAsCompleted(requirementId);
+//            wfd.updateStatus(updateForm);
+//            wfd.markAsCompleted(requirementId);
         } else if (status.equals("Completed") && !checkIsPay && !checkFaultType) {
             WarrantyForm updateForm = wfd.getWarrantyFormByRequirementId(productId, requirementId);
             wfd.updateStatus(updateForm);

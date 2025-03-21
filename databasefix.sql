@@ -231,7 +231,8 @@ INSERT INTO Product (ProductId, ProductName, Brand, Price, CustomerId) VALUES
 ('P009', 'Laptop Razer Blade 15', 'Razer', 50000000, 1),
 ('P010', 'Laptop Microsoft Surface Laptop 5', 'Microsoft', 33000000, 1),
 ('P011', 'Laptop LG Gram 17', 'LG', 29000000, 1),
-('P012', 'Laptop Huawei MateBook X Pro', 'Huawei', 31000000, 1);
+('P012', 'Laptop Huawei MateBook X Pro', 'Huawei', 31000000, 1),
+('P013', 'Laptop Huawei MateBook X Pro', 'Huawei', 31000000, 2);
 INSERT INTO WarrantyRequirement (ProductId, CustomerId, Status, Description, RegisterDate)
 VALUES ('P001', 1, 'Pending', 'Khách hàng yêu cầu bảo hành do lỗi phần cứng', GETDATE());
 INSERT INTO Blog (Title, Description, Content, ImageUrl, StaffId) VALUES

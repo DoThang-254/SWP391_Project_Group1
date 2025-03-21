@@ -80,7 +80,8 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>Status</th>
-                                                <th>View Invoice</th>
+                                                <th>View Product</th>
+                                                <th>Invoice</th>
 
                                                 <th>View Warranty Form</th>
                                                 <th>Update End date Warranty Form</th>
@@ -92,6 +93,7 @@
 
                                                 <tr>
                                                     <td>${pr.requirement.requirementId}</td>
+
                                                     <td>
                                                         <script>
                                                             function confirmUpdate(form) {
@@ -104,7 +106,7 @@
                                                         <form action="task" method="post">
                                                             <input type="hidden" name="processingId" value="${pr.processingId}">
                                                             <input type="hidden" name="requirementId" value="${pr.requirement.requirementId}">
-                                                            <input type="text" name="productId" value="${pr.requirement.product.productId}">
+                                                            <input type="hidden" name="productId" value="${pr.requirement.product.productId}">
 
                                                             <select name="status" class="form-control" onchange="confirmUpdate(this.form)">
                                                                 <option value="Under Inspection" ${pr.status == 'Under Inspection' ? 'selected' : ''}>Under Inspection</option>
@@ -114,6 +116,8 @@
                                                             </select>
                                                         </form>
                                                     </td>
+
+                                                    <td><a href="viewproduct?productId=${pr.requirement.product.productId}">View</a></td>
 
 
                                                     <td>

@@ -154,6 +154,10 @@
 
                                                 </th> 
 
+                                                <th>Staff Information 
+
+                                                </th> 
+
                                                 <th>Status
 
                                                 </th>
@@ -202,6 +206,18 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${empty r.staff.staffId}">
+                                                            No information
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <a href="viewstaff?staffId=${r.staff.staffId}" title="Update Form">
+                                                                View information
+                                                            </a></c:otherwise>
+                                                    </c:choose>
+                                                </td>
+
 
                                                 <td>
                                                     <c:if test="${not empty r.status}">
@@ -216,7 +232,7 @@
                                                 <td><img src="${r.img}" width="200" height="200" alt="Warranty Image"> 
                                                 </td>
                                                 <td> 
-                                                     <a href="viewnewest?productid=${r.product.productId}" title="Update Form">
+                                                    <a href="viewnewest?productid=${r.product.productId}" title="Update Form">
                                                         View Form
                                                     </a>
                                                 </td>

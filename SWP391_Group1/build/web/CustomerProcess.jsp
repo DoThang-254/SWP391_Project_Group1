@@ -100,11 +100,13 @@
                                                         ${pr.status}
                                                     </td>
                                                     <td>
-                                                        ${pr.staff.staffId}
+                                                        <a href="viewstaff?staffId=${pr.staff.staffId}" title="Update Form">
+                                                            ${pr.staff.staffId}
+                                                        </a>
                                                     </td>
-                                                    <td>
-                                                        ${pr.requirement.product.productId}
-                                                    </td>
+                                                    
+                                                    <td><a href="viewproduct?productId=${pr.requirement.product.productId}">View product information</a></td>
+
                                                     <td>
                                                         ${pr.note != null ? pr.note : 'N/A'}
                                                     </td>

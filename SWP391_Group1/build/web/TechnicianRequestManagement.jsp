@@ -143,16 +143,11 @@
                                                     <a href="searchinformation?sort=productname&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
                                                     <a href="searchinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
-                                                <th>Customer
 
-                                                </th> 
                                                 <th>Register Date
 
                                                 </th> 
 
-                                                <th>Staff
-
-                                                </th> 
 
                                                 <th>Status
 
@@ -189,10 +184,9 @@
                                         <c:forEach var="r" items="${requestScope.list}">
                                             <tr>
                                                 <td>${r.requirementId}</td>
-                                                <td>${r.product.productId}</td>
-                                                <td>${r.customer.firstName} ${r.customer.lastName}</td>
+                                                <td><a href="viewproduct?productId=${r.product.productId}">View product information</a></td>
+
                                                 <td>${r.registerDate}</td>
-                                                <td>${r.staff.staffId}</td>
 
                                                 <!-- Dữ liệu từ listB -->
                                                 <td>

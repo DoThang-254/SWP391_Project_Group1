@@ -136,7 +136,7 @@ public class CreateForm extends HttpServlet {
         String existingImage = request.getParameter("existingImage");
         String imagePath = existingImage; // Mặc định giữ ảnh cũ
         String msg = null;
-// Danh sách định dạng ảnh hợp lệ
+        // Danh sách định dạng ảnh hợp lệ
         List<String> allowedExtensions = Arrays.asList("png", "jpg", "jpeg");
 
         if (filePart != null && filePart.getSize() > 0) { // Nếu có ảnh mới, cập nhật ảnh
@@ -163,17 +163,14 @@ public class CreateForm extends HttpServlet {
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();
             }
+            String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
 
             // Lưu file vào server
-            String filePath = uploadPath + File.separator + fileName;
-            try (InputStream input = filePart.getInputStream(); FileOutputStream output = new FileOutputStream(filePath)) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = input.read(buffer)) != -1) {
-                    output.write(buffer, 0, bytesRead);
-                }
-            }
-            imagePath = "uploads/" + fileName; // Cập nhật đường dẫn mới
+            String filePath = uploadPath + File.separator + uniqueFileName;
+
+            filePart.write(filePath);
+
+            imagePath = "uploads/" + uniqueFileName;
         } else if (existingImage == null || existingImage.isEmpty()) {
             // Trường hợp không chọn ảnh và ảnh cũ không tồn tại
             msg = "img is not empty";

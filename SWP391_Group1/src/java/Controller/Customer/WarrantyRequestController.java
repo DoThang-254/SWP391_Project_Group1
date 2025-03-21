@@ -157,17 +157,15 @@ public class WarrantyRequestController extends HttpServlet {
             return;
         }
 
-        // Đọc các tham số từ request
         String productId = request.getParameter("productId");
         String status = request.getParameter("status");
         String description = request.getParameter("description");
         String isPay = request.getParameter("ispay");
 
         // Kiểm tra file upload
-        Part filePart = request.getPart("image"); // Lấy file từ input name="image"
+        Part filePart = request.getPart("image"); 
 
-        // Đường dẫn ảnh để hiển thị lại trên JSP
-        // Tiếp tục xử lý lưu dữ liệu bảo hành
+       
         Product product = pd.GetProductById(productId);
         if (product == null) {
             request.setAttribute("errorMessage", "Sản phẩm không tồn tại.");
@@ -175,7 +173,6 @@ public class WarrantyRequestController extends HttpServlet {
             return;
         }
 
-        // Kiểm tra trạng thái yêu cầu bảo hành
         boolean hasPendingRequest = wrd.hasPendingRequest(productId);
         boolean hasUnPay = wrd.hasUnPayRequest(productId);
         if (!hasPendingRequest && !hasUnPay) { //&& wfd.hasActive(productId)
@@ -187,7 +184,6 @@ public class WarrantyRequestController extends HttpServlet {
             requestWarranty.setRegisterDate(new Date());
             requestWarranty.setIsPay(isPay);
 
-//            String fileName = filePart.getSubmittedFileName(); // Lấy tên file gốc
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             List<String> allowedExtensions = Arrays.asList("png", "jpg", "jpeg");
             if (!fileName.isEmpty()) {
@@ -206,37 +202,27 @@ public class WarrantyRequestController extends HttpServlet {
             } else {
                 request.setAttribute("errorMessage", "Ảnh không được để trống");
                 request.getRequestDispatcher("WarrantyRequirementForm.jsp").forward(request, response);
-                return ;
+                return;
             }
+            String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
 
             // Đường dẫn thư mục lưu ảnh (thay đổi tùy theo server của bạn)
-            String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
+            String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads"; // tạo Đường dẫn lưu file
+            System.out.println("Thư mục upload: " + uploadPath);
+
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) {
                 uploadDir.mkdir(); // Tạo thư mục nếu chưa có
             }
 
             // Đường dẫn lưu file
-            String filePath = uploadPath + File.separator + fileName;
-            try (InputStream input = filePart.getInputStream(); FileOutputStream output = new FileOutputStream(filePath)) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = input.read(buffer)) != -1) {
-                    output.write(buffer, 0, bytesRead);
-                }
-            }
 
-            if (!fileName.equals("default-avatar.png")) {
-                try (InputStream input = filePart.getInputStream(); FileOutputStream output = new FileOutputStream(filePath)) {
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = input.read(buffer)) != -1) {
-                        output.write(buffer, 0, bytesRead);
-                    }
-                }
-            }
+            String filePath = uploadPath + File.separator + uniqueFileName;
 
-            String imagePath = "uploads/" + fileName;
+            filePart.write(filePath); // Lưu file
+            
+            String imagePath = "uploads/" + uniqueFileName;
+            
             request.setAttribute("imagePath", imagePath);
             requestWarranty.setImg(imagePath); // Lưu đường dẫn ảnh vào DB (nếu có cột này)
 

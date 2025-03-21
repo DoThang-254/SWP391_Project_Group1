@@ -137,6 +137,11 @@
                                                         <i class="fa fa-arrow-down"></i>
                                                     </a>
                                                 </th>
+
+                                                <th>
+                                                    Staff Full name
+                                                </th>
+                                               
                                                 <th>
                                                     Assign Task
                                                 </th>
@@ -153,6 +158,8 @@
 
                                             <tr>
                                                 <td>${s.staffId}</td>
+                                                <td>${s.firstName} ${s.lastName}</td>
+                                                
                                                 <td> <form action="assigntechnician" method="post">
                                                         <input type="hidden" name="requirementId" value="${requestScope.requirementId}">
                                                         <input type="hidden" name="staffId" value="${s.staffId}">

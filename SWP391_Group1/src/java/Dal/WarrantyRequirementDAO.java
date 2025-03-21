@@ -95,7 +95,7 @@ public class WarrantyRequirementDAO extends DBContext {
 
     public List<WarrantyRequirement> GetAllRequest() {
         List<WarrantyRequirement> list = new ArrayList<>();
-        String sql = "SELECT * FROM WarrantyRequirement ";
+        String sql = "SELECT * FROM WarrantyRequirement wr join Customer c on wr.CustomerId = c.CustomerId";
 
         try {
             p = connection.prepareStatement(sql);
@@ -110,9 +110,13 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setProduct(p);
                 Staff s = new Staff();
                 s.setStaffId(rs.getString(4));
+//                s.setFirstName(rs.getString(14));
+//                s.setLastName(rs.getString(15));
                 wr.setStaff(s);
                 Customer c = new Customer();
                 c.setCustomerId(rs.getInt(3));
+                c.setFirstName(rs.getString(14));
+                c.setLastName(rs.getString(15));
                 wr.setCustomer(c);
                 wr.setStatus(rs.getString(5));
                 wr.setDescription(rs.getString(6));
@@ -125,6 +129,33 @@ public class WarrantyRequirementDAO extends DBContext {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public Staff ViewStaff(String staffId) {
+        String sql = "select * from Staff where StaffId = ?";
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1, staffId);
+            rs = p.executeQuery();
+            
+            while (rs.next()) {
+
+                Staff s = new Staff();
+                s.setStaffId(rs.getString(1));
+                s.setFirstName(rs.getString(4));
+                s.setLastName(rs.getString(5));
+                s.setEmail(rs.getString(6));
+                s.setPhone(rs.getString(7));
+                s.setGender(rs.getString(8));
+                s.setBirthDate(rs.getDate(9));
+                return s;
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<WarrantyRequirement> GetAllRequestByStaffId(String staffId) {
@@ -381,7 +412,7 @@ public class WarrantyRequirementDAO extends DBContext {
 
     public List<WarrantyRequirement> historyRequestByCustomerId(int index, int customerId, int amount) {
         List<WarrantyRequirement> list = new ArrayList<>();
-        String sql = " select wr.* , wf.* , c.Email from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId \n"
+        String sql = " select wr.* , c.Email from WarrantyRequirement wr \n"
                 + "                 join Customer c on c.CustomerId = wr.CustomerId\n"
                 + "                 where wr.CustomerId = ?\n"
                 + "                 order by wr.requirementId desc , wr.registerDate desc\n"
@@ -409,16 +440,9 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setDescription(rs.getString(6));
                 Customer cust = new Customer();
                 cust.setCustomerId(rs.getInt(3));
-                cust.setEmail(rs.getString(20));
+                cust.setEmail(rs.getString(11));
                 wr.setCustomer(cust);
                 wr.setRegisterDate(rs.getDate(8));
-                WarrantyForm form = new WarrantyForm();
-                form.setFormId(rs.getInt(10));
-                form.setVerified(rs.getString(16));
-                form.setFaultType(rs.getString(17));
-                form.setTechnicianVerify(rs.getString(18));
-                form.setStatus(rs.getString(15));
-                wr.setForm(form);
                 wr.setIsPay(rs.getString(9));
 
                 list.add(wr);

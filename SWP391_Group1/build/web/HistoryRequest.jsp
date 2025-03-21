@@ -139,7 +139,7 @@
                                                     </a>
                                                 </th>
 
-                                                <th>Product Id
+                                                <th>Product 
                                                     <a href="searchinformation?sort=productname&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
                                                     <a href="searchinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
@@ -161,13 +161,7 @@
                                                 <th> is pay
 
                                                 </th>
-                                                <th>fault type</th>
-
-
-                                                <th>
-                                                    Xác nhận từ nhân viên
-                                                </th> 
-
+                                                
                                               
                                             </tr>
                                         </thead>
@@ -182,10 +176,13 @@
 
                                             <tr>
                                                 <td>${r.requirementId}</td>
-                                                <td>${r.product.productId}</td>
+                                                <td><a href="viewproduct?productId=${r.product.productId}">View product information</a></td>
                                                 <td>${r.registerDate}</td>
                                                 <td>
-                                                    ${r.staff.staffId}
+                                                    
+                                                    <a href="viewstaff?staffId=${r.staff.staffId}" title="Update Form">
+                                                                View information
+                                                            </a>
                                                 </td>
                                                 <td>
                                                     ${r.status}
@@ -197,23 +194,7 @@
 
                                                 <td>${r.isPay}</td>
 
-                                                <c:if test="${r.form.faultType == null}">
-                                                    <td>N/A</td>
-
-                                                </c:if>
-                                                <c:if test="${r.form.faultType != null}">
-                                                    <td>${r.form.faultType}</td>
-
-                                                </c:if>
-
-
-                                                <td class="${r.form.technicianVerify eq 'yes' ? 'verified-yes' : (r.form.technicianVerify eq 'no' ? 'verified-no' : 'verified-empty')}">
-                                                    <c:choose>
-
-                                                        <c:when test="${r.form.technicianVerify eq 'yes'}">Đã nhận</c:when>
-
-                                                    </c:choose>
-                                                </td>
+                                             
 
                                             </tr>
 
