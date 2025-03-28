@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html>
@@ -80,20 +81,23 @@
                                             <label for="filterBrand">Brand</label>
                                             <select name="filterBrand" id="filterBrand" class="form-control">
                                                 <option value="" ${empty requestScope.brand ? 'selected' : ''}>-- All Brands --</option>
-                                                <option value="BrandY" ${requestScope.brand == 'BrandY' ? 'selected' : ''}>BrandY</option>
-                                                <option value="BrandX" ${requestScope.brand == 'BrandX' ? 'selected' : ''}>BrandX</option>
+                                                <c:forEach var="branding" items="${requestScope.brands}">
+                                                    <option value="${branding}" ${requestScope.brand == branding ? 'selected' : ''}>${branding}</option>
+                                                </c:forEach>
                                             </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="filterBrand">amount of product</label>
-                                            <select name="amount" id="filterBrand" class="form-control">
-                                                <option value="">-- All --</option>
 
-                                                <option value="5" > 5 </option>
-                                                <option value="6" >6</option>
-                                                <option value="7">7</option>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label for="filterBrand">Amount of product</label>
+                                            <select name="amount" id="filterBrand" class="form-control">
+                                                <option value="" ${empty requestScope.amount ? 'selected' : ''}>-- All --</option>
+                                                <option value="5" ${requestScope.amount == '5' ? 'selected' : ''}>5</option>
+                                                <option value="6" ${requestScope.amount == '6' ? 'selected' : ''}>6</option>
+                                                <option value="7" ${requestScope.amount == '7' ? 'selected' : ''}>7</option>
                                             </select>
                                         </div>
+
 
 
 
@@ -103,11 +107,11 @@
                                             <label for="filterPriceRange">Price Range</label>
                                             <select name="filterPriceRange" id="filterPriceRange" class="form-control">
                                                 <option value="" ${empty requestScope.priceRange ? 'selected' : ''}>Tất cả giá</option>
-                                                <option value="0-5000" ${requestScope.priceRange == '0-5000' ? 'selected' : ''}>Dưới 5.000</option>
-                                                <option value="5000-10000" ${requestScope.priceRange == '5000-10000' ? 'selected' : ''}>5.000 - 10.000</option>
-                                                <option value="10000-15000" ${requestScope.priceRange == '10000-15000' ? 'selected' : ''}>10.000 - 15.000</option>
-                                                <option value="15000-20000" ${requestScope.priceRange == '15000-20000' ? 'selected' : ''}>15.000 - 20.000</option>
-                                                <option value="20000+" ${requestScope.priceRange == '20000+' ? 'selected' : ''}>Trên 20.000</option>
+                                                <option value="0-5000000" ${requestScope.priceRange == '0-5000000' ? 'selected' : ''}>Dưới 5.000.000</option>
+                                                <option value="5000000-10000000" ${requestScope.priceRange == '5000000-10000000' ? 'selected' : ''}>5.000.000 - 10.000.000</option>
+                                                <option value="10000000-15000000" ${requestScope.priceRange == '10000000-15000000' ? 'selected' : ''}>10.000.000 - 15.000.000</option>
+                                                <option value="15000000-40000000" ${requestScope.priceRange == '15000000-40000000' ? 'selected' : ''}>15.000.000 - 40.000.000</option>
+                                                <option value="40000000+" ${fn:replace(requestScope.priceRange, '%2B', '+') == '40000000+' ? 'selected' : ''}>Trên 40.000.000</option>
                                             </select>
 
                                         </div>
@@ -131,26 +135,26 @@
                                         <thead>
                                             <tr>
                                                 <th>Product ID
-                                                    <a href="searchinformation?sort=productid&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}">
+                                                    <a href="searchinformation?sort=productid&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&amount=${requestScope.amount}">
                                                         <i class="fa fa-arrow-up"></i>
                                                     </a>
-                                                    <a href="searchinformation?sort=productid&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}">
+                                                    <a href="searchinformation?sort=productid&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&amount=${requestScope.amount}">
                                                         <i class="fa fa-arrow-down"></i>
                                                     </a>
                                                 </th>
 
                                                 <th>Product Name
-                                                    <a href="searchinformation?sort=productname&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
+                                                    <a href="searchinformation?sort=productname&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}&amount=${requestScope.amount}"><i class="fa fa-arrow-up"></i></a>
+                                                    <a href="searchinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}&amount=${requestScope.amount}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
 
                                                 <th>Price
-                                                    <a href="searchinformation?sort=Price&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=Price&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
+                                                    <a href="searchinformation?sort=Price&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}&amount=${requestScope.amount}"><i class="fa fa-arrow-up"></i></a>
+                                                    <a href="searchinformation?sort=Price&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}&amount=${requestScope.amount}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
                                                 <th>Brand
-                                                    <a href="searchinformation?sort=Brand&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
-                                                    <a href="searchinformation?sort=Brand&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
+                                                    <a href="searchinformation?sort=Brand&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}&amount=${requestScope.amount}"><i class="fa fa-arrow-up"></i></a>
+                                                    <a href="searchinformation?sort=Brand&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}&amount=${requestScope.amount}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
 
                                                 <th>Status
@@ -219,7 +223,7 @@
                                             <c:forEach begin="1" end="${requestScope.endpage}" var="i">
                                                 <li>
                                                     <a class="${tag == i ? 'active' : ''}"
-                                                       href="searchinformation?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}&amount=${requestScope.amount}">${i}</a>
+                                                       href="searchinformation?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}&amount=${requestScope.amount}&filterPriceRange=${requestScope.priceRange}">${i}</a>
                                                 </li>
                                             </c:forEach>
                                         </ul>

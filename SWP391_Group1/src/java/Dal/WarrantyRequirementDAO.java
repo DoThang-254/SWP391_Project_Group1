@@ -16,12 +16,6 @@ public class WarrantyRequirementDAO extends DBContext {
     private PreparedStatement p;
     private ResultSet rs;
 
-    public static void main(String[] args) {
-        WarrantyRequirementDAO d = new WarrantyRequirementDAO();
-        boolean check = d.hasPendingRequest("P001");
-        System.out.println(check);
-    }
-
 //    public boolean hasPendingRequest(String productId) {
 //        String sql = "SELECT COUNT(*) FROM WarrantyRequirement WHERE ProductId = ? AND (Status = 'Pending' or Status = 'Uncheck' or Status = 'In Repair')";
 //
@@ -93,15 +87,49 @@ public class WarrantyRequirementDAO extends DBContext {
         }
     }
 
-    public List<WarrantyRequirement> GetAllRequest() {
+    public int GetTotalRequest(String search) {
+        String sql = "SELECT count(*) FROM WarrantyRequirement wr join Customer c on wr.CustomerId = c.CustomerId";
+        if (search != null && !search.trim().isEmpty()) {
+            sql += " where c.FirstName like ? or c.LastName like ?";
+        }
+        try {
+            p = connection.prepareStatement(sql);
+            int index = 1;
+            if (search != null && !search.trim().isEmpty()) {
+                String searchPattern = "%" + search/*.replaceAll("\\s+", "")*/.trim() + "%";
+                p.setString(index++, searchPattern);
+                p.setString(index, searchPattern);
+            }
+            rs = p.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<WarrantyRequirement> GetAllRequest(int index, int amount, String search) {
         List<WarrantyRequirement> list = new ArrayList<>();
-        String sql = "SELECT * FROM WarrantyRequirement wr join Customer c on wr.CustomerId = c.CustomerId";
+        String sql = "SELECT * FROM WarrantyRequirement wr join Customer c on wr.CustomerId = c.CustomerId\n";
+        if (search != null && !search.trim().isEmpty()) {
+            sql += " where c.FirstName like ? or c.LastName like ?";
+        }
+        sql += " order by wr.RequirementId\n"
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
             p = connection.prepareStatement(sql);
-
+            int param = 1;
+            if (search != null && !search.trim().isEmpty()) {
+                String searchPattern = "%" + search/*.replaceAll("\\s+", "")*/.trim() + "%";
+                p.setString(param++, searchPattern);
+                p.setString(param++, searchPattern);
+            }
+            p.setInt(param++, (index - 1) * amount);
+            p.setInt(param, amount);
             rs = p.executeQuery();
-
             while (rs.next()) {
                 WarrantyRequirement wr = new WarrantyRequirement();
                 wr.setRequirementId(rs.getInt(1));
@@ -110,8 +138,6 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setProduct(p);
                 Staff s = new Staff();
                 s.setStaffId(rs.getString(4));
-//                s.setFirstName(rs.getString(14));
-//                s.setLastName(rs.getString(15));
                 wr.setStaff(s);
                 Customer c = new Customer();
                 c.setCustomerId(rs.getInt(3));
@@ -138,7 +164,7 @@ public class WarrantyRequirementDAO extends DBContext {
             p = connection.prepareStatement(sql);
             p.setString(1, staffId);
             rs = p.executeQuery();
-            
+
             while (rs.next()) {
 
                 Staff s = new Staff();
@@ -319,39 +345,68 @@ public class WarrantyRequirementDAO extends DBContext {
         }
     }
 
-    public int GetTotalWarrantyRequest(int customerId) {
-        String sql = " select count(*) from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId \n"
-                + " join Customer c on c.CustomerId = wr.CustomerId\n"
-                + "                  where wr.CustomerId = ?";
-
+    public int GetTotalWarrantyRequest(int customerId, String faultType, String search) {
+        String sql = " select count(*) from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId join Product p on p.ProductId = wr.ProductId\n"
+                + " join Customer c on c.CustomerId = wr.CustomerId join Invoice i on i.RequirementId = wr.RequirementId\n"
+                + " where wr.CustomerId = ?";
+        if (faultType != null && !faultType.trim().isEmpty()) {
+            sql += " and FaultType = ?";
+        }
+        if (search != null && !search.trim().isEmpty()) {
+            sql += " AND (p.ProductId LIKE ? or p.ProductName like ? )";
+        }
         try {
             p = connection.prepareStatement(sql);
             p.setInt(1, customerId);
+            int param = 2;
+            if (faultType != null && !faultType.trim().isEmpty()) {
+                p.setString(param++, faultType);
+            }
+            if (search != null && !search.trim().isEmpty()) {
+                String searchPattern = "%" + search/*.replaceAll("\\s+", "")*/.trim() + "%";
+                p.setString(param++, searchPattern);
+                p.setString(param, searchPattern);
+            }
             rs = p.executeQuery();
 
-            while (rs.next()) {
-
+            if (rs.next()) {
                 return rs.getInt(1);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
     }
 
-    public List<WarrantyRequirement> GetAllRequestByCustomerId(int index, int customerId, int amount) {
+    public List<WarrantyRequirement> GetAllRequestByCustomerId(int index, int customerId, int amount, String faultType, String search) {
         List<WarrantyRequirement> list = new ArrayList<>();
-        String sql = " select wr.* , wf.* , c.Email , i.* from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId \n"
+        String sql = " select wr.* , wf.* , c.Email , i.* , p.ProductName from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId join Product p on p.ProductId = wr.ProductId\n"
                 + "                 join Customer c on c.CustomerId = wr.CustomerId join Invoice i on i.RequirementId = wr.RequirementId\n"
-                + "                 where wr.CustomerId = ?\n"
-                + "                 order by wr.requirementId desc , wr.registerDate desc\n"
-                + "                 offset ? rows fetch next ? rows only";
+                + "                 where wr.CustomerId = ?\n";
+        if (faultType != null && !faultType.trim().isEmpty()) {
+            sql += " and FaultType = ?";
+        }
+        if (search != null && !search.trim().isEmpty()) {
+            sql += " AND (p.ProductId LIKE ? or p.ProductName like ? )";
+        }
+        sql += " order by wr.requirementId desc , wr.registerDate desc\n"
+                + " offset ? rows fetch next ? rows only";
 
         try {
             p = connection.prepareStatement(sql);
             p.setInt(1, customerId);
-            p.setInt(2, (index - 1) * amount);
-            p.setInt(3, amount);
+            int param = 2;
+            if (faultType != null && !faultType.trim().isEmpty()) {
+                p.setString(param++, faultType);
+            }
+            if (search != null && !search.trim().isEmpty()) {
+                String searchPattern = "%" + search/*.replaceAll("\\s+", "")*/.trim() + "%";
+                p.setString(param++, searchPattern);
+                p.setString(param++, searchPattern);
+            }
+            p.setInt(param++, (index - 1) * amount);
+            p.setInt(param, amount);
 
             rs = p.executeQuery();
 
@@ -360,6 +415,7 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setRequirementId(rs.getInt(1));
                 Product p = new Product();
                 p.setProductId(rs.getString(2));
+                p.setProductName(rs.getString(27));
                 wr.setProduct(p);
                 Staff s = new Staff();
                 s.setStaffId(rs.getString(4));
@@ -390,17 +446,38 @@ public class WarrantyRequirementDAO extends DBContext {
         return list;
     }
 
-    public int GetTotalHistoryWarrantyRequest(int customerId) {
-        String sql = " select count(*) from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId \n"
-                + " join Customer c on c.CustomerId = wr.CustomerId\n"
-                + "                  where wr.CustomerId = ?";
+    public static void main(String[] args) {
+        WarrantyRequirementDAO d = new WarrantyRequirementDAO();
 
+        System.out.println(d.GetTotalWarrantyRequest(1, "", "laptop razer"));
+    }
+
+    public int GetTotalHistoryWarrantyRequest(int customerId, String status, String search) {
+        String sql = "select count(*) from WarrantyRequirement wr join Product p on p.ProductId = wr.ProductId\n"
+                + "join Customer c on c.CustomerId = wr.CustomerId where wr.CustomerId = ?";
+        if (status != null && !status.trim().isEmpty()) {
+            sql += " and wr.[Status] = ?";
+        }
+
+        if (search != null && !search.trim().isEmpty()) {
+            sql += " AND (p.ProductId LIKE ? or p.ProductName like ? )";
+        }
         try {
             p = connection.prepareStatement(sql);
             p.setInt(1, customerId);
+            int index = 2;
+
+            if (status != null && !status.trim().isEmpty()) {
+                p.setString(index++, status);
+            }
+            if (search != null && !search.trim().isEmpty()) {
+                String searchPattern = "%" + search.trim() + "%";
+                p.setString(index++, searchPattern);
+                p.setString(index, searchPattern);
+            }
             rs = p.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
 
                 return rs.getInt(1);
             }
@@ -410,20 +487,35 @@ public class WarrantyRequirementDAO extends DBContext {
         return 0;
     }
 
-    public List<WarrantyRequirement> historyRequestByCustomerId(int index, int customerId, int amount) {
+    public List<WarrantyRequirement> historyRequestByCustomerId(int index, int customerId, int amount, String status, String search) {
         List<WarrantyRequirement> list = new ArrayList<>();
-        String sql = " select wr.* , c.Email from WarrantyRequirement wr \n"
+        String sql = " select wr.* , c.Email , p.ProductName from WarrantyRequirement wr join Product p on p.ProductId = wr.ProductId\n"
                 + "                 join Customer c on c.CustomerId = wr.CustomerId\n"
-                + "                 where wr.CustomerId = ?\n"
-                + "                 order by wr.requirementId desc , wr.registerDate desc\n"
-                + "                 offset ? rows fetch next ? rows only";
-        ;
+                + "                 where wr.CustomerId = ?\n";
+        if (status != null && !status.trim().isEmpty()) {
+            sql += " and wr.[Status] = ?";
+        }
+        if (search != null && !search.trim().isEmpty()) {
+            sql += " AND (p.ProductId LIKE ? or p.ProductName like ? )";
+        }
+        sql += " order by wr.requirementId desc , wr.registerDate desc\n"
+                + " offset ? rows fetch next ? rows only";
 
         try {
             p = connection.prepareStatement(sql);
             p.setInt(1, customerId);
-            p.setInt(2, (index - 1) * amount);
-            p.setInt(3, amount);
+            int x = 2;
+            if (status != null && !status.trim().isEmpty()) {
+                p.setString(x++, status);
+
+            }
+            if (search != null && !search.trim().isEmpty()) {
+                String searchPattern = "%" + search.trim() + "%";
+                p.setString(x++, searchPattern);
+                p.setString(x++, searchPattern);
+            }
+            p.setInt(x++, (index - 1) * amount);
+            p.setInt(x, amount);
 
             rs = p.executeQuery();
 
@@ -432,6 +524,7 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setRequirementId(rs.getInt(1));
                 Product p = new Product();
                 p.setProductId(rs.getString(2));
+                p.setProductName(rs.getString(12));
                 wr.setProduct(p);
                 Staff s = new Staff();
                 s.setStaffId(rs.getString(4));

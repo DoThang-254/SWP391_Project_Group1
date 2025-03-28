@@ -19,6 +19,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,6 +71,9 @@ public class TaskController extends HttpServlet {
         Staff s = (Staff) request.getSession().getAttribute("Staff");
         WarrantyProcessDao wpd = new WarrantyProcessDao();
         List<WarrantyProcessing> list = wpd.getAllWarrantyProcess(s.getStaffId());
+        String msg = request.getParameter("msg");
+        request.setAttribute("msg", msg);
+        
         request.setAttribute("list", list);
         request.getRequestDispatcher("Task.jsp").forward(request, response);
     }
@@ -84,12 +90,28 @@ public class TaskController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        WarrantyProcessDao wpd = new WarrantyProcessDao();
+        String msg = null;
         String status = request.getParameter("status");
         int processId = Integer.parseInt(request.getParameter("processingId"));
         int requirementId = Integer.parseInt(request.getParameter("requirementId"));
         String productId = request.getParameter("productId");
-        WarrantyProcessDao wpd = new WarrantyProcessDao();
-        wpd.updateStatusWarrantyProcess(processId, status);
+        String returnDate = request.getParameter("returndate");
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf.setLenient(false); // Đảm bảo kiểm tra ngày hợp lệ
+            Date selectedDate = sdf.parse(returnDate);
+            Date now = new Date(); // Ngày hiện tại
+
+            if (selectedDate.before(now)) {
+                msg = "invalid date";
+            } else {
+                wpd.updateStatusWarrantyProcess(processId, status, returnDate);
+            }
+        } catch (ParseException e) {
+            msg = "invalid date";
+        }
+
         //check xem ispay của requirement 1 trong process 1 có phải là yes ko nếu yes thì tạo hóa đơn
         boolean checkIsPay = wpd.checkIsPayinRequirement(requirementId, processId);
         boolean checkFaultType = wpd.checkFaultTypeInRequirement(productId, requirementId, processId);
@@ -103,8 +125,12 @@ public class TaskController extends HttpServlet {
             wfd.updateStatus(updateForm);
             wfd.markAsCompleted(requirementId);
         }
+        if (msg != null) {
+            response.sendRedirect("task?msg=" + msg);
 
+        }
         response.sendRedirect("task");
+
     }
 
     /**

@@ -34,6 +34,7 @@ CREATE TABLE Staff (
     Phone VARCHAR(255),
     Gender VARCHAR(50),
     BirthDate DATE,
+	Address VARCHAR(255) ,
     Status VARCHAR(50),
 	IsWork BIT DEFAULT 1, -- '0' busy , '1' available
     RoleId INT,
@@ -69,7 +70,7 @@ CREATE TABLE WarrantyForm (
     StartDate DATE NOT NULL,
     EndDate DATE NULL,
     Status VARCHAR(50) DEFAULT 'Active', 
-    Verified varchar(3) DEFAULT null, 
+    --Verified varchar(3) DEFAULT null, 
     FaultType VARCHAR(50) CHECK (FaultType IN ('Manufacturer', 'User')) NULL,
 	TechnicianVerify varchar(3) DEFAULT null, -- '1' nếu đã xác nhận, '0' nếu chưa 
     ImageUrl VARCHAR(500), -- URL ảnh
@@ -104,7 +105,7 @@ CREATE TABLE Invoice (
     FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId)
 );
 
-CREATE TABLE Component (
+/*CREATE TABLE Component (
     ComponentId INT IDENTITY(1,1) PRIMARY KEY,
     ComponentName VARCHAR(255) NOT NULL,
     Brand VARCHAR(255),
@@ -136,7 +137,7 @@ CREATE TABLE Schedule (
     EndTime TIME,
     Date DATE,
     FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
-);
+);*/
 
 CREATE TABLE WarrantyProcessing (
     ProcessingId INT IDENTITY(1,1) PRIMARY KEY,
@@ -145,7 +146,7 @@ CREATE TABLE WarrantyProcessing (
     Status VARCHAR(255) DEFAULT 'Approved' CHECK (Status IN ('Approved','In Repair', 'Completed', 'Start Repair')),
     Note VARCHAR(255),
     ReturnDate DATE,
-	IsAccept VARCHAR(255) Null,
+	--IsAccept VARCHAR(255) Null,
     FOREIGN KEY (RequirementId) REFERENCES WarrantyRequirement(RequirementId),
     FOREIGN KEY (StaffId) REFERENCES Staff(StaffId)
 );
@@ -162,6 +163,7 @@ CREATE TABLE TokenForgetPassword (
 	FOREIGN KEY (StaffId) REFERENCES Staff( StaffId)
 
 );
+/*
 CREATE TABLE Report (
     ReportId INT IDENTITY(1,1) PRIMARY KEY,
     Comment NVARCHAR(MAX),
@@ -169,7 +171,7 @@ CREATE TABLE Report (
     ProcessingId INT,
     FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
     FOREIGN KEY (ProcessingId ) REFERENCES WarrantyProcessing(ProcessingId)
-);
+);*/
 
 CREATE TABLE Blog (
     BlogId INT IDENTITY(1,1) PRIMARY KEY,
@@ -262,3 +264,20 @@ VALUES
 ('P001', '2023-09-10', '2024-09-10', 'Active', 1);
 
 
+
+
+
+
+
+INSERT INTO WarrantyRequirement (ProductId, CustomerId, StaffId, Status, Description, ImageUrl, RegisterDate, IsPay, FormId)
+VALUES
+('P001', 1, 'S001', 'Pending', N'Lỗi màn hình', 'https://example.com/image1.jpg', GETDATE(), 'No', null),
+('P002', 2, 'S002', 'Approved', N'Lỗi bàn phím', 'https://example.com/image2.jpg', GETDATE(), 'Yes', null),
+('P003', 3, 'S003', 'Rejected', N'Pin chai', 'https://example.com/image3.jpg', GETDATE(), 'No', NULL),
+('P004', 4, 'S004', 'Pending', N'Hỏng mainboard', 'https://example.com/image4.jpg', GETDATE(), 'Yes', null),
+('P005', 5, 'S005', 'Approved', N'Lỗi touchpad', 'https://example.com/image5.jpg', GETDATE(), 'No', null),
+('P006', 6, 'S006', 'Pending', N'Không nhận sạc', 'https://example.com/image6.jpg', GETDATE(), 'Yes', null),
+('P007', 7, 'S007', 'Rejected', N'Hỏng loa', 'https://example.com/image7.jpg', GETDATE(), 'No', null),
+('P008', 8, 'S008', 'Approved', N'Lỗi phần mềm', 'https://example.com/image8.jpg', GETDATE(), 'Yes', null),
+('P009', 9, 'S009', 'Pending', N'Máy bị treo', 'https://example.com/image9.jpg', GETDATE(), 'No', null),
+('P010', 10, 'S010', 'Rejected', N'Lỗi card đồ họa', 'https://example.com/image10.jpg', GETDATE(), 'Yes', NULL);

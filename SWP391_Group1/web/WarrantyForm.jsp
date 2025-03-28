@@ -189,7 +189,7 @@
 
 
                                     <br>
-                                    <a href="searchinformation">Back</a>
+                                    <a href="javascript:window.history.back();">Back</a>
                                 </div>
 
                             </div>

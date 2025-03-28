@@ -8,6 +8,8 @@ import Model.Product;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,7 +21,9 @@ public class ProductDao extends DBContext {
     private ResultSet rs;
     public static void main(String[] args) {
         ProductDao p = new ProductDao();
-        System.out.println(p.GetProductById("P001").getProductId());
+        for (String a : p.GetBrandById(1)) {
+            System.out.println(a);
+        }
     }
     public Product GetProductById(String productId) {
         String sql = "select * from Product where ProductId = ? ";
@@ -38,5 +42,22 @@ public class ProductDao extends DBContext {
             e.printStackTrace();
         }
         return null;
+    }
+    
+     public List<String> GetBrandById(int customerId) {
+        String sql = "select distinct Brand from Product where CustomerId = ? ";
+        List<String> brands = new ArrayList<>();
+        try {
+            p = connection.prepareStatement(sql);
+            p.setInt(1, customerId);
+            rs = p.executeQuery();
+
+            while(rs.next()) {
+                brands.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return brands;
     }
 }

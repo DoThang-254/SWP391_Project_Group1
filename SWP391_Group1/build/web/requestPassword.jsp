@@ -46,6 +46,10 @@
                                     </div>
                                 </form>
                                 <p class="text-danger">${mess}</p>
+                                <br>
+                                <a href="login">
+                                   <span>Back</span>
+                                </a>
                             </div>
                         </div>
                     </div>

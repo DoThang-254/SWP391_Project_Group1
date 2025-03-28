@@ -5,7 +5,7 @@ import Dal.GoogleAccountDao;
 import Model.Customer;
 import Model.GoogleAccount;
 import Model.Staff;
-import Validation.Validation;
+import Utils.Validation;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -70,12 +70,10 @@ public class LoginController extends HttpServlet {
                         response.sendRedirect("home");
                     }
                 } else {
-                    // Nếu không tìm thấy tài khoản trong hệ thống, quay lại login với thông báo lỗi
                     request.setAttribute("msg", "Tài khoản Google này chưa được đăng ký trong hệ thống.");
                     request.getRequestDispatcher("Login.jsp").forward(request, response);
                 }
             } catch (IOException e) {
-                // Nếu có lỗi khi gọi API Google, quay lại login với thông báo lỗi
                 request.setAttribute("msg", "Đăng nhập Google thất bại: " + e.getMessage());
                 request.getRequestDispatcher("Login.jsp").forward(request, response);
             }
@@ -133,7 +131,6 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Hiện tại, doPost chưa được sử dụng
     }
 
     @Override

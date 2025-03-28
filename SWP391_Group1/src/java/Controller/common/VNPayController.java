@@ -5,7 +5,7 @@
 package Controller.common;
 
 import Model.Customer;
-import Validation.VNPayUtils;
+import Utils.VNPayUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;

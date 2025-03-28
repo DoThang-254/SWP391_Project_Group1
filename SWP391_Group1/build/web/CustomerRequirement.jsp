@@ -59,7 +59,7 @@
 
                                 </header>
                                 <div class="filter-section">
-                                    <form action="searchinformation" method="get" class="row">
+                                    <form action="customerrequest" method="get" class="row">
                                         <input type="hidden" name="sort" value="${requestScope.sort}">
                                         <input type="hidden" name="order" value="${requestScope.order}">
                                         <div class="box-tools m-b-15">
@@ -77,39 +77,21 @@
                                         </div>
 
                                         <div class="col-md-3">
-                                            <label for="filterBrand">Brand</label>
-                                            <select name="filterBrand" id="filterBrand" class="form-control">
-                                                <option value="" ${empty requestScope.brand ? 'selected' : ''}>-- All Brands --</option>
-                                                <option value="BrandY" ${requestScope.brand == 'BrandY' ? 'selected' : ''}>BrandY</option>
-                                                <option value="BrandX" ${requestScope.brand == 'BrandX' ? 'selected' : ''}>BrandX</option>
+                                            <label for="filterBrand">Fault Type</label>
+                                            <select name="faulttype" id="filterBrand" class="form-control">
+                                                <option value="" ${empty requestScope.faulttype ? 'selected' : ''}>--None--</option>
+                                                <option value="manufacturer" ${requestScope.faulttype == 'manufacturer' ? 'selected' : ''}>manufacturer</option>
+                                                <option value="user" ${requestScope.faulttype == 'user' ? 'selected' : ''}>user</option>
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="filterBrand">amount of product</label>
+                                            <label for="filterBrand">Amount of product</label>
                                             <select name="amount" id="filterBrand" class="form-control">
-                                                <option value="">-- All --</option>
-
-                                                <option value="5" > 5 </option>
-                                                <option value="6" >6</option>
-                                                <option value="7">7</option>
+                                                <option value="" ${empty requestScope.amount ? 'selected' : ''}>-- All --</option>
+                                                <option value="5" ${requestScope.amount == '5' ? 'selected' : ''}>5</option>
+                                                <option value="6" ${requestScope.amount == '6' ? 'selected' : ''}>6</option>
+                                                <option value="7" ${requestScope.amount == '7' ? 'selected' : ''}>7</option>
                                             </select>
-                                        </div>
-
-
-
-                                        <!-- Filter Price -->
-                                        <div class="col-md-3">
-
-                                            <label for="filterPriceRange">Price Range</label>
-                                            <select name="filterPriceRange" id="filterPriceRange" class="form-control">
-                                                <option value="" ${empty requestScope.priceRange ? 'selected' : ''}>Tất cả giá</option>
-                                                <option value="0-5000" ${requestScope.priceRange == '0-5000' ? 'selected' : ''}>Dưới 5.000</option>
-                                                <option value="5000-10000" ${requestScope.priceRange == '5000-10000' ? 'selected' : ''}>5.000 - 10.000</option>
-                                                <option value="10000-15000" ${requestScope.priceRange == '10000-15000' ? 'selected' : ''}>10.000 - 15.000</option>
-                                                <option value="15000-20000" ${requestScope.priceRange == '15000-20000' ? 'selected' : ''}>15.000 - 20.000</option>
-                                                <option value="20000+" ${requestScope.priceRange == '20000+' ? 'selected' : ''}>Trên 20.000</option>
-                                            </select>
-
                                         </div>
 
 
@@ -118,7 +100,7 @@
                                             <button type="submit" class="btn btn-primary">
                                                 <i class="fa fa-filter"></i> Apply Filters
                                             </button>
-                                            <a href="searchinformation" class="btn btn-secondary">
+                                            <a href="customerrequest" class="btn btn-secondary">
                                                 <i class="fa fa-times"></i> Reset
                                             </a>
                                         </div>
@@ -139,10 +121,14 @@
                                                     </a>
                                                 </th>
 
-                                                <th>Product 
+                                                <th>Product Information
                                                     <a href="searchinformation?sort=productname&order=asc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-up"></i></a>
                                                     <a href="searchinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
+
+                                                <th>Product Name
+
+                                                </th> 
 
                                                 <th>Register Date
 
@@ -184,12 +170,14 @@
 
                                             <tr>
                                                 <td>${r.requirementId}</td>
-                                                <td><a href="viewproduct?productId=${r.product.productId}">View product information</a></td>
+                                                <td><a href="viewproduct?productId=${r.product.productId}">View product ${r.product.productId}</a></td>
+                                                <td>${r.product.productName}</td>
+
                                                 <td>${r.registerDate}</td>
                                                 <td>
                                                     <a href="viewstaff?staffId=${r.staff.staffId}" title="Update Form">
-                                                                View information
-                                                            </a>
+                                                        View information
+                                                    </a>
                                                 </td>
                                                 <td>
                                                     ${r.status}

@@ -8,7 +8,7 @@ import Dal.TokenForgetDao;
 import Model.Customer;
 import Model.Staff;
 import Model.TokenForgetPassword;
-import Validation.ResetService;
+import Utils.ResetService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;

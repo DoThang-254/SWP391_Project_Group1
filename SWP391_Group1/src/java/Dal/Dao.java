@@ -4,7 +4,6 @@
  */
 package Dal;
 
-import Repository.ILoginDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import Model.Customer;
@@ -15,7 +14,7 @@ import Model.Staff;
  *
  * @author thang
  */
-public class Dao extends DBContext implements ILoginDAO {
+public class Dao extends DBContext {
 
     private PreparedStatement p;
     private ResultSet rs;

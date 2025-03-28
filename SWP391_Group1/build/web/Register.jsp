@@ -18,11 +18,11 @@
         <form action="register" method="post">
             Username <input type="text" name="userName" value="${requestScope.userName}" required />
             <br>
-            Password <input type="password" name="passWord" required /> <br>
-            Confirm Password <input type="password" name="confirmPassword" required /> <br>
+            Password <input type="password" name="passWord" value="${requestScope.password}" required /> <br>
+            Confirm Password <input type="password" name="confirmPassword" value="${requestScope.cPassword}" required /> <br>
             First name <input type="text" name="firstName" value="${requestScope.firstName}" required /> <br>
             Last name <input type="text" name="lastName" value="${requestScope.lastName}" required /> <br>
-
+            Gender
             <select name="gender">
                 <option value="Male" ${requestScope.gender == 'Male' ? 'selected' : ''}>Male</option>
                 <option value="Female" ${requestScope.gender == 'Female' ? 'selected' : ''}>Female</option>
@@ -36,9 +36,14 @@
 
             <input type="hidden" name="status" value="active" /> <br>
 
-            <c:if test="${requestScope.msg != null}">
-                <p style="color: red">${requestScope.msg}</p>
+            <c:if test="${not empty requestScope.msg}">
+                <ul style="color: red;">
+                    <c:forEach var="error" items="${requestScope.msg}">
+                        <li>${error}</li>
+                        </c:forEach>
+                </ul>
             </c:if>
+
             <c:if test="${requestScope.msg2 != null}">
                 <p style="color: green">${requestScope.msg2}</p>
             </c:if>

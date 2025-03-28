@@ -11,18 +11,15 @@ import Model.WarrantyForm;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.util.List;
 
 /**
  *
  * @author thang
  */
-@WebServlet(name = "detail", urlPatterns = {"/warrantyformdetail"})
 public class WarrantyFormDetail extends HttpServlet {
 
     /**
@@ -42,10 +39,10 @@ public class WarrantyFormDetail extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet detail</title>");
+            out.println("<title>Servlet WarrantyFormDetail</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet detail at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet WarrantyFormDetail at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,7 +57,7 @@ public class WarrantyFormDetail extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    CustomerDao cd = new CustomerDao();
+    private CustomerDao cd = new CustomerDao();
     private WarrantyFormDao wfd = new WarrantyFormDao();
 
     @Override
@@ -68,7 +65,6 @@ public class WarrantyFormDetail extends HttpServlet {
             throws ServletException, IOException {
         String customerIdParam = request.getParameter("customerId");
         if (customerIdParam == null || customerIdParam.isEmpty()) {
-            // Nếu không có customerId, thử lấy từ session
             Customer c = (Customer) request.getSession().getAttribute("Customer");
             if (c == null) {
                 response.sendRedirect("404.jsp"); // Yêu cầu đăng nhập nếu không có session
@@ -100,11 +96,10 @@ public class WarrantyFormDetail extends HttpServlet {
 
         List<WarrantyForm> wf = cd.ProductDetail(index, customerId, productId, amount);
 
-      
         Customer customer = cd.GetCustomer(customerId); // Truy vấn Customer từ ID
         if (customer != null) {
             request.setAttribute("customerUsername", customer.getUsername()); // Đặt username vào requestScope
-            
+
         }
 
         request.setAttribute("form", wf);

@@ -5,6 +5,7 @@
 package Controller.Customer;
 
 import Dal.CustomerDao;
+import Dal.ProductDao;
 import Dal.WarrantyFormDao;
 import Model.Customer;
 import Model.Product;
@@ -73,12 +74,13 @@ public class WarrantyInformationController extends HttpServlet {
     }
     CustomerDao cd = new CustomerDao();
     WarrantyFormDao wfd = new WarrantyFormDao();
+    ProductDao pd = new ProductDao();
 
     protected void searchWarrantyInformation(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String amountRaw = request.getParameter("amount");
         if (amountRaw == null || amountRaw.trim().isEmpty()) {
-            amountRaw = "10";
+            amountRaw = "4";
         }
 
         int amount = Integer.parseInt(amountRaw);
@@ -95,12 +97,13 @@ public class WarrantyInformationController extends HttpServlet {
         Product newProduct = new Product(null, null, 0, brand, c.getCustomerId());
         String sort = request.getParameter("sort");
         String order = request.getParameter("order");
-        int count = cd.GetTotalProductByProductId(c.getCustomerId(), searchBox, newProduct);
+
+        String priceRange = request.getParameter("filterPriceRange");
+        int count = cd.GetTotalProductByProductId(c.getCustomerId(), searchBox, newProduct, priceRange);
         int endPage = count / amount;
         if (count % amount != 0) {
             endPage++;
         }
-        String priceRange = request.getParameter("filterPriceRange");
         List<Product> list = cd.SearchingProductByProductId(index, c.getCustomerId(), searchBox, newProduct, sort, order, priceRange, amount);
 
         for (Product p : list) {
@@ -111,7 +114,8 @@ public class WarrantyInformationController extends HttpServlet {
                 p.setWarrantyStatus("Hết hạn bảo hành");
             }
         }
-
+        List<String> brands = pd.GetBrandById(c.getCustomerId());
+        request.setAttribute("brands", brands);
         request.setAttribute("endpage", endPage);
         request.setAttribute("listA", list);
         request.setAttribute("tag", index);
@@ -124,8 +128,6 @@ public class WarrantyInformationController extends HttpServlet {
 
         request.getRequestDispatcher("SearchInformation.jsp").forward(request, response);
     }
-
-    
 
     @Override
     public String getServletInfo() {

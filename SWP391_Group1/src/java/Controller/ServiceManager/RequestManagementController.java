@@ -60,9 +60,32 @@ public class RequestManagementController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         WarrantyRequirementDAO wrd = new WarrantyRequirementDAO();
-        List<WarrantyRequirement> list = wrd.GetAllRequest();
+        String amountRaw = request.getParameter("amount");
+        if (amountRaw == null || amountRaw.trim().isEmpty()) {
+            amountRaw = "4";
+        }
+        int amount = Integer.parseInt(amountRaw);
+
+        String input = request.getParameter("index");
+        if (input == null || input.isBlank()) {
+            input = "1";
+        }
+        int index = Integer.parseInt(input);
+
+        String search = request.getParameter("table_search");
+        int count = wrd.GetTotalRequest(search);
+        int endPage = count / amount;
+        if (count % amount != 0) {
+            endPage++;
+        }
+
+        List<WarrantyRequirement> list = wrd.GetAllRequest(index, amount, search);
         request.setAttribute("list", list);
-        
+        request.setAttribute("tag", index);
+        request.setAttribute("amount", amount);
+        request.setAttribute("endpage", endPage);
+        request.setAttribute("save", search);
+
         request.getRequestDispatcher("WarrantyRequestManagement.jsp").forward(request, response);
     }
 

@@ -65,25 +65,31 @@ public class CustomerHistoryRequest extends HttpServlet {
         String input = request.getParameter("index");
         String amount = request.getParameter("amount");
 
-        if (input == null) {
+        if (input == null || input.isEmpty()) {
             input = "1";
         }
 
-        if (amount == null) {
-            amount = "1";
+        if (amount == null || amount.isEmpty()) {
+            amount = "3";
         }
+
         int x = Integer.parseInt(amount);
         int index = Integer.parseInt(input);
-        int count = wrd.GetTotalWarrantyRequest(c.getCustomerId());
+        String status = request.getParameter("status");
+        String search = request.getParameter("table_search");
+        int count = wrd.GetTotalHistoryWarrantyRequest(c.getCustomerId(), status, search);
         int endPage = count / x;
         if (endPage % x != 0) {
             endPage++;
         }
-        List<WarrantyRequirement> list = wrd.historyRequestByCustomerId(index, c.getCustomerId(), x);
+        List<WarrantyRequirement> list = wrd.historyRequestByCustomerId(index, c.getCustomerId(), x, status, search);
         request.setAttribute("list", list);
         request.setAttribute("tag", index);
         request.setAttribute("endpage", endPage);
         request.setAttribute("amount", x);
+        request.setAttribute("status", status);
+        request.setAttribute("save", search);
+
         request.getRequestDispatcher("HistoryRequest.jsp").forward(request, response);
     }
 

@@ -59,7 +59,7 @@
 
                                 </header>
                                 <div class="filter-section">
-                                    <form action="searchinformation" method="get" class="row">
+                                    <form action="requestmanagement" method="get" class="row">
                                         <input type="hidden" name="sort" value="${requestScope.sort}">
                                         <input type="hidden" name="order" value="${requestScope.order}">
                                         <div class="box-tools m-b-15">
@@ -76,41 +76,18 @@
                                             </div>
                                         </div>
 
+
                                         <div class="col-md-3">
-                                            <label for="filterBrand">Fault Type</label>
-                                            <select name="filterBrand" id="filterBrand" class="form-control">
-                                                <option value="" ${empty requestScope.brand ? 'selected' : ''}>-- All Brands --</option>
-                                                <option value="BrandY" ${requestScope.brand == 'BrandY' ? 'selected' : ''}>BrandY</option>
-                                                <option value="BrandX" ${requestScope.brand == 'BrandX' ? 'selected' : ''}>BrandX</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="filterBrand"></label>
+                                            <label for="filterBrand">Amount of request</label>
                                             <select name="amount" id="filterBrand" class="form-control">
                                                 <option value="">-- All --</option>
-
-                                                <option value="5" > 5 </option>
-                                                <option value="6" >6</option>
-                                                <option value="7">7</option>
+                                                <option value="5" ${param.amount == '5' ? 'selected' : ''}>5</option>
+                                                <option value="6" ${param.amount == '6' ? 'selected' : ''}>6</option>
+                                                <option value="7" ${param.amount == '7' ? 'selected' : ''}>7</option>
                                             </select>
                                         </div>
 
 
-
-                                        <!-- Filter Price -->
-                                        <div class="col-md-3">
-
-                                            <label for="filterPriceRange">Price Range</label>
-                                            <select name="filterPriceRange" id="filterPriceRange" class="form-control">
-                                                <option value="" ${empty requestScope.priceRange ? 'selected' : ''}>Tất cả giá</option>
-                                                <option value="0-5000" ${requestScope.priceRange == '0-5000' ? 'selected' : ''}>Dưới 5.000</option>
-                                                <option value="5000-10000" ${requestScope.priceRange == '5000-10000' ? 'selected' : ''}>5.000 - 10.000</option>
-                                                <option value="10000-15000" ${requestScope.priceRange == '10000-15000' ? 'selected' : ''}>10.000 - 15.000</option>
-                                                <option value="15000-20000" ${requestScope.priceRange == '15000-20000' ? 'selected' : ''}>15.000 - 20.000</option>
-                                                <option value="20000+" ${requestScope.priceRange == '20000+' ? 'selected' : ''}>Trên 20.000</option>
-                                            </select>
-
-                                        </div>
 
 
                                         <!-- Submit Button -->
@@ -118,7 +95,7 @@
                                             <button type="submit" class="btn btn-primary">
                                                 <i class="fa fa-filter"></i> Apply Filters
                                             </button>
-                                            <a href="searchinformation" class="btn btn-secondary">
+                                            <a href="requestmanagement" class="btn btn-secondary">
                                                 <i class="fa fa-times"></i> Reset
                                             </a>
                                         </div>
@@ -192,7 +169,11 @@
                                             <tr>
                                                 <td>${r.requirementId}</td>
                                                 <td>${r.product.productId}</td>
-                                                <td>${r.customer.firstName} ${r.customer.lastName}</td>
+                                                <td>
+                                                    <a href="viewcustomer?customerId=${r.customer.customerId}">
+                                                        ${r.customer.firstName} ${r.customer.lastName}       
+                                                    </a>
+                                                </td>
                                                 <td>${r.registerDate}</td>
                                                 <td>
                                                     <c:choose>
@@ -247,7 +228,7 @@
                                             <c:forEach begin="1" end="${requestScope.endpage}" var="i">
                                                 <li>
                                                     <a class="${tag == i ? 'active' : ''}"
-                                                       href="searchinformation?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}&amount=${requestScope.amount}">${i}</a>
+                                                       href="requestmanagement?index=${i}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&sort=${requestScope.sort}&order=${requestScope.order}&amount=${requestScope.amount}">${i}</a>
                                                 </li>
                                             </c:forEach>
                                         </ul>

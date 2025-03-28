@@ -144,6 +144,8 @@
                                                     <a href="searchinformation?sort=productname&order=desc&index=${requestScope.tag}&table_search=${requestScope.save}&filterBrand=${requestScope.brand}&filterPriceRange=${requestScope.priceRange}"><i class="fa fa-arrow-down"></i></a>
                                                 </th>
 
+                                                <th>Customer</th>
+
                                                 <th>Register Date
 
                                                 </th> 
@@ -185,7 +187,11 @@
                                             <tr>
                                                 <td>${r.requirementId}</td>
                                                 <td><a href="viewproduct?productId=${r.product.productId}">View product information</a></td>
-
+                                                <td>
+                                                    <a href="viewcustomer?customerId=${r.customer.customerId}">
+                                                        Customer
+                                                    </a>
+                                                </td>
                                                 <td>${r.registerDate}</td>
 
                                                 <!-- Dữ liệu từ listB -->

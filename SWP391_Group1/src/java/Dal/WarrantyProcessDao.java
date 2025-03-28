@@ -211,7 +211,7 @@ public class WarrantyProcessDao extends DBContext {
                 wp.setStaff(s);
                 wp.setStatus(rs.getString(4));
                 wp.setIsAccept(rs.getString(7));
-
+                wp.setReturnDate(rs.getDate(6));
                 // Kiểm tra xem requirementId có trong danh sách đã có hóa đơn không
                 wr.setHasInvoice(invoiceSet.contains(wr.getRequirementId()));
 
@@ -224,15 +224,17 @@ public class WarrantyProcessDao extends DBContext {
         return list;
     }
 
-    public void updateStatusWarrantyProcess(int processId, String status) {
+    public void updateStatusWarrantyProcess(int processId, String status, String returnDate) {
         String sql = "UPDATE [dbo].[WarrantyProcessing]\n"
-                + "   SET [Status] = ?\n"
-                + "   WHERE ProcessingId = ? ";
+                + "				SET [Status] = ? , \n"
+                + "				ReturnDate = ?\n"
+                + "                WHERE ProcessingId = ?";
 
         try {
             p = connection.prepareStatement(sql);
             p.setString(1, status);
-            p.setInt(2, processId);
+            p.setString(2, returnDate);
+            p.setInt(3, processId);
 
             p.executeUpdate();
         } catch (SQLException e) {
@@ -293,7 +295,7 @@ public class WarrantyProcessDao extends DBContext {
                 WarrantyRequirement wr = new WarrantyRequirement();
                 wr.setRequirementId(rs.getInt(2));
                 wr.setRegisterDate(rs.getDate(15));
-                Product product = new Product() ;
+                Product product = new Product();
                 product.setProductId(rs.getString(9));
                 wr.setProduct(product);
                 WarrantyForm wf = new WarrantyForm();
@@ -307,7 +309,7 @@ public class WarrantyProcessDao extends DBContext {
                 wp.setNote(rs.getString(5));
                 wp.setReturnDate(rs.getDate(6));
                 wp.setIsAccept(rs.getString(7));
-               
+
                 list.add(wp);
             }
         } catch (Exception e) {

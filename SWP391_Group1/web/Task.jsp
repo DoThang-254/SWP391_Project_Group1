@@ -6,7 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html>
 
@@ -84,7 +85,7 @@
                                                 <th>Invoice</th>
 
                                                 <th>View Warranty Form</th>
-                                                <th>Update End date Warranty Form</th>
+                                                <th>Update Warranty Form</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -107,6 +108,8 @@
                                                             <input type="hidden" name="processingId" value="${pr.processingId}">
                                                             <input type="hidden" name="requirementId" value="${pr.requirement.requirementId}">
                                                             <input type="hidden" name="productId" value="${pr.requirement.product.productId}">
+                                                            <fmt:formatDate value="${pr.returnDate}" pattern="yyyy-MM-dd" var="formattedReturnDate" />
+                                                            <input type="date" name="returndate" value="${formattedReturnDate}">
 
                                                             <select name="status" class="form-control" onchange="confirmUpdate(this.form)">
                                                                 <option value="Under Inspection" ${pr.status == 'Under Inspection' ? 'selected' : ''}>Under Inspection</option>
@@ -116,6 +119,7 @@
                                                             </select>
                                                         </form>
                                                     </td>
+
 
                                                     <td><a href="viewproduct?productId=${pr.requirement.product.productId}">View</a></td>
 
@@ -154,7 +158,11 @@
 
                                                 </tr>
                                             </c:forEach>
-
+                                            <c:if test="${requestScope.msg != null}">
+                                            <script>
+                                                    alert("invalid date");
+                                            </script>
+                                            </c:if>
                                         </tbody>
                                     </table>
                                     <br>
@@ -212,18 +220,18 @@
 
         <!-- Director for demo purposes -->
         <script type="text/javascript">
-                                                                $('input').on('ifChecked', function (event) {
-                                                                    // var element = $(this).parent().find('input:checkbox:first');
-                                                                    // element.parent().parent().parent().addClass('highlight');
-                                                                    $(this).parents('li').addClass("task-done");
-                                                                    console.log('ok');
-                                                                });
-                                                                $('input').on('ifUnchecked', function (event) {
-                                                                    // var element = $(this).parent().find('input:checkbox:first');
-                                                                    // element.parent().parent().parent().removeClass('highlight');
-                                                                    $(this).parents('li').removeClass("task-done");
-                                                                    console.log('not');
-                                                                });
+                                                    $('input').on('ifChecked', function (event) {
+                                                        // var element = $(this).parent().find('input:checkbox:first');
+                                                        // element.parent().parent().parent().addClass('highlight');
+                                                        $(this).parents('li').addClass("task-done");
+                                                        console.log('ok');
+                                                    });
+                                                    $('input').on('ifUnchecked', function (event) {
+                                                        // var element = $(this).parent().find('input:checkbox:first');
+                                                        // element.parent().parent().parent().removeClass('highlight');
+                                                        $(this).parents('li').removeClass("task-done");
+                                                        console.log('not');
+                                                    });
 
         </script>
         <script>

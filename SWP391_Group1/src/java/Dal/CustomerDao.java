@@ -9,7 +9,6 @@ import Model.Product;
 import Model.Staff;
 import Model.WarrantyForm;
 import Model.WarrantyProcessing;
-import Repository.ICustomerDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.List;
  *
  * @author thang
  */
-public class CustomerDao extends DBContext implements ICustomerDAO {
+public class CustomerDao extends DBContext{
 
     private PreparedStatement p;
     private ResultSet rs;
@@ -35,6 +34,12 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
             if (rs.next()) {
                 Customer customer = new Customer();
                 customer.setUsername(rs.getString(2));
+                customer.setFirstName(rs.getString(4));
+                customer.setLastName(rs.getString(5));
+                customer.setPhone(rs.getString(6));
+                customer.setEmail(rs.getString(7));
+                customer.setGender(rs.getString(8));
+                customer.setAddress(rs.getString(11));
                 return customer;
             }
         } catch (Exception e) {
@@ -43,7 +48,8 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         return null;  // Trả về 0 nếu có lỗi
     }
 
-    public int GetTotalProductByProductId(int CustomerId, String search, Product product) {
+    
+    public int GetTotalProductByProductId(int CustomerId, String search, Product product , String priceRange) {
         String sql = "SELECT count(*) FROM Product p JOIN Customer c ON c.CustomerId = p.CustomerId WHERE c.CustomerId = ? ";
 
         if (search != null && !search.trim().isEmpty()) {
@@ -53,6 +59,13 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         if (product.getBrand() != null && !product.getBrand().trim().isEmpty()) {
             sql += " AND p.Brand = ? ";
         }
+        if (priceRange != null && !priceRange.trim().isEmpty()) {
+            if (priceRange.equals("40000000+")) {
+                sql += " AND p.Price >= 40000000 ";
+            } else {
+                sql += " AND p.Price BETWEEN ? AND ? ";
+            }
+        }
 
         try {
             p = connection.prepareStatement(sql);
@@ -60,13 +73,20 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
 
             int index = 2;
             if (search != null && !search.trim().isEmpty()) {
-                String searchPattern = "%" + search.replaceAll("\\s+", "").trim() + "%";
+                String searchPattern = "%" + search/*.replaceAll("\\s+", "")*/.trim() + "%";
                 p.setString(index++, searchPattern);
                 p.setString(index++, searchPattern);
             }
 
             if (product.getBrand() != null && !product.getBrand().trim().isEmpty()) {
                 p.setString(index++, product.getBrand());
+            }
+            
+            if (priceRange != null && !priceRange.trim().isEmpty() && !priceRange.equals("40000000+")) {
+                String[] range = priceRange.split("-");
+                p.setLong(index, Long.parseLong(range[0]));
+                index++;
+                p.setLong(index, Long.parseLong(range[1]));
             }
 
             rs = p.executeQuery();
@@ -81,14 +101,14 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
 
      public static void main(String[] args) {
         CustomerDao c = new CustomerDao();
-        Product n = new Product();
-         for (Product pr : c.SearchingProductByProductId(1, 1, "l      aptop",n , null, null, null, 5)) {
-             System.out.println(pr.getProductId());
-         }
-         String search = "   l     ap   ";
-         System.out.println("1: " + search);
-         String test = search.trim().replaceAll("\\s+", "");
-         System.out.println(test);
+//        Product n = new Product();
+//         for (Product pr : c.SearchingProductByProductId(1, 1, "l      aptop",n , null, null, null, 5)) {
+//             System.out.println(pr.getProductId());
+//         }
+//         String search = "   l     ap   ";
+//         System.out.println("1: " + search);
+//         String test = search.trim() ; //.replaceAll("\\s+", "");
+//         System.out.println(test);
 
     }
     
@@ -104,8 +124,8 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
         }
 
         if (priceRange != null && !priceRange.trim().isEmpty()) {
-            if (priceRange.equals("20000+")) {
-                sql += " AND p.Price >= 20000 ";
+            if (priceRange.equals("40000000+")) {
+                sql += " AND p.Price >= 40000000 ";
             } else {
                 sql += " AND p.Price BETWEEN ? AND ? ";
             }
@@ -125,7 +145,7 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
 
             int paramIndex = 2;
             if (search != null && !search.trim().isEmpty()) {
-                String searchPattern = "%" + search.replaceAll("\\s+", "").trim() + "%";
+                String searchPattern = "%" + search/*.replaceAll("\\s+", "")*/.trim() + "%";
                 p.setString(paramIndex++, searchPattern);
                 p.setString(paramIndex++, searchPattern);
             }
@@ -134,11 +154,11 @@ public class CustomerDao extends DBContext implements ICustomerDAO {
                 paramIndex++;
             }
 
-            if (priceRange != null && !priceRange.trim().isEmpty() && !priceRange.equals("20000+")) {
+            if (priceRange != null && !priceRange.trim().isEmpty() && !priceRange.equals("40000000+")) {
                 String[] range = priceRange.split("-");
-                p.setFloat(paramIndex, Float.parseFloat(range[0]));
+                p.setLong(paramIndex, Long.parseLong(range[0]));
                 paramIndex++;
-                p.setFloat(paramIndex, Float.parseFloat(range[1]));
+                p.setLong(paramIndex, Long.parseLong(range[1]));
                 paramIndex++;
             }
 

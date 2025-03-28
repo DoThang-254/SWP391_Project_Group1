@@ -118,6 +118,7 @@ public class CreateForm extends HttpServlet {
         int formId = Integer.parseInt(request.getParameter("formId"));
         String endDate = request.getParameter("endDate");
         String faultType = request.getParameter("faultType");
+        String msg = null;
 
         WarrantyForm wf = new WarrantyForm();
         wf.setFormId(formId);
@@ -125,7 +126,13 @@ public class CreateForm extends HttpServlet {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Date newEndDate = sdf.parse(endDate);
-                wf.setEndDate(newEndDate); // Gán ngày vào đối tượng WarrantyForm
+                Date now = new Date(); // Lấy ngày hiện tại
+
+                if (newEndDate.after(now)) { // Chỉ set nếu newEndDate > now
+                    wf.setEndDate(newEndDate);
+                } else {
+                    msg = "invalid endate";
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -135,8 +142,6 @@ public class CreateForm extends HttpServlet {
         Part filePart = request.getPart("image"); // Lấy file từ input name="image"
         String existingImage = request.getParameter("existingImage");
         String imagePath = existingImage; // Mặc định giữ ảnh cũ
-        String msg = null;
-        // Danh sách định dạng ảnh hợp lệ
         List<String> allowedExtensions = Arrays.asList("png", "jpg", "jpeg");
 
         if (filePart != null && filePart.getSize() > 0) { // Nếu có ảnh mới, cập nhật ảnh
@@ -188,7 +193,7 @@ public class CreateForm extends HttpServlet {
 
         if (isUserFault) {
             if (isWarrantyValid != null) {
-                wfd.updateIsPay(formId, "yes"); // Còn hạn + lỗi user 
+                wfd.updateIsPay(formId, "Yes"); // Còn hạn + lỗi user 
                 wfd.updateTechVerify(formId);
 
                 if (!wpd.isWarrantyProcessExists(requireId)) {
@@ -209,7 +214,7 @@ public class CreateForm extends HttpServlet {
             // Nếu hết hạn mà `isPay` đã là "yes", giữ nguyên (không cần update lại)
         } else {
             if (isWarrantyValid != null) {
-                wfd.updateIsPay(formId, "no"); // Còn hạn + lỗi NSX → Miễn phí
+                wfd.updateIsPay(formId, "No"); // Còn hạn + lỗi NSX → Miễn phí
                 if (!wpd.isWarrantyProcessExists(requireId)) { // Nếu chưa tồn tại, mới insert
                     wpd.insertWarrantyProcess(requireId, staffId);
                     wrd.UpdateStatusRequest("Checked", requireId);
@@ -226,7 +231,7 @@ public class CreateForm extends HttpServlet {
             }
         }
 
-        response.sendRedirect("updateform?formId=" + formId + "&requireId=" + requireId + "&staffId=" + staffId);
+            response.sendRedirect("updateform?formId=" + formId + "&requireId=" + requireId + "&staffId=" + staffId + "&msg=" + msg);
     }
 
     /**
