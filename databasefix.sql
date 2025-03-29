@@ -206,7 +206,7 @@ INSERT INTO Role (RoleName) VALUES
 INSERT INTO Staff (StaffId, Username, Password, FirstName, LastName, Email, Phone, Gender, BirthDate, Status, IsWork, RoleId) VALUES
 ('S001', 'tech1', 'pass123', 'John', 'Doe', 'john@example.com', '123456789', 'Male', '1990-05-15', 'Active', 1, 1),
 ('S002', 'tech2', 'pass123', 'Jane', 'Smith', 'jane@example.com', '987654321', 'Female', '1992-08-22', 'Active', 1, 1),
-('S003', 'manager1', 'pass123', 'Michael', 'Brown', 'michael@example.com', '1122334455', 'Male', '1985-03-10', 'Active', 1, 2),
+('S003', 'manager1', 'pass123', 'Michael', 'Brown', 'thangmoneo2542004@gmail.com', '1122334455', 'Male', '1985-03-10', 'Active', 1, 2),
 ('S004', 'admin1', 'pass123', 'Alice', 'Johnson', 'alice@example.com', '2233445566', 'Female', '1988-12-05', 'Active', 1, 3),
 ('S005', 'cashier1', 'pass123', 'David', 'Wilson', 'david@example.com', '3344556677', 'Male', '1995-07-18', 'Active', 1, 4),
 ('S006', 'tech3', 'pass123', 'Laura', 'Miller', 'laura@example.com', '4455667788', 'Female', '1993-04-25', 'Active', 1, 1),

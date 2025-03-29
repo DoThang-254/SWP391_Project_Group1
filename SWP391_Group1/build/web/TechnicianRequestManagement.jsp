@@ -58,72 +58,7 @@
                                     Requirement Warranty Management
 
                                 </header>
-                                <div class="filter-section">
-                                    <form action="searchinformation" method="get" class="row">
-                                        <input type="hidden" name="sort" value="${requestScope.sort}">
-                                        <input type="hidden" name="order" value="${requestScope.order}">
-                                        <div class="box-tools m-b-15">
-                                            <div class="input-group">                                            
-                                                <input type="text" name="table_search" class="form-control input-sm pull-right"
-                                                       style="width: 150px;" placeholder="Search" 
-                                                       value="${not empty requestScope.save ? requestScope.save : ''}" />
-
-                                                <div class="input-group-btn">
-                                                    <button type="submit" class="btn btn-sm btn-default">
-                                                        <i class="fa fa-search"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <label for="filterBrand">Brand</label>
-                                            <select name="filterBrand" id="filterBrand" class="form-control">
-                                                <option value="" ${empty requestScope.brand ? 'selected' : ''}>-- All Brands --</option>
-                                                <option value="BrandY" ${requestScope.brand == 'BrandY' ? 'selected' : ''}>BrandY</option>
-                                                <option value="BrandX" ${requestScope.brand == 'BrandX' ? 'selected' : ''}>BrandX</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="filterBrand">amount of product</label>
-                                            <select name="amount" id="filterBrand" class="form-control">
-                                                <option value="">-- All --</option>
-
-                                                <option value="5" > 5 </option>
-                                                <option value="6" >6</option>
-                                                <option value="7">7</option>
-                                            </select>
-                                        </div>
-
-
-
-                                        <!-- Filter Price -->
-                                        <div class="col-md-3">
-
-                                            <label for="filterPriceRange">Price Range</label>
-                                            <select name="filterPriceRange" id="filterPriceRange" class="form-control">
-                                                <option value="" ${empty requestScope.priceRange ? 'selected' : ''}>Tất cả giá</option>
-                                                <option value="0-5000" ${requestScope.priceRange == '0-5000' ? 'selected' : ''}>Dưới 5.000</option>
-                                                <option value="5000-10000" ${requestScope.priceRange == '5000-10000' ? 'selected' : ''}>5.000 - 10.000</option>
-                                                <option value="10000-15000" ${requestScope.priceRange == '10000-15000' ? 'selected' : ''}>10.000 - 15.000</option>
-                                                <option value="15000-20000" ${requestScope.priceRange == '15000-20000' ? 'selected' : ''}>15.000 - 20.000</option>
-                                                <option value="20000+" ${requestScope.priceRange == '20000+' ? 'selected' : ''}>Trên 20.000</option>
-                                            </select>
-
-                                        </div>
-
-
-                                        <!-- Submit Button -->
-                                        <div class="col-md-12 text-right mt-3">
-                                            <button type="submit" class="btn btn-primary">
-                                                <i class="fa fa-filter"></i> Apply Filters
-                                            </button>
-                                            <a href="searchinformation" class="btn btn-secondary">
-                                                <i class="fa fa-times"></i> Reset
-                                            </a>
-                                        </div>
-                                    </form>
-                                </div>
+                                
                                 <div class="panel-body table-responsive">
 
 

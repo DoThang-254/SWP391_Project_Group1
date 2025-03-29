@@ -4,10 +4,9 @@
  */
 package Controller.Customer;
 
-import Dal.CustomerDao;
-import Dal.WarrantyFormDao;
+import Dal.TransactionDao;
 import Model.Customer;
-import Model.WarrantyForm;
+import Model.Transaction;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,7 +19,7 @@ import java.util.List;
  *
  * @author thang
  */
-public class WarrantyFormDetail extends HttpServlet {
+public class TransactionHistory extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +38,10 @@ public class WarrantyFormDetail extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet WarrantyFormDetail</title>");
+            out.println("<title>Servlet TransactionHistory</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet WarrantyFormDetail at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet TransactionHistory at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,57 +56,15 @@ public class WarrantyFormDetail extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private CustomerDao cd = new CustomerDao();
-    private WarrantyFormDao wfd = new WarrantyFormDao();
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String customerIdParam = request.getParameter("customerId");
-        if (customerIdParam == null || customerIdParam.isEmpty()) {
-            Customer c = (Customer) request.getSession().getAttribute("Customer");
-            if (c == null) {
-                response.sendRedirect("404.jsp"); // Yêu cầu đăng nhập nếu không có session
-                return;
-            }
-            customerIdParam = String.valueOf(c.getCustomerId());
-        }
+        TransactionDao td = new TransactionDao();
+        Customer c = (Customer) request.getSession().getAttribute("Customer");
 
-        int customerId = Integer.parseInt(customerIdParam);
-        String input = request.getParameter("index");
-        String amount_raw = request.getParameter("amount");
-        String productId = request.getParameter("productid");
-
-        if (input == null || input.trim().isEmpty()) {
-            input = "1";
-        }
-
-        if (amount_raw == null || amount_raw.trim().isEmpty()) {
-            amount_raw = "5";
-        }
-        int index = Integer.parseInt(input);
-        int amount = Integer.parseInt(amount_raw);
-        int count = cd.GetTotalProductDetail(customerId, productId);
-
-        int endPage = count / amount;
-        if (count % amount != 0) {
-            endPage++;
-        }
-
-        List<WarrantyForm> wf = cd.ProductDetail(index, customerId, productId, amount);
-
-        Customer customer = cd.GetCustomer(customerId); 
-        if (customer != null) {
-            request.setAttribute("customerUsername", customer.getUsername());
-
-        }
-
-        request.setAttribute("form", wf);
-        request.setAttribute("tag", index);
-        request.setAttribute("endpage", endPage);
-        request.setAttribute("productid", productId);
-        request.getRequestDispatcher("WarrantyForm.jsp").forward(request, response);
-
+        List<Transaction> list = td.GetAllTransaction(c.getCustomerId());
+        request.setAttribute("list", list);
+        request.getRequestDispatcher("TransactionHistory.jsp").forward(request, response);
     }
 
     /**

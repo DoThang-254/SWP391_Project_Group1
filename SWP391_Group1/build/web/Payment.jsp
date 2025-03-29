@@ -98,7 +98,7 @@
             <hr>
             <div class="d-flex justify-content-between">
                 <button onclick="history.back()" class="btn btn-warning">Quay lại</button>
-                <a href="transactionHistory.jsp" class="btn btn-secondary">Lịch sử giao dịch</a>
+                <a href="transactionhistory" class="btn btn-secondary">Lịch sử giao dịch</a>
             </div>
         </div>
 

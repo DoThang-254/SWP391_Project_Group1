@@ -34,7 +34,7 @@ public class WarrantyRequirementDAO extends DBContext {
 //        return false;
 //    }
     public boolean hasPendingRequest(String productId) {
-        String sql = "SELECT COUNT(*) FROM WarrantyRequirement WHERE ProductId = ? AND Status <> 'Completed'";
+        String sql = "SELECT COUNT(*) FROM WarrantyRequirement WHERE ProductId = ? AND Status <> 'Completed' AND Status <> 'Uncheck'";
 
         try {
             p = connection.prepareStatement(sql);
