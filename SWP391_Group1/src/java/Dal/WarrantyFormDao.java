@@ -55,10 +55,7 @@ public class WarrantyFormDao extends DBContext {
         }
     }
 
-    public static void main(String[] args) {
-        WarrantyFormDao wfd = new WarrantyFormDao();
-        System.out.println(wfd.getActiveWarrantyFormByProduct("P001").getProduct().getProductId());
-    }
+    
     private PreparedStatement p;
 
     public boolean hasActive(String productId) {
@@ -282,6 +279,11 @@ public class WarrantyFormDao extends DBContext {
         return false;
     }
 
+    
+    public static void main(String[] args) {
+        WarrantyFormDao wfd = new WarrantyFormDao();
+        System.out.println(wfd.getWarrantyFormByProductId("P001"));
+    }
     public WarrantyForm getWarrantyFormbyProductId(String productId) { // lấy ra warranty formid mới nhất 
         WarrantyForm warrantyForm = null;
         String sql = "SELECT top 1 wf.* FROM WarrantyRequirement wr join Product p on p.ProductId = wr.ProductId\n"
@@ -297,14 +299,15 @@ public class WarrantyFormDao extends DBContext {
 
             if (rs.next()) {
                 warrantyForm = new WarrantyForm();
-                warrantyForm.setFormId(rs.getInt("FormId"));
+                warrantyForm.setFormId(rs.getInt(1));
                 Product p = new Product();
-                p.setProductId(rs.getString("ProductId"));
+                p.setProductId(rs.getString(2));
                 warrantyForm.setProduct(p);
-                warrantyForm.setStartDate(rs.getDate("StartDate"));
-                warrantyForm.setEndDate(rs.getDate("EndDate"));
-                warrantyForm.setStatus(rs.getString("Status"));
-                warrantyForm.setImgUrl(rs.getString(9));
+                warrantyForm.setStartDate(rs.getDate(3));
+                warrantyForm.setEndDate(rs.getDate(4));
+                warrantyForm.setStatus(rs.getString(5));
+                warrantyForm.setImgUrl(rs.getString(8));
+                warrantyForm.setFaultType(rs.getString(6));
             }
         } catch (SQLException e) {
         }
@@ -438,9 +441,9 @@ public class WarrantyFormDao extends DBContext {
                 warrantyForm.setStartDate(rs.getDate("StartDate"));
                 warrantyForm.setEndDate(rs.getDate("EndDate"));
                 warrantyForm.setStatus(rs.getString("Status"));
-                warrantyForm.setFaultType(rs.getString(7));
-                warrantyForm.setTechnicianVerify(rs.getString(8));
-                warrantyForm.setImgUrl(rs.getString(9));
+                warrantyForm.setFaultType(rs.getString(6));
+                warrantyForm.setTechnicianVerify(rs.getString(7));
+                warrantyForm.setImgUrl(rs.getString(8));
             }
         } catch (SQLException e) {
         }

@@ -132,6 +132,8 @@ public class CreateForm extends HttpServlet {
                     wf.setEndDate(newEndDate);
                 } else {
                     msg = "invalid endate";
+                    response.sendRedirect("updateform?formId=" + formId + "&requireId=" + requireId + "&staffId=" + staffId + "&msg=" + msg);
+                    return;
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -230,8 +232,13 @@ public class CreateForm extends HttpServlet {
                 }
             }
         }
+////        if (msg != null) {
+//        response.sendRedirect("updateform?formId=" + formId + "&requireId=" + requireId + "&staffId=" + staffId + "&msg=" + msg);
 
-            response.sendRedirect("updateform?formId=" + formId + "&requireId=" + requireId + "&staffId=" + staffId + "&msg=" + msg);
+//        } else {
+            response.sendRedirect("updateform?formId=" + formId + "&requireId=" + requireId + "&staffId=" + staffId);
+//
+//        }
     }
 
     /**

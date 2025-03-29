@@ -53,6 +53,10 @@ public class SendConfirmController extends HttpServlet {
             ivd.updateIsConfirmInvoice(invoiceId);
             int requirementId = Integer.parseInt(request.getParameter("requirementId"));
             int formId = Integer.parseInt(request.getParameter("formId"));
+            if (ivd.isInvoicePaid(invoiceId)) {
+                response.sendRedirect("404.jsp");
+                return;
+            }
             response.sendRedirect("payment?requirementId=" + requirementId + "&formId=" + formId);
         } catch (Exception e) {
             response.sendRedirect("404.jsp");

@@ -216,9 +216,9 @@ public class WarrantyRequirementDAO extends DBContext {
                 WarrantyForm form = new WarrantyForm();
                 form.setFormId(rs.getInt(10));
                 form.setStatus(rs.getString(16));
-                form.setVerified(rs.getString(17));
-                form.setFaultType(rs.getString(18));
-                form.setTechnicianVerify(rs.getString(19));
+                form.setFaultType(rs.getString(17));
+                form.setTechnicianVerify(rs.getString(18));
+                form.setImgUrl(rs.getString(19));
                 wr.setForm(form);
                 list.add(wr);
             }
@@ -379,6 +379,13 @@ public class WarrantyRequirementDAO extends DBContext {
         return 0;
     }
 
+    public static void main(String[] args) {
+        WarrantyRequirementDAO d = new WarrantyRequirementDAO();
+        for (WarrantyRequirement w : d.GetAllRequestByCustomerId(1, 1, 4, "", "")) {
+            System.out.println(w.getInvoiceId());
+        }
+    }
+    
     public List<WarrantyRequirement> GetAllRequestByCustomerId(int index, int customerId, int amount, String faultType, String search) {
         List<WarrantyRequirement> list = new ArrayList<>();
         String sql = " select wr.* , wf.* , c.Email , i.* , p.ProductName from WarrantyRequirement wr join WarrantyForm wf on wr.FormId = wf.FormId join Product p on p.ProductId = wr.ProductId\n"
@@ -415,7 +422,7 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setRequirementId(rs.getInt(1));
                 Product p = new Product();
                 p.setProductId(rs.getString(2));
-                p.setProductName(rs.getString(27));
+                p.setProductName(rs.getString(26));
                 wr.setProduct(p);
                 Staff s = new Staff();
                 s.setStaffId(rs.getString(4));
@@ -429,14 +436,13 @@ public class WarrantyRequirementDAO extends DBContext {
                 wr.setRegisterDate(rs.getDate(8));
                 WarrantyForm form = new WarrantyForm();
                 form.setFormId(rs.getInt(10));
-                form.setVerified(rs.getString(16));
-                form.setFaultType(rs.getString(17));
-                form.setTechnicianVerify(rs.getString(18));
+                form.setFaultType(rs.getString(16));
+                form.setTechnicianVerify(rs.getString(17));
                 form.setStatus(rs.getString(15));
                 wr.setForm(form);
                 wr.setIsPay(rs.getString(9));
                 wr.setInvoiceId(rs.getInt(21));
-                wr.setInvoiceStatus(rs.getString(24));
+                wr.setInvoiceStatus(rs.getString(23));
 
                 list.add(wr);
             }
@@ -446,11 +452,7 @@ public class WarrantyRequirementDAO extends DBContext {
         return list;
     }
 
-    public static void main(String[] args) {
-        WarrantyRequirementDAO d = new WarrantyRequirementDAO();
-
-        System.out.println(d.GetTotalWarrantyRequest(1, "", "laptop razer"));
-    }
+    
 
     public int GetTotalHistoryWarrantyRequest(int customerId, String status, String search) {
         String sql = "select count(*) from WarrantyRequirement wr join Product p on p.ProductId = wr.ProductId\n"

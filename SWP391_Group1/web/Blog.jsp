@@ -37,10 +37,20 @@
     </head>
 
     <body class="skin-black">
-        <c:import url="navbar.jsp"/>
+        <c:if test="${sessionScope.Staff != null}">
+            <c:import url="StaffNavbar.jsp"/>
+        </c:if>
+        <c:if test="${sessionScope.Staff == null}">
+            <c:import url="navbar.jsp"/>
+        </c:if>
 
         <div class="wrapper row-offcanvas row-offcanvas-left">
-            <c:import url="menu.jsp"/>
+            <c:if test="${sessionScope.Staff != null}">
+                <c:import url="StaffMenu.jsp"/>
+            </c:if>
+            <c:if test="${sessionScope.Staff == null}">
+                <c:import url="menu.jsp"/>
+            </c:if>
 
 
             <!-- Right side column. Contains the navbar and content of the page -->

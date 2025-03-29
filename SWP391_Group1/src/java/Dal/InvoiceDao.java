@@ -23,6 +23,11 @@ public class InvoiceDao extends DBContext {
     private PreparedStatement p;
     private ResultSet rs;
 
+    public static void main(String[] args) {
+        InvoiceDao i = new InvoiceDao();
+        System.out.println(i.getInvoiceByRequirementId(1).getInvoiceId());
+    }
+
     public Invoice getInvoiceByRequirementId(int requirementId) {
         String sql = "select i.* , p.CustomerId , p.ProductId from Product p join WarrantyRequirement wr on p.ProductId = wr.ProductId\n"
                 + "join Invoice i on i.RequirementId = wr.RequirementId\n"
@@ -48,7 +53,7 @@ public class InvoiceDao extends DBContext {
                 i.setStatus(rs.getString(4));
                 i.setNote(rs.getString(5));
                 i.setConfirmed(rs.getBoolean(6));
-                return i ;
+                return i;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -131,7 +136,6 @@ public class InvoiceDao extends DBContext {
 //        }
 //        return null;
 //    }
-
     public void updateInvoie(long price, String note, int invoiceId) {
         String sql = "UPDATE [dbo].[Invoice]\n"
                 + "   SET [Price] = ?\n"
@@ -198,6 +202,25 @@ public class InvoiceDao extends DBContext {
         }
         return false;
     }
-    
-    
+
+    public boolean isInvoicePaid(int invoiceId) {
+        boolean isPaid = false;
+        String query = "SELECT COUNT(1) FROM Invoice WHERE InvoiceId = ? AND Status = 'Paid'";
+
+        try {
+            p = connection.prepareStatement(query);
+            
+
+            p.setInt(1, invoiceId);
+            rs = p.executeQuery();
+
+            if (rs.next()) {
+                isPaid = rs.getInt(1) > 0; // Nếu có hóa đơn với trạng thái 'Paid' thì trả về true
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isPaid;
+    }
+
 }

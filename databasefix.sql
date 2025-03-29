@@ -69,7 +69,7 @@ CREATE TABLE WarrantyForm (
     ProductId VARCHAR(255) NOT NULL,
     StartDate DATE NOT NULL,
     EndDate DATE NULL,
-    Status VARCHAR(50) DEFAULT 'Active', 
+    Status VARCHAR(50) NOT NULL, 
     --Verified varchar(3) DEFAULT null, 
     FaultType VARCHAR(50) CHECK (FaultType IN ('Manufacturer', 'User')) NULL,
 	TechnicianVerify varchar(3) DEFAULT null, -- '1' nếu đã xác nhận, '0' nếu chưa 
@@ -234,9 +234,17 @@ INSERT INTO Product (ProductId, ProductName, Brand, Price, CustomerId) VALUES
 ('P010', 'Laptop Microsoft Surface Laptop 5', 'Microsoft', 33000000, 1),
 ('P011', 'Laptop LG Gram 17', 'LG', 29000000, 1),
 ('P012', 'Laptop Huawei MateBook X Pro', 'Huawei', 31000000, 1),
-('P013', 'Laptop Huawei MateBook X Pro', 'Huawei', 31000000, 2);
-INSERT INTO WarrantyRequirement (ProductId, CustomerId, Status, Description, RegisterDate)
-VALUES ('P001', 1, 'Pending', 'Khách hàng yêu cầu bảo hành do lỗi phần cứng', GETDATE());
+('P013', 'Laptop MSI Stealth 15M', 'MSI', 31000000, 2) ,
+('P014', 'Laptop LG Gram 17', 'LG', 31000000, 2),
+('P015', 'Laptop Samsung Galaxy Book3', 'Huawei', 31000000, 2),
+('P016', 'Laptop Lenovo ThinkPad X1', 'Lenovo', 31000000, 2),
+('P017', 'Laptop MacBook Pro 14', 'Apple', 31000000, 2),
+('P018', 'Laptop Dell XPS 13', 'Dell', 31000000, 2),
+('P019', 'Laptop Huawei Pro', 'Huawei', 31000000, 2);
+
+INSERT INTO WarrantyRequirement (ProductId, CustomerId, Status, Description, RegisterDate , IsPay)
+VALUES ('P001', 1, 'Pending', 'Khách hàng yêu cầu bảo hành do lỗi phần cứng', GETDATE() , 'Yes');
+
 INSERT INTO Blog (Title, Description, Content, ImageUrl, StaffId) VALUES
 (N'Laptop Bảo Hành Miễn Phí', N'Hướng dẫn về chính sách bảo hành miễn phí', N'Nội dung chi tiết về bảo hành miễn phí...', 'images/blog1.jpg', 'S001'),
 (N'Sửa Laptop Bị Lỗi Màn Hình', N'Cách khắc phục lỗi màn hình phổ biến', N'Nội dung chi tiết về sửa lỗi màn hình...', 'images/blog2.jpg', 'S002'),
@@ -250,26 +258,29 @@ INSERT INTO Blog (Title, Description, Content, ImageUrl, StaffId) VALUES
 (N'Tại Sao Laptop Không Nhận USB', N'Hướng dẫn sửa lỗi laptop không nhận USB', N'Nội dung chi tiết...', 'images/blog10.jpg', 'S010'),
 (N'Cách Vệ Sinh Laptop Đúng Cách', N'Hướng dẫn vệ sinh laptop giúp kéo dài tuổi thọ', N'Nội dung chi tiết...', 'images/blog11.jpg', 'S001'),
 (N'Cập Nhật Driver Cho Laptop', N'Tại sao cần cập nhật driver và cách thực hiện', N'Nội dung chi tiết...', 'images/blog12.jpg', 'S001');
-INSERT INTO WarrantyForm (ProductId, StartDate, EndDate, Status, Verified)
-VALUES 
-('P001', '2023-01-01', '2024-01-01', 'Completed', 1),
-('P001', '2024-01-02', '2025-01-02', 'Active', 1),
-('P001', '2024-02-01', '2025-02-01', 'Active', 1),
-('P001', '2023-03-05', '2024-03-05', 'Completed', 0),
-('P001', '2024-04-10', '2025-04-10', 'Active', 1),
-('P001', '2023-05-15', '2024-05-15', 'Active', 1),
-('P001', '2023-06-20', '2024-06-20', 'Active', 0),
-('P001', '2022-07-25', '2023-07-25', 'Canceled', 0),
-('P001', '2024-08-30', '2025-08-30', 'Active', 1),
-('P001', '2023-09-10', '2024-09-10', 'Active', 1);
+
+INSERT INTO WarrantyForm (ProductId, StartDate, EndDate, Status) VALUES
+('P001', '2024-01-10', '2025-01-10', 'Active'),
+('P002', '2024-02-15', '2025-02-15', 'Active'),
+('P003', '2024-03-20', '2025-03-20', 'Active'),
+('P004', '2024-04-05', '2025-04-05', 'Active'),
+('P005', '2024-05-18', '2025-05-18', 'Active'),
+('P006', '2024-06-22', '2025-06-22', 'Active'),
+('P007', '2024-07-07', '2025-07-07', 'Active'),
+('P008', '2024-08-12', '2025-08-12', 'Active'),
+('P009', '2024-09-25', '2025-09-25', 'Active'),
+('P010', '2024-10-30', '2025-10-30', 'Active'),
+('P011', '2024-11-14', '2025-11-14', 'Active'),
+('P012', '2024-12-29', '2025-12-29', 'Active'),
+('P013', '2023-01-08', '2024-01-08', 'Active'),
+('P014', '2023-02-19', '2024-02-19', 'Active'),
+('P015', '2023-03-25', '2024-03-25', 'Active'),
+('P016', '2023-04-30', '2024-04-30', 'Active'),
+('P017', '2023-05-05', '2024-05-05', 'Active'),
+('P018', '2023-06-15', '2024-06-15', 'Active');
 
 
-
-
-
-
-
-INSERT INTO WarrantyRequirement (ProductId, CustomerId, StaffId, Status, Description, ImageUrl, RegisterDate, IsPay, FormId)
+/*INSERT INTO WarrantyRequirement (ProductId, CustomerId, StaffId, Status, Description, ImageUrl, RegisterDate, IsPay, FormId)
 VALUES
 ('P001', 1, 'S001', 'Pending', N'Lỗi màn hình', 'https://example.com/image1.jpg', GETDATE(), 'No', null),
 ('P002', 2, 'S002', 'Approved', N'Lỗi bàn phím', 'https://example.com/image2.jpg', GETDATE(), 'Yes', null),
@@ -280,4 +291,4 @@ VALUES
 ('P007', 7, 'S007', 'Rejected', N'Hỏng loa', 'https://example.com/image7.jpg', GETDATE(), 'No', null),
 ('P008', 8, 'S008', 'Approved', N'Lỗi phần mềm', 'https://example.com/image8.jpg', GETDATE(), 'Yes', null),
 ('P009', 9, 'S009', 'Pending', N'Máy bị treo', 'https://example.com/image9.jpg', GETDATE(), 'No', null),
-('P010', 10, 'S010', 'Rejected', N'Lỗi card đồ họa', 'https://example.com/image10.jpg', GETDATE(), 'Yes', NULL);
+('P010', 10, 'S010', 'Rejected', N'Lỗi card đồ họa', 'https://example.com/image10.jpg', GETDATE(), 'Yes', NULL);*/

@@ -172,6 +172,7 @@ public class WarrantyProcessDao extends DBContext {
         return invoiceSet;
     }
 
+   
     public List<WarrantyProcessing> getAllWarrantyProcess(String staffId) {
         List<WarrantyProcessing> list = new ArrayList<>();
 
@@ -195,14 +196,14 @@ public class WarrantyProcessDao extends DBContext {
 
                 WarrantyRequirement wr = new WarrantyRequirement();
                 wr.setRequirementId(rs.getInt(2));
-                wr.setIsPay(rs.getString(16));
+                wr.setIsPay(rs.getString(15));
 
                 WarrantyForm form = new WarrantyForm();
-                form.setFormId(rs.getInt(17));
+                form.setFormId(rs.getInt(16));
                 wr.setForm(form);
 
                 Product p = new Product();
-                p.setProductId(rs.getString(9));
+                p.setProductId(rs.getString(8));
                 wr.setProduct(p);
 
                 wp.setRequirement(wr);
@@ -277,6 +278,14 @@ public class WarrantyProcessDao extends DBContext {
         return 0;  // Trả về 0 nếu có lỗi
     }
 
+     public static void main(String[] args) {
+        WarrantyProcessDao w = new WarrantyProcessDao();
+        for (WarrantyProcessing x : w.processListByCustomerId(1, 1, 1)) {
+            System.out.println(x.getProcessingId());
+        }
+
+    }
+    
     public List<WarrantyProcessing> processListByCustomerId(int index, int customerId, int amount) {
         List<WarrantyProcessing> list = new ArrayList<>();
         String sql = "select * from WarrantyProcessing wp join WarrantyRequirement wr \n"
@@ -294,12 +303,12 @@ public class WarrantyProcessDao extends DBContext {
                 wp.setProcessingId(rs.getInt(1));
                 WarrantyRequirement wr = new WarrantyRequirement();
                 wr.setRequirementId(rs.getInt(2));
-                wr.setRegisterDate(rs.getDate(15));
+                wr.setRegisterDate(rs.getDate(14));
                 Product product = new Product();
-                product.setProductId(rs.getString(9));
+                product.setProductId(rs.getString(8));
                 wr.setProduct(product);
                 WarrantyForm wf = new WarrantyForm();
-                wf.setFormId(rs.getInt(17));
+                wf.setFormId(rs.getInt(16));
                 wr.setForm(wf);
                 wp.setRequirement(wr);
                 Staff s = new Staff();
@@ -313,6 +322,7 @@ public class WarrantyProcessDao extends DBContext {
                 list.add(wp);
             }
         } catch (Exception e) {
+            System.out.println(e);
         }
         return list;
     }
