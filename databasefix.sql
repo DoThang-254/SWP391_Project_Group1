@@ -242,8 +242,6 @@ INSERT INTO Product (ProductId, ProductName, Brand, Price, CustomerId) VALUES
 ('P018', 'Laptop Dell XPS 13', 'Dell', 31000000, 2),
 ('P019', 'Laptop Huawei Pro', 'Huawei', 31000000, 2);
 
-INSERT INTO WarrantyRequirement (ProductId, CustomerId, Status, Description, RegisterDate , IsPay)
-VALUES ('P001', 1, 'Pending', 'Khách hàng yêu cầu bảo hành do lỗi phần cứng', GETDATE() , 'Yes');
 
 INSERT INTO Blog (Title, Description, Content, ImageUrl, StaffId) VALUES
 (N'Laptop Bảo Hành Miễn Phí', N'Hướng dẫn về chính sách bảo hành miễn phí', N'Nội dung chi tiết về bảo hành miễn phí...', 'images/blog1.jpg', 'S001'),
